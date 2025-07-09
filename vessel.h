@@ -2,33 +2,37 @@
 
 using namespace std;
 
+#include <fstream>
 #include <string>
 
-class vessel {
-    private:
-        string vesselName;
-        string vessel_ID;
-        double HCLL;
-        double LCLL;
-
+class Vessel {
     public:
-        vessel(); // default constructor
-        vessel(string vesselName, string vesselId, double HCLL, double LCLL); // parameterized constructor
+        static const int NAME_LENGTH = 25; // Length of the vessel name
+        static const int ID_LENGTH = 10; // Length of the vessel ID
+        static const int RECORD_SIZE = NAME_LENGTH + ID_LENGTH + sizeof(double) * 2; // Size of the record in bytes
 
-        string getName() const; // getter for name
-        string getVesselID() const; // getter for vessel_ID
+        char vesselName[NAME_LENGTH + 1]; // +1 for null terminator
+        char vesselId[ID_LENGTH + 1]; // +1 for null terminator 
+        double HCLL; // High Capacity Lane Length
+        double LCLL; // Low Capacity Lane Length
+
+
+        vessel(); // default constructor
+        vessel(const std::string& vesselName, const std::string& vesselId, double HCLL, double LCLL); // parameterized constructor
+
+        void writeToFile(std::fstream& file) const; // write vessel data to file
+        void readFromFile(std::fstream& file); // read vessel data from file
+
+        std::string toString() const; // convert vessel data to string for display
+
+        bool checkExists(const std::string& vesselId);
+        bool writeVessel(const std::string& VesselName, const std::string& vesselId, double HCLL, double LCLL);
+
+        std::string getName() const; // getter for name
+        std::string getVesselID() const; // getter for vessel_ID
         double getHCLL() const; // getter for HCLL(High Capacity Lane Length)
         double getLCLL() const; // getter for LCLL(Low Capacity Lane Length)
 
-        void setName(string name); // setter for name
-        void setVesselID(string vesselId); // setter for vessel_ID
-        void setHCLL(double HCLL); // setter for HCLL(High Capacity Lane Length)
-        void setLCLL(double LCLL); // setter for LCLL(Low Capacity Lane Length)
-
-        bool checkExists(string vesselId);
-        bool writeVessel(string VesselName, string vesselId, double HCLL, double LCLL);
-        double getHCLL();
-        double getLCLL();
-
+        int getCapacity() const; // returns the capacity of the vessel
 
     };
