@@ -6,11 +6,11 @@ using namespace std;
 #include <fstream>
 
 
-class vehicle {
+class Vehicle {
 
     public:
-        const int LICENSE_PLATE_LENGTH = 10;
-        const int PHONE_LENGTH = 10;
+        static const int LICENSE_PLATE_LENGTH = 10;
+        static const int PHONE_LENGTH = 10;
         static const int RECORD_SIZE = LICENSE_PLATE_LENGTH + PHONE_LENGTH + sizeof(float) * 2;
 
         char license[LICENSE_PLATE_LENGTH + 1]; // +1 for null terminator
@@ -18,21 +18,22 @@ class vehicle {
         float height;
         float length;
         
-        vehicle(); // default constructor
-        vehicle(const std::string& license, const std::string& phone, float height, float length); // parameterized constructor
+        Vehicle(); // default constructor
+        Vehicle(const std::string& license, const std::string& phone, float height, float length); // parameterized constructor
 
-        string getLicense() const; // getter for license
+        void writeToFile(std::fstream& file) const; // Write vehicle information to a file
+        void readFromFile(std::fstream& file); // Read vehicle information from a file
+
+        std::string getLicense() const; // getter for license
         string getPhone() const; // getter for phone
-        float getHeight() const; // getter for height
-        float getLength() const; // getter for length
+        double getHeight() const; // getter for height
+        double getLength() const; // getter for length
 
         void setLicense(string license); // setter for license
         void setPhone(string phone); // setter for phone
-        void setHeight(float height); // setter for height
-        void setLength(float length); // setter for length
+        void setHeight(double height); // setter for height
+        void setLength(double length); // setter for length
         
-        bool checkExists(string license);
-        bool writeVehicle(string license, string phone, float height, float length);
-        double getHeight();
-        double getLength();
+        bool checkExists(const std::string& license);
+        bool writeVehicle(const std::string& license, const std::string& phone, double height, double length);
 };

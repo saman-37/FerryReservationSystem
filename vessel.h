@@ -17,8 +17,8 @@ class Vessel {
         double LCLL; // Low Capacity Lane Length
 
 
-        vessel(); // default constructor
-        vessel(const std::string& vesselName, const std::string& vesselId, double HCLL, double LCLL); // parameterized constructor
+        Vessel(); // default constructor
+        Vessel(const std::string& vesselName, const std::string& vesselId, double HCLL, double LCLL); // parameterized constructor
 
         void writeToFile(std::fstream& file) const; // write vessel data to file
         void readFromFile(std::fstream& file); // read vessel data from file

@@ -14,11 +14,10 @@ class Sailing{
 
     char sailingId[SAILING_ID_LENGTH + 1]; // Unique identifier for the sailing
     char vesselName[VESSEL_NAME_LENGTH + 1]; // Name of the vessel
-    double vehicleLength; // Length of the vehicle in meters
     double HRL; // High Road Length in meters
     double LRL; // Low Road Lengths in meters
     
-    sailing();
+    Sailing();
     Sailing(const std::string& sailingId, const std::string& vesselName, double HRL, double LRL); 
 
     void writeToFile(std::fstream& file) const; // Write sailing information to a file
@@ -28,13 +27,13 @@ class Sailing{
 
     static Sailing getSailingInfo(const std::string& sailingId); // returns sailing information as a string
     
-    bool checkExists(std::string& SailingId);
-    bool writeSailing(std::string& SailingId, std::string& vesselName, double HRL, double LRL);
-    bool removeSailing(std::string& SailingId);
-    bool isSpaceAvailable(const std::string& SailingId, double vehicleLength, bool isSpecial);
+    static bool checkExists(std::string& SailingId);
+    static bool writeSailing(std::string& SailingId, std::string& vesselName, double HRL, double LRL);
+    static bool removeSailing(std::string& SailingId);
+    static bool isSpaceAvailable(const std::string& SailingId, double vehicleLength, bool isSpecial);
     
-    void reduceSpace(const std::string& SailingId, double vehicleLength, bool isSpecial);
-    void addSpace(const std::string& SailingId, double vehicleLength);
+    static void reduceSpace(const std::string& SailingId, double vehicleLength, bool isSpecial);
+    static void addSpace(const std::string& SailingId, double vehicleLength);
     
     double getHRL(const std::string& SailingId) const; // getter for HRL (High Road Length)
     double getLRL(const std::string& SailingId) const; // getter for LRL (Low Road Length)
