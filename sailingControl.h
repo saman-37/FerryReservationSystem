@@ -1,14 +1,16 @@
 #pragma once
 #include "sailing.h"
 
+#include <string>
 
-class sailingControl {
-    private:
-        string sailingId;
-        sailing aSailing;
+
+class SailingControl {
 
     public:
-        sailingControl();
-        sailingControl(string sai)
+        SailingControl();
+
+        bool createSailing(const std::string& sailingId, const std::string& vesselName);
+        void querySailing(const std::string& sailingId);
+        void printSailingReport(const std::string& sailingId);
         
 };

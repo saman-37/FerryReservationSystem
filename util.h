@@ -1,10 +1,13 @@
 #pragma once
 
-class util {
-    public:
-    util();        //constructor
+#include <fstream>
+#include <string>
 
-    void startup();
-    void shutdown();
-    void reset();
+class Util {
+    public:
+        Util();        //constructor
+
+        void startup();
+        void shutdown();
+        void reset();
 };

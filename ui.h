@@ -1,15 +1,26 @@
 #pragma once
 
-class ui {
+#include <iostream>
+#include <string>
+
+#include "sailingControl.h"
+#include "otherControl.h"
+#include "util.h"
+
+class UI {
     public:
-    
-    ui();        //constructor
-    ui(int argc);     //constructor with arguments
+        UI();        //constructor
+        UI(int argc);     //constructor with arguments
 
 
-    void displayMainMenu();
-    void displayCreateMenu();
-    void displayDeleteMenu();
-    void userInterface();
+        void userInterface();
+
+        void displayMainMenu();
+
+        void displayCreateMenu();
+        void displayDeleteMenu();
+
+        int getUserChoice(int min, int max);
+        std::string getInput(const std::string& prompt);
 
 };
