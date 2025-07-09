@@ -1,3 +1,10 @@
+//************************************************************
+// util.h
+//************************************************************
+// Purpose: Provides system-level helper functions such as
+// startup, shutdown, and reset operations.
+//************************************************************
+
 #pragma once
 
 #include <fstream>
@@ -5,9 +12,9 @@
 
 class Util {
     public:
-        Util();        //constructor
+        Util(); // Default Constructor
 
-        void startup();
-        void shutdown();
-        void reset();
+        void startup(); // Initializes the system (e.g., opens data files)
+        void shutdown(); // Gracefully closes resources/files
+        void reset(); // Resets system data (e.g., clears files)
 };

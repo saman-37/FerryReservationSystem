@@ -1,3 +1,10 @@
+//************************************************************
+// vessel.h
+//************************************************************
+// Purpose: Represents a ferry vessel that holds capacity values
+// used to initialize new sailings. Stored as binary data.
+//************************************************************
+
 #pragma once
 
 using namespace std;
@@ -17,8 +24,8 @@ class Vessel {
         double LCLL; // Low Capacity Lane Length
 
 
-        Vessel(); // default constructor
-        Vessel(const std::string& vesselName, const std::string& vesselId, double HCLL, double LCLL); // parameterized constructor
+        Vessel(); // Default Constructor
+        Vessel(const std::string& vesselName, const std::string& vesselId, double HCLL, double LCLL); // Parameterized Constructor
 
         void writeToFile(std::fstream& file) const; // write vessel data to file
         void readFromFile(std::fstream& file); // read vessel data from file

@@ -1,3 +1,10 @@
+//************************************************************
+// sailing.h
+//************************************************************
+// Purpose: Represents a ferry sailing with fixed-size binary fields
+// and supports lane management (HRL, LRL), file operations, and info retrieval.
+//************************************************************
+
 #pragma once
 
 using namespace std;
@@ -14,11 +21,11 @@ class Sailing{
 
     char sailingId[SAILING_ID_LENGTH + 1]; // Unique identifier for the sailing
     char vesselName[VESSEL_NAME_LENGTH + 1]; // Name of the vessel
-    double HRL; // High Road Length in meters
-    double LRL; // Low Road Lengths in meters
+    double HRL; // High Remaining Length in meters
+    double LRL; // Low Remaining Length in meters
     
-    Sailing();
-    Sailing(const std::string& sailingId, const std::string& vesselName, double HRL, double LRL); 
+    Sailing(); // Default Constructor
+    Sailing(const std::string& sailingId, const std::string& vesselName, double HRL, double LRL); // Parametrised Constructor
 
     void writeToFile(std::fstream& file) const; // Write sailing information to a file
     void readFromFile(std::fstream& file); // Read sailing information from a file
@@ -35,6 +42,6 @@ class Sailing{
     static void reduceSpace(const std::string& SailingId, double vehicleLength, bool isSpecial);
     static void addSpace(const std::string& SailingId, double vehicleLength);
     
-    double getHRL(const std::string& SailingId) const; // getter for HRL (High Road Length)
-    double getLRL(const std::string& SailingId) const; // getter for LRL (Low Road Length)
+    double getHRL(const std::string& SailingId) const; // getter for HRL (High Remaining Length)
+    double getLRL(const std::string& SailingId) const; // getter for LRL (Low Remaining Length)
 };

@@ -1,3 +1,12 @@
+//************************************************************
+// ui.h
+//************************************************************
+// Purpose: Top-level UI class for the Ferry Reservation System.
+// This is the user interface layer responsible for managing
+// all menus, taking user input, and routing commands to
+// mid-level control modules.
+//************************************************************
+
 #pragma once
 
 #include <iostream>
@@ -9,8 +18,8 @@
 
 class UI {
     public:
-        UI();        //constructor
-        UI(int argc);     //constructor with arguments
+        UI();         // Default Constructor
+        UI(int argc); // Parametrised Constructor
 
 
         void userInterface();

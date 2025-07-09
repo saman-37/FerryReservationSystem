@@ -1,10 +1,14 @@
-#pragma once
+//************************************************************
+// vehicle.h
+//************************************************************
+// Purpose: Represents a binary-stored vehicle record with license,
+// phone, height, and length data. Used in reservations.
+//************************************************************
 
-using namespace std;
+#pragma once
 
 #include <string>
 #include <fstream>
-
 
 class Vehicle {
 
@@ -18,8 +22,8 @@ class Vehicle {
         float height;
         float length;
         
-        Vehicle(); // default constructor
-        Vehicle(const std::string& license, const std::string& phone, float height, float length); // parameterized constructor
+        Vehicle(); // Default Constructor
+        Vehicle(const std::string& license, const std::string& phone, float height, float length); // Parameterized Constructor
 
         void writeToFile(std::fstream& file) const; // Write vehicle information to a file
         void readFromFile(std::fstream& file); // Read vehicle information from a file
