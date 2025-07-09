@@ -10,7 +10,6 @@ class sailing{
 
     public:
         sailing();
-        sailing();
 
         bool checkExists(string SailingId);
         bool writeSailing(string SailingId, string vesselName);
