@@ -26,7 +26,7 @@ class Vessel {
 
 
         Vessel(); // Default Constructor
-        Vessel(const std::string& vesselName, const std::string& vesselId, double HCLL, double LCLL); // in: vesselName, vesselId, HCLL, LCLL
+        Vessel(const std::string& vesselName, double HCLL, double LCLL); // in: vesselName, HCLL, LCLL
 
         void writeToFile(std::fstream& file) const; // in-out: file
         void readFromFile(std::fstream& file); // in-out: file
@@ -35,7 +35,7 @@ class Vessel {
 
         void initialize(const std::string& vesselName, const std::string& vesselId, double HCLL, double LCLL); // in: vesselName, vesselId, HCLL, LCLL
 
-        bool checkExists(const std::string& vesselId); // in: vesselId
+        bool checkExist(const std::string& vesselId); // in: vesselId
         bool writeVessel(const std::string& VesselName, const std::string& vesselId, double HCLL, double LCLL); // in: vesselName, vesselId, HCLL, LCLL
 
         std::string getName() const; // out: vesselName

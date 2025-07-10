@@ -37,14 +37,14 @@ class Sailing{
     
     static Sailing getSailingInfo(const std::string& sailingId); // returns sailing information as a string, in: sailingId
     
-    static bool checkExists(std::string& SailingId); // in: sailingId
-    static bool writeSailing(std::string& SailingId, std::string& vesselName, double HRL, double LRL); // in: sailingId, vesselName, HRL, LRL
-    static bool removeSailing(std::string& SailingId); // in: sailingId
-    static bool isSpaceAvailable(const std::string& SailingId, double vehicleLength, bool isSpecial); // in: sailingId, vehicleLength, isSpecial
+    static bool checkExists(std::string& sailingId); // in: sailingId
+    static bool writeSailing(std::string& sailingId, std::string& vesselName, double HRL, double LRL); // in: sailingId, vesselName, HRL, LRL
+    static bool removeSailing(std::string& sailingId); // in: sailingId
+    static bool isSpaceAvailable(const std::string& sailingId, double vehicleLength, bool isSpecial); // in: sailingId, vehicleLength, isSpecial
     
-    static void reduceSpace(const std::string& SailingId, double vehicleLength, bool isSpecial); // in-out: modifies storage file
-    static void addSpace(const std::string& SailingId, double vehicleLength); // in-out: modifies storage file
+    static void reduceSpace(const std::string& sailingId, double vehicleLength, bool isSpecial); // in-out: modifies storage file
+    static void addSpace(const std::string& sailingId, double vehicleLength); // in-out: modifies storage file
 
-    double getHRL(const std::string& SailingId) const; // getter for HRL (High Remaining Length), in: sailingId, out: HRL
-    double getLRL(const std::string& SailingId) const; // getter for LRL (Low Remaining Length), in: sailingId, out: LRL
+    double getHRL(const std::string& sailingId) const; // getter for HRL (High Remaining Length), in: sailingId, out: HRL
+    double getLRL(const std::string& sailingId) const; // getter for LRL (Low Remaining Length), in: sailingId, out: LRL
 };

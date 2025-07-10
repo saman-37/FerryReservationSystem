@@ -41,6 +41,6 @@ class Vehicle {
         void setHeight(double height); // in: height
         void setLength(double length); // in: length
         
-        static bool checkExists(const std::string& license); // in: license
+        static bool checkExist(const std::string& license); // in: license
         static bool writeVehicle(const std::string& license, const std::string& phone, double height, double length); // in: license, phone, height, length
 };
