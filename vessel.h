@@ -32,6 +32,8 @@ class Vessel {
 
         std::string toString() const; // convert vessel data to string for display
 
+        void initialize(const std::string& vesselName, const std::string& vesselId, double HCLL, double LCLL); // Initialize the vessel with name, ID, HCLL, and LCLL
+
         bool checkExists(const std::string& vesselId);
         bool writeVessel(const std::string& VesselName, const std::string& vesselId, double HCLL, double LCLL);
 

@@ -33,6 +33,8 @@ class Reservation {
         
         std::string toString() const;
 
+        void initialize(const std::string& sailingId, const std::string& license, const std::string& phone); // Initialize the reservation with sailing ID, license, and phone number.
+
         static int getTotalReservationsOnSailing(const std::string& sailingId) const;
         static bool removeReservation(const std::string& sailingId, const std::string& license) const;
         static bool checkExists(const std::string& sailingId, const std::string& license) const;

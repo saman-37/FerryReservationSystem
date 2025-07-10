@@ -28,7 +28,9 @@ class Vehicle {
         void writeToFile(std::fstream& file) const; // Write vehicle information to a file
         void readFromFile(std::fstream& file); // Read vehicle information from a file
 
-        std::string getLicense() const; // getter for license
+        void initialize(const std::string& license, const std::string& phone, float height, float length); // Initialize vehicle with license, phone, height, and length
+       
+        string getLicense() const; // getter for license
         string getPhone() const; // getter for phone
         double getHeight() const; // getter for height
         double getLength() const; // getter for length
@@ -38,6 +40,6 @@ class Vehicle {
         void setHeight(double height); // setter for height
         void setLength(double length); // setter for length
         
-        bool checkExists(const std::string& license);
-        bool writeVehicle(const std::string& license, const std::string& phone, double height, double length);
+        static bool checkExists(const std::string& license); // Checks if a vehicle exists by license
+        static bool writeVehicle(const std::string& license, const std::string& phone, double height, double length);// Writes new vehicle to file
 };

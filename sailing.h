@@ -32,6 +32,8 @@ class Sailing{
 
     std::string toString() const; // Convert sailing data to string for display
 
+    void initialize(const std::string& sailingId, const std::string& vesselName, double HRL, double LRL); // Initialize sailing data
+    
     static Sailing getSailingInfo(const std::string& sailingId); // returns sailing information as a string
     
     static bool checkExists(std::string& SailingId);
@@ -41,7 +43,7 @@ class Sailing{
     
     static void reduceSpace(const std::string& SailingId, double vehicleLength, bool isSpecial);
     static void addSpace(const std::string& SailingId, double vehicleLength);
-    
+
     double getHRL(const std::string& SailingId) const; // getter for HRL (High Remaining Length)
     double getLRL(const std::string& SailingId) const; // getter for LRL (Low Remaining Length)
 };
