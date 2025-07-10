@@ -37,7 +37,7 @@ class Sailing{
     
     static Sailing getSailingInfo(const std::string& sailingId); // returns sailing information as a string, in: sailingId
     
-    static bool checkExists(std::string& sailingId); // in: sailingId
+    static bool checkExist(std::string& sailingId); // in: sailingId
     static bool writeSailing(std::string& sailingId, std::string& vesselName, double HRL, double LRL); // in: sailingId, vesselName, HRL, LRL
     static bool removeSailing(std::string& sailingId); // in: sailingId
     static bool isSpaceAvailable(const std::string& sailingId, double vehicleLength, bool isSpecial); // in: sailingId, vehicleLength, isSpecial
