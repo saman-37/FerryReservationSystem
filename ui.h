@@ -5,6 +5,7 @@
 // This is the user interface layer responsible for managing
 // all menus, taking user input, and routing commands to
 // mid-level control modules.
+// July 10, 2025 Revision 1
 //************************************************************
 
 #pragma once
@@ -19,7 +20,7 @@
 class UI {
     public:
         UI();         // Default Constructor
-        UI(int argc); // Parametrised Constructor
+        UI(int argc); // in: argc - argument count from command-line
 
 
         void userInterface();
@@ -29,7 +30,7 @@ class UI {
         void displayCreateMenu();
         void displayDeleteMenu();
 
-        int getUserChoice(int min, int max);
-        std::string getInput(const std::string& prompt);
+        int getUserChoice(int min, int max); // in: min, max
+        std::string getInput(const std::string& prompt); // in: prompt - message to display
 
 };

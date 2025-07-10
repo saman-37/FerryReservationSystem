@@ -3,6 +3,7 @@
 //************************************************************
 // Purpose: Represents a binary-stored vehicle record with license,
 // phone, height, and length data. Used in reservations.
+// July 10, 2025 Revision 1
 //************************************************************
 
 #pragma once
@@ -23,23 +24,23 @@ class Vehicle {
         float length;
         
         Vehicle(); // Default Constructor
-        Vehicle(const std::string& license, const std::string& phone, float height, float length); // Parameterized Constructor
+        Vehicle(const std::string& license, const std::string& phone, float height, float length); // in: license, phone, height, length
 
-        void writeToFile(std::fstream& file) const; // Write vehicle information to a file
-        void readFromFile(std::fstream& file); // Read vehicle information from a file
+        void writeToFile(std::fstream& file) const; // in-out: file
+        void readFromFile(std::fstream& file); // in-out: file
 
-        void initialize(const std::string& license, const std::string& phone, float height, float length); // Initialize vehicle with license, phone, height, and length
+        void initialize(const std::string& license, const std::string& phone, float height, float length); // in: license, phone, height, length
        
-        string getLicense() const; // getter for license
-        string getPhone() const; // getter for phone
-        double getHeight() const; // getter for height
-        double getLength() const; // getter for length
+        std::string getLicense() const; // out: license
+        std::string getPhone() const; // out: phone
+        double getHeight() const; // out: height
+        double getLength() const; // out: length
 
-        void setLicense(string license); // setter for license
-        void setPhone(string phone); // setter for phone
-        void setHeight(double height); // setter for height
-        void setLength(double length); // setter for length
+        void setLicense(string license); // in: license
+        void setPhone(string phone); // in: phone
+        void setHeight(double height); // in: height
+        void setLength(double length); // in: length
         
-        static bool checkExists(const std::string& license); // Checks if a vehicle exists by license
-        static bool writeVehicle(const std::string& license, const std::string& phone, double height, double length);// Writes new vehicle to file
+        static bool checkExists(const std::string& license); // in: license
+        static bool writeVehicle(const std::string& license, const std::string& phone, double height, double length); // in: license, phone, height, length
 };

@@ -4,6 +4,7 @@
 // Purpose: Mid-level controller for managing sailings. Handles
 // the creation of sailings, querying individual sailings,
 // and generating sailing reports. Interfaces with the Sailing entity.
+// July 10, 2025 Revision 1
 //************************************************************
 
 #pragma once
@@ -18,8 +19,8 @@ class SailingControl {
     public:
         SailingControl(); // Default Constructor
 
-        bool createSailing(const std::string& sailingId, const std::string& vesselName);
-        void querySailing(const std::string& sailingId);
-        void printSailingReport(const std::string& sailingId);
+        bool createSailing(const std::string& sailingId, const std::string& vesselName); // in: sailingId, vesselName
+        void querySailing(const std::string& sailingId); // in: sailingId
+        void printSailingReport(const std::string& sailingId); // in: sailingId
         
 };

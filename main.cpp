@@ -5,7 +5,7 @@
 // main.cpp
 //************************************************************
 // Purpose: Main entry point for the FerryReserver application.
-// July 9, 2025 Revision 1 - Created initial coding convention document. Team-wide agreement.
+// July 10, 2025 Revision 1
 //************************************************************ 
 
 //************************************************************
@@ -58,7 +58,7 @@ Comments:
 //************************************************************
 // [filename].h
 //************************************************************
-// Purpose: [One-line description of the class/module's role]
+// Purpose: [Description of the class/module's role]
 // [Date] Revision 1 - [Team member(s)]
 //************************************************************ 
 

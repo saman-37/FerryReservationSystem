@@ -4,6 +4,7 @@
 // Purpose: Represents a binary-storable reservation record with
 // check-in status and file-level operations for managing ferry
 // reservations.
+// July 10, 2025 Revision 1
 //************************************************************
 
 #pragma once
@@ -26,20 +27,20 @@ class Reservation {
         bool checkedIn; // Track whether the vehicle has checked in.
 
         Reservation(); // Default Constructor
-        Reservation(const std::string& sailingId, const std::string& license, const std::string& phone); // Parametrised Constructor
+        Reservation(const std::string& sailingId, const std::string& license, const std::string& phone); // in: sailingID, license, phone
 
-        void writeToFile(std::fstream& file) const;
-        void readFromFile(std::fstream& file);
+        void writeToFile(std::fstream& file) const; // in-out: file - binary file stream
+        void readFromFile(std::fstream& file); // in-out: file - binary file stream
         
-        std::string toString() const;
+        std::string toString() const; // out: returns formatted string
 
-        void initialize(const std::string& sailingId, const std::string& license, const std::string& phone); // Initialize the reservation with sailing ID, license, and phone number.
+        void initialize(const std::string& sailingId, const std::string& license, const std::string& phone); // in: sailing ID, license, phone number
 
-        static int getTotalReservationsOnSailing(const std::string& sailingId) const;
-        static bool removeReservation(const std::string& sailingId, const std::string& license) const;
-        static bool checkExists(const std::string& sailingId, const std::string& license) const;
-        static bool writeReservation(const std::string& sailingId, const std::string& license,) const;
-        static void setCheckedIn(const std::string& sailingId, const std::string& license) const;
+        static int getTotalReservationsOnSailing(const std::string& sailingId) const; // in: sailingID
+        static bool removeReservation(const std::string& sailingId, const std::string& license) const; // in: sailingID, license
+        static bool checkExists(const std::string& sailingId, const std::string& license) const; // in: sailingID, license
+        static bool writeReservation(const std::string& sailingId, const std::string& license,) const; // in: sailingID, license, phone
+        static void setCheckedIn(const std::string& sailingId, const std::string& license) const; // in: sailingID, license
 
 
 };

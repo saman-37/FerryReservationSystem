@@ -3,6 +3,7 @@
 //************************************************************
 // Purpose: Represents a ferry vessel that holds capacity values
 // used to initialize new sailings. Stored as binary data.
+// July 10, 2025 Revision 1
 //************************************************************
 
 #pragma once
@@ -25,22 +26,22 @@ class Vessel {
 
 
         Vessel(); // Default Constructor
-        Vessel(const std::string& vesselName, const std::string& vesselId, double HCLL, double LCLL); // Parameterized Constructor
+        Vessel(const std::string& vesselName, const std::string& vesselId, double HCLL, double LCLL); // in: vesselName, vesselId, HCLL, LCLL
 
-        void writeToFile(std::fstream& file) const; // write vessel data to file
-        void readFromFile(std::fstream& file); // read vessel data from file
+        void writeToFile(std::fstream& file) const; // in-out: file
+        void readFromFile(std::fstream& file); // in-out: file
 
-        std::string toString() const; // convert vessel data to string for display
+        std::string toString() const; // out: string
 
-        void initialize(const std::string& vesselName, const std::string& vesselId, double HCLL, double LCLL); // Initialize the vessel with name, ID, HCLL, and LCLL
+        void initialize(const std::string& vesselName, const std::string& vesselId, double HCLL, double LCLL); // in: vesselName, vesselId, HCLL, LCLL
 
-        bool checkExists(const std::string& vesselId);
-        bool writeVessel(const std::string& VesselName, const std::string& vesselId, double HCLL, double LCLL);
+        bool checkExists(const std::string& vesselId); // in: vesselId
+        bool writeVessel(const std::string& VesselName, const std::string& vesselId, double HCLL, double LCLL); // in: vesselName, vesselId, HCLL, LCLL
 
-        std::string getName() const; // getter for name
-        std::string getVesselID() const; // getter for vessel_ID
-        double getHCLL() const; // getter for HCLL(High Capacity Lane Length)
-        double getLCLL() const; // getter for LCLL(Low Capacity Lane Length)
+        std::string getName() const; // out: vesselName
+        std::string getVesselID() const; // out: vesselId
+        double getHCLL() const; // out: HCLL
+        double getLCLL() const; // out: LCLL
 
         int getCapacity() const; // returns the capacity of the vessel
 
