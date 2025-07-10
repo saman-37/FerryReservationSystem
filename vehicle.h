@@ -29,7 +29,7 @@ class Vehicle {
         void writeToFile(std::fstream& file) const; // in-out: file
         void readFromFile(std::fstream& file); // in-out: file
 
-        void initialize(const std::string& license, const std::string& phone, float height, float length); // in: license, phone, height, length
+        void open(const std::string& license, const std::string& phone, float height, float length); // in: license, phone, height, length
        
         std::string getLicense() const; // out: license
         std::string getPhone() const; // out: phone

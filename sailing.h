@@ -33,7 +33,7 @@ class Sailing{
 
     std::string toString() const; // Convert sailing data to string for display, out: string
 
-    void initialize(const std::string& sailingId, const std::string& vesselName, double HRL, double LRL); // in: sailingID, vesselName, HRL, LRL
+    void open(const std::string& sailingId, const std::string& vesselName, double HRL, double LRL); // in: sailingID, vesselName, HRL, LRL
     
     static Sailing getSailingInfo(const std::string& sailingId); // returns sailing information as a string, in: sailingId
     

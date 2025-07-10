@@ -33,7 +33,7 @@ class Vessel {
 
         std::string toString() const; // out: string
 
-        void initialize(const std::string& vesselName, const std::string& vesselId, double HCLL, double LCLL); // in: vesselName, vesselId, HCLL, LCLL
+        void open(const std::string& vesselName, const std::string& vesselId, double HCLL, double LCLL); // in: vesselName, vesselId, HCLL, LCLL
 
         bool checkExist(const std::string& vesselId); // in: vesselId
         bool writeVessel(const std::string& VesselName, const std::string& vesselId, double HCLL, double LCLL); // in: vesselName, vesselId, HCLL, LCLL

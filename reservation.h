@@ -34,7 +34,7 @@ class Reservation {
         
         std::string toString() const; // out: returns formatted string
 
-        void initialize(const std::string& sailingId, const std::string& license, const std::string& phone); // in: sailing ID, license, phone number
+        void open(const std::string& sailingId, const std::string& license, const std::string& phone); // in: sailing ID, license, phone number
 
         static int getTotalReservationsOnSailing(const std::string& sailingId) const; // in: sailingID
         static bool removeReservation(const std::string& sailingId, const std::string& license) const; // in: sailingID, license
