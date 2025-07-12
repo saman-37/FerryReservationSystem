@@ -11,6 +11,7 @@
 
 #include <fstream>
 #include <string>
+using namespace std;
 
 class Reservation {
     public:
@@ -32,7 +33,7 @@ class Reservation {
         void writeToFile(std::fstream& file) const; // in-out: file - binary file stream
         void readFromFile(std::fstream& file); // in-out: file - binary file stream
         
-        std::string toString() const; // out: returns formatted string
+        string toString() const; // out: returns formatted string
 
         void open(const std::string& sailingId, const std::string& license, const std::string& phone); // in: sailing ID, license, phone number
 
