@@ -36,12 +36,12 @@ class Reservation {
 
         void open(const std::string& sailingId, const std::string& license, const std::string& phone); // in: sailing ID, license, phone number
 
-        static int getTotalReservationsOnSailing(const std::string& sailingId) const; // in: sailingID
-        static bool removeReservation(const std::string& sailingId, const std::string& license) const; // in: sailingID, license
-        static bool removeReservationsOnSailing(const std::string& sailingId) const; // in: sailingId
-        static bool checkExist(const std::string& sailingId, const std::string& license) const; // in: sailingID, license
-        static bool writeReservation(const std::string& sailingId, const std::string& license) const; // in: sailingID, license, phone
-        static void setCheckedIn(const std::string& sailingId, const std::string& license) const; // in: sailingID, license
+        static int getTotalReservationsOnSailing(const std::string& sailingId); // in: sailingID
+        static bool removeReservation(const std::string& sailingId, const std::string& license); // in: sailingID, license
+        static bool removeReservationsOnSailing(const std::string& sailingId); // in: sailingId
+        static bool checkExist(const std::string& sailingId, const std::string& license); // in: sailingID, license
+        static bool writeReservation(const std::string& sailingId, const std::string& license); // in: sailingID, license, phone
+        static void setCheckedIn(const std::string& sailingId, const std::string& license); // in: sailingID, license
 
 
 };
