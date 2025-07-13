@@ -1,17 +1,9 @@
 //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  // Each .cpp file should begin with this line
-//************************************************************
-// reservation.h
-//************************************************************
-// Purpose: Represents a binary-storable reservation record with
-// check-in status and file-level operations for managing ferry
-// reservations.
-// July 10, 2025 Revision 1
-//************************************************************
+// July 10, 2025 Revision 1     //Each implementation .cpp module will need a version history at the top
+                                // Introductory comment which adds to already provided comment in .h file,describe any overall design issues internal to this module (like data structure (if there are any) and algorithm (e.g. linear search of file
 
-#pragma once
-
-#include <fstream>
-#include <string>
+//************************************************************
+#include "reservation.h"
 
 class Reservation {
     public:
@@ -24,16 +16,56 @@ class Reservation {
         // Reservation record fields
         char sailingId[SAILING_ID_LENGTH + 1]; // +1 for null terminator
         char license[LICENSE_LENGTH + 1]; // +1 for null terminator
+
         char phone[PHONE_LENGTH + 1]; // +1 for null terminator
+        //WE DONT NEED TO STORE PHONE IN RESERVATION, LICENSE AND SAILING ID ARE KEYS
+        //but WE MAY NEED IT, IN-CASE THE VEHICLE IS NOT ALREADY, WE WILL CREATE ITS OBJECT AND PUSH IT IN VEHICLE FILE FOR FUTURE easy referance and reservation creation
+
         bool checkedIn; // Track whether the vehicle has checked in.
 
+        //????????????????????
         Reservation(); // Default Constructor
-        Reservation(const string& sailingId, const string& license, const string& phone); // in: sailingID, license, phone
 
-        void writeToFile(fstream& file) const; // in-out: file - binary file stream
-        void readFromFile(fstream& file); // in-out: file - binary file stream
+        Reservation(const string& sailingId, const string& license, const string& phone) // in: sailingID, license, phone
+        {
+            int length;
+            int height;
+            //search in "vehicle" file, if it already exists
+            //SO HERE, DO I NEED TO HAVE .csv file for vehicle,which i will communicate to now 
+
+            //yet how do i get data from vehicle?
+            // do i create an empty vehicle instance with just license, and tell it to match with license in vehicle, return the whole record? 
+            //...
+            if (vehicle.checkExists(license){
+                //use that object
+                height = vehicle.getHeight();
+                length = vehicle.getLength();
+            }
+            else{
+                //prompts customer for attributes-- BUT THIS IS DONE BY UI RIGHT? 
+                //SO WE NEED THIS CHANGE IN user interface documnet, that after getting license, NOT ALWAYS WE ASK FOR ALL OTHER ATTRIBUTES
+                //need to push this instance to vehicle file too
+                vehicle.writeVehicle();
+            }
+
+            
+
+        };
+
+        void writeToFile(fstream& file) const // in-out: file - binary file stream
+        {
+        };
+
+        void readFromFile(fstream& file); // in-out: file - binary file stream 
+        {
+        };
+
         
-        string toString() const; // out: returns formatted string
+        string toString() const // out: returns formatted string 
+        {
+            
+        };
+
 
         void open(const string& sailingId, const string& license, const string& phone) // in: sailing ID, license, phone number        
         {
@@ -57,11 +89,13 @@ class Reservation {
 
         static bool checkExist(const string& sailingId, const string& license)// in: sailingID, license
         {
+            
     
         };
 
         static bool writeReservation(const string& sailingId, const string& license)// in: sailingID, license, phone                                                                                                                                                                                              {
         {
+            
     
         };
 
