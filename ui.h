@@ -10,6 +10,8 @@
 
 #pragma once
 
+using namespace std;
+
 #include <iostream>
 #include <string>
 
@@ -31,6 +33,6 @@ class UI {
         void displayDeleteMenu();
 
         int getUserChoice(int min, int max); // in: min, max
-        std::string getInput(const std::string& prompt); // in: prompt - message to display
+        string getInput(const string& prompt); // in: prompt - message to display
 
 };

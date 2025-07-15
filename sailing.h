@@ -26,25 +26,25 @@ class Sailing{
     double LRL; // Low Remaining Length in meters
     
     Sailing(); // Default Constructor
-    Sailing(const std::string& sailingId, const std::string& vesselName, double HRL, double LRL); // in: sailingId, vesselName, HRL, LRL
+    Sailing(const string& sailingId, const string& vesselName, double HRL, double LRL); // in: sailingId, vesselName, HRL, LRL
 
-    void writeToFile(std::fstream& file) const; // Write sailing information to a file, in-out: file
-    void readFromFile(std::fstream& file); // Read sailing information from a file, in-out: file
+    void writeToFile(fstream& file) const; // Write sailing information to a file, in-out: file
+    void readFromFile(fstream& file); // Read sailing information from a file, in-out: file
 
-    std::string toString() const; // Convert sailing data to string for display, out: string
+    string toString() const; // Convert sailing data to string for display, out: string
 
-    void open(const std::string& sailingId, const std::string& vesselName, double HRL, double LRL); // in: sailingID, vesselName, HRL, LRL
+    void open(const string& sailingId, const string& vesselName, double HRL, double LRL); // in: sailingID, vesselName, HRL, LRL
     
-    static Sailing getSailingInfo(const std::string& sailingId); // returns sailing information as a string, in: sailingId
+    static Sailing getSailingInfo(const string& sailingId); // returns sailing information as a string, in: sailingId
     
-    static bool checkExist(std::string& sailingId); // in: sailingId
-    static bool writeSailing(std::string& sailingId, std::string& vesselName, double HRL, double LRL); // in: sailingId, vesselName, HRL, LRL
-    static bool removeSailing(std::string& sailingId); // in: sailingId
-    static bool isSpaceAvailable(const std::string& sailingId, double vehicleLength, bool isSpecial); // in: sailingId, vehicleLength, isSpecial
+    static bool checkExist(string& sailingId); // in: sailingId
+    static bool writeSailing(string& sailingId, string& vesselName, double HRL, double LRL); // in: sailingId, vesselName, HRL, LRL
+    static bool removeSailing(string& sailingId); // in: sailingId
+    static bool isSpaceAvailable(const string& sailingId, double vehicleLength, bool isSpecial); // in: sailingId, vehicleLength, isSpecial
     
-    static void reduceSpace(const std::string& sailingId, double vehicleLength, bool isSpecial); // in-out: modifies storage file
-    static void addSpace(const std::string& sailingId, double vehicleLength); // in-out: modifies storage file
+    static void reduceSpace(const string& sailingId, double vehicleLength, bool isSpecial); // in-out: modifies storage file
+    static void addSpace(const string& sailingId, double vehicleLength); // in-out: modifies storage file
 
-    double getHRL(const std::string& sailingId) const; // getter for HRL (High Remaining Length), in: sailingId, out: HRL
-    double getLRL(const std::string& sailingId) const; // getter for LRL (Low Remaining Length), in: sailingId, out: LRL
+    double getHRL(const string& sailingId) const; // getter for HRL (High Remaining Length), in: sailingId, out: HRL
+    double getLRL(const string& sailingId) const; // getter for LRL (Low Remaining Length), in: sailingId, out: LRL
 };

@@ -9,6 +9,8 @@
 
 #pragma once
 
+using namespace std;
+
 #include "sailing.h"
 
 #include <string>
@@ -19,9 +21,9 @@ class SailingControl {
     public:
         SailingControl(); // Default Constructor
 
-        bool createSailing(const std::string& sailingId, const std::string& vesselName); // in: sailingId, vesselName
-        bool deleteSailing(const std::& sailingId); // in: sailingId
-        void querySailing(const std::string& sailingId); // in: sailingId
-        void printSailingReport(const std::string& sailingId); // in: sailingId
+        bool createSailing(const string& sailingId, const std::string& vesselName); // in: sailingId, vesselName
+        bool deleteSailing(const string& sailingId); // in: sailingId
+        void querySailing(const string& sailingId); // in: sailingId
+        void printSailingReport(const string& sailingId); // in: sailingId
         
 };

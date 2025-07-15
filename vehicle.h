@@ -8,6 +8,8 @@
 
 #pragma once
 
+using namespace std;
+
 #include <string>
 #include <fstream>
 
@@ -24,15 +26,15 @@ class Vehicle {
         float length;
         
         Vehicle(); // Default Constructor
-        Vehicle(const std::string& license, const std::string& phone, float height, float length); // in: license, phone, height, length
+        Vehicle(const string& license, const string& phone, float height, float length); // in: license, phone, height, length
 
-        void writeToFile(std::fstream& file) const; // in-out: file
-        void readFromFile(std::fstream& file); // in-out: file
+        void writeToFile(fstream& file) const; // in-out: file
+        void readFromFile(fstream& file); // in-out: file
 
-        void open(const std::string& license, const std::string& phone, float height, float length); // in: license, phone, height, length
+        void open(const string& license, const string& phone, float height, float length); // in: license, phone, height, length
        
-        std::string getLicense() const; // out: license
-        std::string getPhone() const; // out: phone
+        string getLicense() const; // out: license
+        string getPhone() const; // out: phone
         double getHeight() const; // out: height
         double getLength() const; // out: length
 
@@ -41,6 +43,6 @@ class Vehicle {
         void setHeight(double height); // in: height
         void setLength(double length); // in: length
         
-        static bool checkExist(const std::string& license); // in: license
-        static bool writeVehicle(const std::string& license, const std::string& phone, double height, double length); // in: license, phone, height, length
+        static bool checkExist(const string& license); // in: license
+        static bool writeVehicle(const string& license, const string& phone, double height, double length); // in: license, phone, height, length
 };
