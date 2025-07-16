@@ -18,7 +18,7 @@ class SailingControl {
         {
         }
 
-        bool deleteSailing(const & sailingId) // in: sailingId
+        bool deleteSailing(const string& sailingId) // in: sailingId
         {
         }
 
