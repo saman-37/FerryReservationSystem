@@ -110,6 +110,7 @@ void UI::displayCreateMenu() {
          }
 
          case 2: {
+            //should add vessselId as well as we need it to create vessel in vessel.cpp
             string vesselName = getInput("Enter Vessel Name (max: 25 characters): ");
             double LCLL = stod(getInput("Enter LCLL (max: 3600.0): "));
             double HCLL = stod(getInput("Enter HCLL (max: 3600.0): "));

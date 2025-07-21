@@ -31,18 +31,15 @@ class Vessel {
       void writeToFile(fstream& file) const; // in-out: file
       void readFromFile(fstream& file); // in-out: file
 
-      string toString() const; // out: string
-
-         void open(const string& vesselName, const string& vesselId, double HCLL, double LCLL); // in: vesselName, vesselId, HCLL, LCLL
-
       bool checkExist(const string& vesselId); // in: vesselId
       bool writeVessel(const string& VesselName, const string& vesselId, double HCLL, double LCLL); // in: vesselName, vesselId, HCLL, LCLL
+      string toString() const; // out: string
 
       string getName() const; // out: vesselName
       string getVesselID() const; // out: vesselId
       double getHCLL() const; // out: HCLL
       double getLCLL() const; // out: LCLL
 
-      int getCapacity() const; // returns the capacity of the vessel
+      int getCapacity() const; // returns the ssum of HCLL and LCLL as capacity of the vessel
 
     };

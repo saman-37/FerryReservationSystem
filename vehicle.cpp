@@ -2,7 +2,7 @@
 // vehicle.cpp
 //************************************************************
 // Purpose: Represents a binary-stored vehicle record with license,
- // phone, height, and length data. Used in reservations.
+// phone, height, and length data. Used in reservations.
 //July 20, 2025 Revision 1 - Darpandeep Kaur
 //************************************************************ 
 
@@ -35,11 +35,11 @@ Vehicle::Vehicle(const string& license, const string& phone, float height, float
    strncpy(this->license, license.c_str(), LICENSE_PLATE_LENGTH); // Copy license string
    this->license[LICENSE_PLATE_LENGTH] = '\0'; // Null-terminate
 
-    strncpy(this->phone, phone.c_str(), PHONE_LENGTH); // Copy phone string
-    this->phone[PHONE_LENGTH] = '\0'; // Null-terminate
+   strncpy(this->phone, phone.c_str(), PHONE_LENGTH); // Copy phone string
+   this->phone[PHONE_LENGTH] = '\0'; // Null-terminate
 
-    this->height = height; // Set height
-    this->length = length; // Set length
+   this->height = height; // Set height
+   this->length = length; // Set length
 }
 
 //************************************************************
