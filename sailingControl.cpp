@@ -1,33 +1,49 @@
-//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-// July 10, 2025 Revision 1
-//************************************************************
+#include "reservation.h"
+#include "sailing.h"
 #include "sailingControl.h"
-#include <string>
-using namespace std;
+#include "vessel.h"
 
+#include <iostream>
 
-class SailingControl {
+sailingControl::sailingControl() {
+    //Default Constructor
+}
 
-    public:
-        SailingControl() // Default Constructor
-        {
-            
-        } 
+bool sailingControl::createSailing(const string& sailingId, const string& vesselName) {
+    // if checkExist(vesselName)
+}
 
-        bool createSailing(const string& sailingId, const string& vesselName) // in: sailingId, vesselName
-        {
-        }
+bool sailingControl::deleteSailing(const string& sailingId) {
+    if checkExist(sailingId){
+        removeReservationsOnSailing(sailingId);
+        removeSailing(sailingId);
+        return true;
+    }
+    else {
+        // cout << "Sailing does not exist..." << endl;
+        return false;
+    }
+}
 
-        bool deleteSailing(const string& sailingId) // in: sailingId
-        {
-        }
+void sailingControl::querySailing(const string& sailingId) {
+    if checkExist(sailingId) {
+        // getName(sailingId);
+        // getHRL(sailingId);
+        // getLRL(sailingId);
+        // getLCLL(sailingId);
+        // getHCLL(sailingId);
+        // getTotalReservationsOnSailing(sailingId);
+        // What to do next?
+    }
+    else
+        return;
+}
 
-        void querySailing(const string& sailingId) // in: sailingId
-        {
-        }
+void sailingControl::printSailingReport(const string& sailingId) {
+    // getCapacity(sailingId);
+    // getSailingInfo(sailingId);
+    // getNext(); // What do we need this for?
+    // getTotalReservationsOnSailing(sailingId);
 
-        void printSailingReport(const string& sailingId) // in: sailingId
-        {
-        }
-        
-};
+    // Should I print them as required or UI will print them? I guess I should.
+}
