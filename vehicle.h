@@ -30,8 +30,6 @@ class Vehicle {
 
       void writeToFile(fstream& file) const; // in-out: file
       void readFromFile(fstream& file); // in-out: file
-
-      void open(const string& license, const string& phone, float height, float length); // in: license, phone, height, length
        
       string getLicense() const; // out: license
       string getPhone() const; // out: phone
@@ -45,4 +43,5 @@ class Vehicle {
         
       static bool checkExist(const string& license); // in: license
       static bool writeVehicle(const string& license, const string& phone, double height, double length); // in: license, phone, height, length
+      string toString() const; // out: formatted string
 };
