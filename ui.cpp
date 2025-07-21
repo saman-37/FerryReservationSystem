@@ -9,11 +9,11 @@
 #include "ui.h"
 
 #include <iostream>
-#include <string>
+#include <limits>
 #include "sailingControl.h"
 #include "otherControl.h"
-#include "reservation.h"
 #include "util.h"
+
 using namespace std;
 
 OtherControl otherControl; // Create an instance of OtherControl to manage reservations and vessels

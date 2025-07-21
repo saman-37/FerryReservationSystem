@@ -10,15 +10,8 @@
 
 #pragma once
 
-using namespace std;
-
-#include <iostream>
 #include <string>
 
-#include "sailingControl.h"
-#include "otherControl.h"
-#include "reservation.h"
-#include "util.h"
 
 class UI {
     public:
@@ -35,6 +28,6 @@ class UI {
         void displaySailingReport();
 
         int getUserChoice(int min, int max); // in: min, max
-        string getInput(const string& prompt); // in: prompt - message to display
+        std::string getInput(const std::string& prompt); // in: prompt - message to display
 
 };
