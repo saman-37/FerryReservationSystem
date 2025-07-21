@@ -17,6 +17,7 @@ using namespace std;
 
 #include "sailingControl.h"
 #include "otherControl.h"
+#include "reservation.h"
 #include "util.h"
 
 class UI {
@@ -26,11 +27,12 @@ class UI {
 
 
         void userInterface();
-
         void displayMainMenu();
-
         void displayCreateMenu();
         void displayDeleteMenu();
+        void CheckInVehicle();
+        void displayQuery();
+        void displaySailingReport();
 
         int getUserChoice(int min, int max); // in: min, max
         string getInput(const string& prompt); // in: prompt - message to display

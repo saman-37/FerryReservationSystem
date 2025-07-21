@@ -5,7 +5,7 @@
 // main.cpp
 //************************************************************
 // Purpose: Main entry point for the FerryReserver application.
-// July 10, 2025 Revision 1
+// July 20, 2025 Revision 2 - Darpandeep Kaur
 //************************************************************ 
 
 //************************************************************
@@ -63,3 +63,17 @@ Comments:
 //************************************************************ 
 
 */
+
+//************************************************************
+// Main entry point for the FerryReserver application.
+// This file initializes the system and starts the user interface loop.
+//************************************************************
+int main(int argc, char* argv[]) {
+   Util util; // Create Util object
+   util.startup(); // Initialize the system
+
+   UI ui(argc); // Create UI object with command-line arguments
+   ui.userInterface(); // Start the user interface loop
+
+   return 0; // Exit the application
+}
