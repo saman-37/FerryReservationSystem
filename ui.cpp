@@ -28,13 +28,6 @@ UI::UI() {
 }
 
 //************************************************************
-// Constructor with argument count
-//************************************************************
-UI::UI(int argc) {
-   // Placeholder for initialization based on command-line arguments if needed
-}
-
-//************************************************************
 // Main user interface loop
 //************************************************************  
 void UI::userInterface() {

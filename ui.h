@@ -16,8 +16,6 @@
 class UI {
    public:
       UI();         // Default Constructor
-      UI(int argc); // in: argc - argument count from command-line
-
 
       void userInterface();
       void displayMainMenu();
