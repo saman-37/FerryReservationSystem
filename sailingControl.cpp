@@ -1,7 +1,7 @@
-#include "reservation.h"
-#include "sailing.h"
-#include "sailingControl.h"
-#include "vessel.h"
+#include "Reservation.h"
+#include "Sailing.h"
+#include "SailingControl.h"
+#include "Vessel.h"
 
 #include <iostream>
 

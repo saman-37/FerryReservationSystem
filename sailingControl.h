@@ -11,7 +11,7 @@
 
 using namespace std;
 
-#include "sailing.h"
+#include "Sailing.h"
 
 #include <string>
 

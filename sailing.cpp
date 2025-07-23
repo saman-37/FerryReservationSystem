@@ -5,7 +5,7 @@
 // July 21, 2025 Revision 1 - Team 18
 //************************************************************
 
-#include "sailing.h"
+#include "Sailing.h"
 #include <iostream>
 #include <iomanip>
 #include <cstring>

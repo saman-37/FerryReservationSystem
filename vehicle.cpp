@@ -6,8 +6,8 @@
 //July 20, 2025 Revision 1 - Darpandeep Kaur
 //************************************************************ 
 
-#include "vehicle.h"
-#include "util.h"
+#include "Vehicle.h"
+#include "Util.h"
 #include <iostream>
 #include <iomanip>
 #include <cstring>
@@ -83,7 +83,7 @@ bool Vehicle::checkExist(const string& license) {
             return true; // Vehicle with the given license exists
         }
     }
-   return false; // Vehicle with the given license does not exist
+    return false; // Vehicle with the given license does not exist
 }
 
 //************************************************************
@@ -107,10 +107,10 @@ bool Vehicle::writeVehicle(const string& license, const string& phone, double he
 string Vehicle::toString() const {
     stringstream ss; // Create a string stream for formatting
     ss << "License: " << license 
-       << ", Phone: " << phone
-       << ", Height: " << height
-       << "m, Length: " << length << "m";
-     return ss.str(); // Return the formatted string
+        << ", Phone: " << phone
+        << ", Height: " << height
+        << "m, Length: " << length << "m";
+    return ss.str(); // Return the formatted string
 
 }
 

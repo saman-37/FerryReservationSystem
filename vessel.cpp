@@ -6,8 +6,8 @@
 //July 21, 2025 Revision 1 - Darpandeep Kaur
 //************************************************************ 
 
-#include "vessel.h"
-#include "util.h"
+#include "Vessel.h"
+#include "Util.h"
 #include <iostream>
 #include <iomanip>
 #include <cstring>
@@ -46,11 +46,11 @@ Vessel::Vessel(const string& vesselName, double HCLL, double LCLL){
 //************************************************************
 void Vessel::writeToFile(fstream& file) const {
     if (file.is_open()) {
-       file.write(vesselName, NAME_LENGTH + 1); // Write vesselName
-       file.write(vesselId, ID_LENGTH + 1); //Write vesselId
-       file.write(reinterpret_cast<const char*>(&HCLL), sizeof(HCLL)); // Write High Capacity Lane Length
-       file.write(reinterpret_cast<const char*>(&LCLL), sizeof(LCLL)); // Write Low Capacity Lane Length
-     }
+        file.write(vesselName, NAME_LENGTH + 1); // Write vesselName
+        file.write(vesselId, ID_LENGTH + 1); //Write vesselId
+        file.write(reinterpret_cast<const char*>(&HCLL), sizeof(HCLL)); // Write High Capacity Lane Length
+        file.write(reinterpret_cast<const char*>(&LCLL), sizeof(LCLL)); // Write Low Capacity Lane Length
+    }
 }
 
 //************************************************************
@@ -59,11 +59,11 @@ void Vessel::writeToFile(fstream& file) const {
 //************************************************************
 void Vessel::readFromFile(fstream& file) {
     if (file.is_open()) {
-       file.read(vesselName, NAME_LENGTH + 1); // Read vesselName
-       file.read(vesselId, ID_LENGTH + 1); //Read vesselId
-       file.read(reinterpret_cast<char*>(&HCLL), sizeof(HCLL)); // Read High Capacity Lane Length
-       file.read(reinterpret_cast<char*>(&LCLL), sizeof(LCLL)); // Read Low Capacity Lane Length
-     }
+        file.read(vesselName, NAME_LENGTH + 1); // Read vesselName
+        file.read(vesselId, ID_LENGTH + 1); //Read vesselId
+        file.read(reinterpret_cast<char*>(&HCLL), sizeof(HCLL)); // Read High Capacity Lane Length
+        file.read(reinterpret_cast<char*>(&LCLL), sizeof(LCLL)); // Read Low Capacity Lane Length
+    }
 }
 
 //************************************************************
@@ -75,16 +75,16 @@ bool Vessel::checkExist(const string& vesselId) {
     fstream file;
     file.open("vessel.dat", ios::in | ios::binary); // Open vessel file for reading
     if (!file.is_open()) {
-       cout << "Error opening vessel file." << endl;
-       return false; // File could not be opened
+        cout << "Error opening vessel file." << endl;
+        return false; // File could not be opened
     }
     Vessel vessel; // Create a Vessel object to read records
     while (Util::vesselFile.read(reinterpret_cast<char*>(&vessel), RECORD_SIZE)) { // Read each record
-       if (strcmp(vessel.vesselId, vesselId.c_str()) == 0) { // Compare vesselId 
-          return true; // Vessel with the given ID exists
-       }
-     }
-     return false; // Vessel with the given ID does not exist
+        if (strcmp(vessel.vesselId, vesselId.c_str()) == 0) { // Compare vesselId 
+            return true; // Vessel with the given ID exists
+        }
+    }
+    return false; // Vessel with the given ID does not exist
 }
 
 //************************************************************
@@ -94,8 +94,8 @@ bool Vessel::checkExist(const string& vesselId) {
 //************************************************************
 bool Vessel::writeVessel(const string& VesselName, const string& vesselId, double HCLL, double LCLL) {
     if (checkExist(vesselId)) {
-       cout << "Vessel with ID " << vesselId << " already exists." << endl;
-       return false; // Vessel already exists
+        cout << "Vessel with ID " << vesselId << " already exists." << endl;
+        return false; // Vessel already exists
     }
 
     Vessel vessel(vesselName, HCLL, LCLL); // Create a Vessel object with provided values
@@ -112,10 +112,10 @@ bool Vessel::writeVessel(const string& VesselName, const string& vesselId, doubl
 string Vessel::toString() const {
     stringstream ss; // Create a string stream to format the output
     ss << "Vessel Name: " << vesselName << ", "
-       << "Vessel ID: " << vesselId << ", "
-       << "High Capacity Lane Legth (HCLL): " << HCLL << "m, "
-       << "Low Capacity Lane Length (LCLL): " << LCLL << "m. ";
-       return ss.str(); // Return the formatted string
+        << "Vessel ID: " << vesselId << ", "
+        << "High Capacity Lane Legth (HCLL): " << HCLL << "m, "
+        << "Low Capacity Lane Length (LCLL): " << LCLL << "m. ";
+        return ss.str(); // Return the formatted string
 }
 
 //************************************************************

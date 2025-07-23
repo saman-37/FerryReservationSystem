@@ -10,9 +10,9 @@
 
 #include <iostream>
 #include <limits>
-#include "sailingControl.h"
-#include "otherControl.h"
-#include "util.h"
+#include "SailingControl.h"
+#include "OtherControl.h"
+#include "Util.h"
 
 using namespace std;
 
@@ -123,9 +123,9 @@ void UI::displayCreateMenu() {
                     if (otherControl.createReservation(phoneNumber, sailingId, LicensePlate)) {
                         cout << "Reservation successfully created.\n" << endl;
                         getInput("Do you wish to create another reservation? (y/n): ");
-                     } else {
+                    } else {
                         cout << "Failed to create reservation.\n" << endl;
-                     }
+                    }
                 } while (getInput("Do you wish to create another reservation? (y/n): ") == "y");
                 break;
             }

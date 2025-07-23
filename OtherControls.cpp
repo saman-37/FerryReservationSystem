@@ -1,7 +1,7 @@
 //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 // July 12, 2025 Revision 1
 //************************************************************
-#include "otherControl.h"
+#include "OtherControl.h"
 #include <string>
 using namespace std;
 
