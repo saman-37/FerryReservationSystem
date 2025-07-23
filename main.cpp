@@ -1,5 +1,5 @@
-#include "util.h"
-#include "ui.h"
+#include "Util.h"
+#include "Ui.h"
 
 //************************************************************
 // main.cpp
