@@ -211,8 +211,8 @@ void UI::CheckInVehicle() {
 void UI::displayQuery() {
     cout << "================== Inquiry =======================\n" << endl;
     string sailingId = getInput("Enter the sailing id (ttt-dd-hh): ");
-    SailingControl sailingControl; // Create SailingControl object
-    sailingControl.querySailing(sailingId); // Query the sailing
+    
+    SailingControl::querySailing(sailingId); // Query the sailing
 }
 
 //************************************************************
