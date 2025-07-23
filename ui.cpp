@@ -209,7 +209,7 @@ void UI::CheckInVehicle() {
 // Displays query options for sailings
 //************************************************************
 void UI::displayQuery() {
-    cout << "================== Inquiry =======================\n" << endl;
+    cout << "================== Inquiry =======================" << endl;
     string sailingId = getInput("Enter the sailing id (ttt-dd-hh): ");
     
     SailingControl::querySailing(sailingId); // Query the sailing
@@ -219,10 +219,7 @@ void UI::displayQuery() {
 // Print sailing report
 //************************************************************
 void UI::displaySailingReport() {
-    cout << "======================== Sailing Report ======================" << endl;
-    string sailingId = getInput("Enter the sailing Id for report ");
-    SailingControl sailingControl; // Create SailingControl object
-    sailingControl.printSailingReport(sailingId); // Print the sailing report
+    SailingControl::printSailingReport(); // Print the sailing report
 }
 
 //************************************************************
