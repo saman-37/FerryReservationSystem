@@ -18,7 +18,7 @@
 General Style:
 --------------
 -	All .h files and .cpp files begin with a divider comment, file name, purpose and revision history
--	Use consistent 3-space indentation throughout the project
+-	Use consistent 4-space indentation throughout the project
 -	Opening braces ‘{‘ go on the same line as the function header and ‘}’ is placed on the next line from where function ended. The same rule applies to loops and switches.
         E.g. function (string a) {
                 // function body
@@ -72,7 +72,7 @@ int main(int argc, char* argv[]) {
    Util util; // Create Util object
    util.startup(); // Initialize the system
 
-   UI ui(argc); // Create UI object with command-line arguments
+   UI ui; // Create UI object with command-line arguments
    ui.userInterface(); // Start the user interface loop
 
    return 0; // Exit the application

@@ -14,18 +14,18 @@
 
 
 class UI {
-   public:
-      UI();         // Default Constructor
+    public:
+        UI();         // Default Constructor
 
-      void userInterface();
-      void displayMainMenu();
-      void displayCreateMenu();
-      void displayDeleteMenu();
-      void CheckInVehicle();
-      void displayQuery();
-      void displaySailingReport();
+        void userInterface();
+        void displayMainMenu();
+        void displayCreateMenu();
+        void displayDeleteMenu();
+        void CheckInVehicle();
+        void displayQuery();
+        void displaySailingReport();
 
-      int getUserChoice(int min, int max); // in: min, max
-      std::string getInput(const std::string& prompt); // in: prompt - message to display
+        int getUserChoice(int min, int max); // in: min, max
+        std::string getInput(const std::string& prompt); // in: prompt - message to display
 
 };
