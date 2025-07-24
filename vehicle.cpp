@@ -129,6 +129,10 @@ double Vehicle::getHeight() const {
     return height; // Return height
 }
 
+/*
+this method returns the length of a specific vehicle via random access; as needed when deleting a reservation, so that sailing can be given the capacity back
+
+*/
 double Vehicle::getLength() const {
     return length; // Return length
 }

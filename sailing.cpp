@@ -42,6 +42,35 @@ void Sailing::readFromFile(fstream& file) {
     file.read(reinterpret_cast<char*>(this), RECORD_SIZE);
 }
 
+#include "Sailing.h"
+#include <fstream>
+#include <cstring> // for strcmp if needed
+
+bool Sailing::searchForSailing(const string &sailingId, Sailing &foundSailing)
+{
+    ifstream file("sailing.dat", ios::in | ios::binary);
+    if (!file)
+    {
+        cerr << "Could not open sailing.dat for reading." << endl;
+        return false;
+    }
+
+    Sailing temp;
+    while (file.read(reinterpret_cast<char*>(&temp), sizeof(Sailing)))
+    {
+        if (strcmp(temp.sailingId, sailingId.c_str()) == 0)
+        {
+            foundSailing = temp; // Copy found object into reference
+            file.close();
+            return true;
+        }
+    }
+
+    file.close();
+    return false; // Not found
+}
+
+
 string Sailing::toString() const {
     ostringstream out;
     out << "Sailing ID: " << sailingId << "\n"

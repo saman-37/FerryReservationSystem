@@ -1,5 +1,3 @@
-
--------------
 //************************************************************
 // reservation.h
 //************************************************************
@@ -21,14 +19,14 @@ class Reservation
 public:
     static const int SAILING_ID_LENGTH = 9;
     static const int LICENSE_LENGTH = 10;
-    bool on_board;
+    bool onBoard;
     static const int RECORD_SIZE = LICENSE_LENGTH + 1 + SAILING_ID_LENGTH + 1 + sizeof(bool);
 
     char sailingId[SAILING_ID_LENGTH + 1]; // +1 for null terminator
     char license[LICENSE_LENGTH + 1];      // +1 for null terminator
 
     Reservation();                                                                     // Default Constructor                                                                   // Default Constructor
-    Reservation(const string &license, const string &sailingId, const bool &on_board); // in: sailingID, license, phone
+    Reservation(const string &license, const string &sailingId, const bool &onBoard); // in: sailingID, license, phone
 
     void writeToFile(fstream &file) const; // in-out: file - binary file stream
     void readFromFile(fstream &file);      // in-out: file - binary file stream

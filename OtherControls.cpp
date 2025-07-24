@@ -1,69 +1,159 @@
 //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 // July 12, 2025 Revision 1
 //************************************************************
-#include "OtherControl.h"
+#include "OtherControls.h"
+#include "Sailing.h"
+#include "Vehicle.h"
+#include "Reservation.h"
 #include <string>
+#include <iostream>
 using namespace std;
 
-class OtherControl {
-    public:
-        OtherControl(); // Default Constructor
+OtherControl::OtherControl() // Default Constructor
+{
+}
 
-        //STEP 1 --- Creating a New Reservation
-        bool createReservation(string& sailingId, string& licensePlate) // Makes a new reservation, in: sailingId, licensePlate
-        {
-          if (sailing.checkExist(sailingId))  //STEP 2
-          {
-             //STEP 3
-            if(vehicle.checkExist() == false) // do the EXTRA WORK HERE, BCZ LOWER WORK IS MUTUAL //need to create vehicle record too
-            {
-              //ask more attributes FROM USER befpre writeVehicle; BUT CHECK FIRST DO WE EVEN HAVE SPACE?
-              //TECHINCALLY CHANGE STEP ORDER!!!!!!!!!!
-              if (sailing.isSpaceAvailable(){ //NOW DEPEND ON VEHICLE, SO SHOULD WE INVOKE .isSpaceAvailableInHigh()   ND isSpaceAvailableInLow()
-              
-                //calling the write method in reservation file
-                reservation.writeReservation();  //STEP 8
-                
-              }
+// Step 1: call from UI to create a reservation
+int createReservation(string &sailingId, string &licensePlate) // Makes a new reservation, in: sailingId, licensePlate
+{
 
-              else 
-                exit(2); //ERROR CODE FOR SPACE NOT AVAILABLE
-            }
-          }
+  // Step 2: check if sailing exists
+  //  created a sailing instance,pass it by referance, such that if sailing found, can be filled with other attributes, to refer later to sailing capacity
+  Sailing foundSailing;
+  if (Sailing::searchForSailing(sailingId, foundSailing))
+  {
+    // Sailing found, and foundSailing contains it
+  }
+  else
+  {
+    return 201; // Sailing does not exist
+  }
 
-            
-           if (reservation.checkExist(licensePlate){
-                exit(1); //ERROR CODE WITH ALREADY RESERVATION EXIST
-              }
-              
-              //lets create reservation, hence not here, after CREATING THE VEHICLE
-              
-          }
+  // Step 3: check if reservation already exists
+  // We dont need the attributes of found reservation to be saved, hence, passing only strings: license number and sailing id, to check its existence
+  if (Reservation::checkExist(sailingId, licensePlate))
+  {
+    return 202; // Reservation already exists
+  }
 
-          else 
-          { 
-            //WE JUST WANT TO EXIT WITH A CODE AND LET ANOTHER MODULE HANDLE IT //YES, give exit code to otherControl, it will either detect, or send code back to UI which has a error handling function
-            //cout << "Sailing must already exist"; 
-            exit(0); //ERROR CODE FOR SAILING DOESNT EXIST
-          }
-          
-      
-          
-        };
+  // Step 4: check if vehicle exists
+  // Created an instance of vehicle, pass it by referance pass the license number, read the vehicle file, restore the attributes of the vehicle if found into this object.
+  Vehicle vehicle; // a vehicle instance, appsed  such that if sailing found, can be filled with opther attributes and returned to refer later to sailing capacity
+  if (Vehicle::checkExist(licensePlate))
+  {
+    // vehicle exists and foundVehicle contains it
+  }
 
-        bool createVessel(string& vesselName, double HCLL, double LCLL) //in: vesselName, HCLL, LCLL
-        {
-        };
-        bool deleteReservation(string& sailingId) // Deletes all reservations for a sailing, in: sailingId
-        {
-        };
+  // Step 5: write the new vehicle record. if not already exist
+  // we ask user for further details of the vehicle, if it is special
+  char isSpecial;
+  cout << "Is this a special vehicle? (y/n): y" << endl;
+  cin >> isSpecial;
+  double height, length;
+  if (isSpecial == 'y' || isSpecial == 'Y')
+  {
 
-        bool deleteSailing(string& sailingId)// Deletes a sailing record, in: sailingId
-        {
-        };
+    cout << "Enter height (in meters): ";
+    cin >> height;
+    cout << "Enter length (in meters): ";
+    cin >> length;
 
-        bool checkIn(string& licensePlate,:string& sailingId) // Checks in a vehicle to a sailing, in: sailingId, licensePlate
-        {
-        };
+    // Check for correct format and data range of height and length
+    /*Height: Special vehicle height max 9.9 meters. Range 2.1 to 9.9m. Precision 0.1 [If not stated, -0.5 marks]
+    • Length: Special vehicle length max 99.9 meters. Range 7.1-999.9m. Precision .1 [If not stated, -0.5 marks]*/
+    if (height < 2.1 || height > 9.9 || length < 7.1 || length > 99.9)
+    {
+      cout << "Invalid height or length for special vehicle." << endl;
+      return 203; // Invalid height or length
+    }
 
+    // Phone number is needed to save the vehicle record
+    string phone;
+    cout << "Enter Customer Phone Number (format: 14 characters):7781234567" << endl;
+    cin >> phone;
+    // Check for correct format and data range of phone number
+    if (phone.length() != 14)
+    {
+      cout << "Invalid phone number format. Must be 14 digits." << endl;
+      return 204; // Invalid phone number format
+    }
+
+    // Write the vehicle to the file
+    Vehicle::writeVehicle(licensePlate, phone, height, length); // Phone number is not used here
+  }
+
+  else
+  {
+    // Write the vehicle to the file with default height and length
+    Vehicle::writeVehicle(licensePlate, "", 2.0, 7.0); // Default values for height and length
+  }
+
+  // Step 6: check if sailing has space available for this new reservation
+  /* Each sailing has High Ceiling Lane Length (HCLL) and Low Ceiling Lane Length (LCLL) capacity. If the low ceiling reserved space becomes full, low
+    vehicles can be reserved into the high ceiling lanes, so we need to check both capacities.
+    Check in the LCLL if regular vehicle, or check HCLL if not available in LCLL, and HCLL if special vehicle.
+   If space is available, write the reservation to the file.
+  */
+  if (!Sailing::isSpaceAvailable(sailingId, isSpecial == 'y' || isSpecial == 'Y', length, height))
+  {
+    return 205; // No space available
+  }
+
+  // Step 7: Reduce the space available, if reservation is successful
+  Sailing::reduceSpace(sailingId, length, isSpecial == 'y' || isSpecial == 'Y');
+}
+
+// Step 1: call from UI to delete a reservation
+// Since primary key of reservation entity is both attributes, sailingId and license, we need to pass both to delete a reservation
+bool deleteReservation(string &license, string &sailingId) // Deletes all reservations for a sailing, in: sailingId
+{
+  // Step 2: check if reservation exists
+  if (!Reservation::checkExist(sailingId, license))
+  {
+    return 206; // Reservation doesnt exist in the system.
+  }
+
+  // Step 3: get length from the vehicle
+  Vehicle vehicle;
+  int length = vehicle.getLength(license);
+
+  // Step 4: remove the reservation record from the reservation file
+  Reservation reservation;
+  if (!Reservation::removeReservation(sailingId, license))
+  {
+    return 207; // Failed to remove reservation
+  }
+  else
+  {
+    cout << "Reservation successfully deleted." << endl;
+  }
+
+  // Step 5: add the space back to the sailing
+  /*
+  Need to specify which of HCLL or LCLL should be added back, based on the type of vehicle, and if the regular was taking HCLL space
+  */
+  Sailing::addSpace(sailingId, length);
+};
+
+bool checkIn(string &licensePlate, string &sailingId) // Checks in a vehicle to a sailing, in: sailingId, licensePlate
+{
+  // Step 1: Check if reservation exists
+  if (!Reservation::checkExist(sailingId, licensePlate))
+  {
+    cout << "Reservation does not exist." << endl;
+    return false; // Reservation does not exist
+  }
+
+  // Step 2: Set the reservation as checked in
+  Reservation::setCheckedIn(sailingId, licensePlate);
+  cout << "Vehicle checked in successfully." << endl;
+  return true; // Successfully checked in
+};
+
+bool createVessel(string &vesselName, double HCLL, double LCLL) // in: vesselName, HCLL, LCLL
+{
+};
+
+bool deleteSailing(string &sailingId) // Deletes a sailing record, in: sailingId
+{
 };

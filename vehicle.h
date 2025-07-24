@@ -13,35 +13,41 @@ using namespace std;
 #include <string>
 #include <fstream>
 
-class Vehicle {
+class Vehicle
+{
 
-    public:
-        static const int LICENSE_PLATE_LENGTH = 10;
-        static const int PHONE_LENGTH = 10;
-        static const int RECORD_SIZE = LICENSE_PLATE_LENGTH + PHONE_LENGTH + sizeof(float) * 2;
+public:
+    static const int LICENSE_PLATE_LENGTH = 10;
+    static const int PHONE_LENGTH = 10;
+    static const int RECORD_SIZE = LICENSE_PLATE_LENGTH + PHONE_LENGTH + sizeof(float) * 2;
 
-        char license[LICENSE_PLATE_LENGTH + 1]; // +1 for null terminator
-        char phone[PHONE_LENGTH + 1]; // +1 for null terminator
-        float height;
-        float length;
-        
-        Vehicle(); // Default Constructor
-        Vehicle(const string& license, const string& phone, float height, float length); // in: license, phone, height, length
+    char license[LICENSE_PLATE_LENGTH + 1]; // +1 for null terminator
+    char phone[PHONE_LENGTH + 1];           // +1 for null terminator
+    float height;
+    float length;
 
-        void writeToFile(fstream& file) const; // in-out: file
-        void readFromFile(fstream& file); // in-out: file
-       
-        string getLicense() const; // out: license
-        string getPhone() const; // out: phone
-        double getHeight() const; // out: height
-        double getLength() const; // out: length
+    Vehicle();                                                                       // Default Constructor
+    Vehicle(const string &license, const string &phone, float height, float length); // in: license, phone, height, length
 
-        void setLicense(string license); // in: license
-        void setPhone(string phone); // in: phone
-        void setHeight(double height); // in: height
-        void setLength(double length); // in: length
-        
-        static bool checkExist(const string& license); // in: license
-        static bool writeVehicle(const string& license, const string& phone, double height, double length); // in: license, phone, height, length
-        string toString() const; // out: formatted string
+    void writeToFile(fstream &file) const; // in-out: file
+    void readFromFile(fstream &file);      // in-out: file
+
+    string getLicense() const; // out: license
+    string getPhone() const;   // out: phone
+    double getHeight() const;  // out: height
+
+    /*
+    this method returns the length of a specific vehicle via random access; as needed when deleting a reservation, so that sailing can be given the capacity back
+    it takes license, which is the primary key of the vehicle, to find the specific vehicle record in the file.
+    */
+    double getLength(const string& license) const; // out: length
+
+    void setLicense(string license); // in: license
+    void setPhone(string phone);     // in: phone
+    void setHeight(double height);   // in: height
+    void setLength(double length);   // in: length
+
+    static bool checkExist(const string &license);                                                      // in: license
+    static bool writeVehicle(const string &license, const string &phone, double height, double length); // in: license, phone, height, length
+    string toString() const;                                                                            // out: formatted string
 };
