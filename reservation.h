@@ -1,5 +1,5 @@
-//************************************************************
-// Reservation.h
+//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+// reservation.h
 //************************************************************
 // Purpose: Represents a binary-storable reservation record with
 // check-in status and file-level operations for managing ferry
@@ -10,6 +10,7 @@
 
 #include <string>
 #include <fstream>
+#include "Sailing.h"
 
 using namespace std;
 
@@ -20,6 +21,7 @@ public:
     static const int SAILING_ID_LENGTH = 9;
     static const int LICENSE_LENGTH = 10;
     bool onBoard;
+    
     static const int RECORD_SIZE = LICENSE_LENGTH + 1 + SAILING_ID_LENGTH + 1 + sizeof(bool);
 
     char sailingId[SAILING_ID_LENGTH + 1]; // +1 for null terminator
@@ -31,11 +33,11 @@ public:
     void writeToFile(fstream &file) const; // in-out: file - binary file stream
     void readFromFile(fstream &file);      // in-out: file - binary file stream
 
-    static int getTotalReservationsOnSailing(const string &sailingId);             // in: sailingID
-    static bool removeReservation(const string &sailingId, const string &license); // in: sailingID, license
-    static bool removeReservationsOnSailing(const string &sailingId);              // in: sailingId
-    static bool checkExist(const string &sailingId, const string &license);        // in: sailingID, license
-    static bool writeReservation(const string &sailingId, const string &license);  // in: sailingID, license, phone
-    static void setCheckedIn(const string &sailingId, const string &license);      // in: sailingID, license
+    static int getTotalReservationsOnSailing(const string &sailingId, fstream &file);             // in: sailingID
+    static bool removeReservation(const string &sailingId, const string &license, fstream &file); // in: sailingID, license
+    static bool removeReservationsOnSailing(const string &sailingId, fstream &file);              // in: sailingId
+    static bool checkExist(const string &sailingId, const string &license, fstream &file);        // in: sailingID, license
+    static bool writeReservation(const string &sailingId, const string &license, fstream &file);  // in: sailingID, license, phone
+    static void setCheckedIn(const string &sailingId, const string &license, fstream &file);      // in: sailingID, license
     string toString() const;                                                       // out: returns formatted string
 };
