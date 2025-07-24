@@ -17,9 +17,9 @@ using namespace std;
 
 //************************************************************
 // Default Constructor
-// Initializes the vehicle with default values
 //************************************************************
 Vehicle::Vehicle() {
+    // Initializes the vehicle with default values
     strcpy(license, ""); // Initialize license to empty string
     strcpy(phone, ""); // Initialize phone to empty string
     height = 2.0f; // Initialize height to 2.0f
@@ -28,10 +28,11 @@ Vehicle::Vehicle() {
 
 //************************************************************
 // Parameterized Constructor
-// Initializes the vehicle with provided values
 // in: license, phone, height, length
 //************************************************************
 Vehicle::Vehicle(const string& license, const string& phone, float height, float length) {
+    // Initializes the vehicle with provided values
+    // Ensure the license and phone are null-terminated strings
     strncpy(this->license, license.c_str(), LICENSE_PLATE_LENGTH); // Copy license string
     this->license[LICENSE_PLATE_LENGTH] = '\0'; // Null-terminate
 
@@ -47,11 +48,14 @@ Vehicle::Vehicle(const string& license, const string& phone, float height, float
 // in-out: file - binary file stream
 //************************************************************
 void Vehicle::writeToFile(fstream& file) const {
+    // Check if the file is open before writing using 
     if (file.is_open()) {
         file.write(license, LICENSE_PLATE_LENGTH + 1); // Write license
         file.write (phone, PHONE_LENGTH + 1); // Write phone
         file.write(reinterpret_cast<const char*>(&height), sizeof(height)); // Write height
         file.write(reinterpret_cast<const char*>(&length), sizeof(length)); // Write length
+    } else {
+        cout << "Error opening file for writing." << endl; // Error opening file for writing
     }
 }
 
