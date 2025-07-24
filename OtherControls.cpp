@@ -164,7 +164,7 @@ bool checkIn(string &licensePlate, string &sailingId) // Checks in a vehicle to 
 // in: vesselName, HCLL, LCLL
 // out: returns true if vessel created successfully, false otherwise
 //************************************************************
-int createVessel(string &vesselName, string &vesselId, double HCLL, double LCLL) {
+bool createVessel(string &vesselName, string &vesselId, double HCLL, double LCLL) {
   //Step 1: Check if all the parameters are valid
   if (vesselName.length() > Vessel::NAME_LENGTH ||
     vesselId.length() > Vessel::ID_LENGTH ||
@@ -175,16 +175,19 @@ int createVessel(string &vesselName, string &vesselId, double HCLL, double LCLL)
   
   // Step 2: Check if vessel already exists
     if (vessel.checkExist(vesselName)) {
-        return 401; // Vessel already exists
+        cout << "Vessel with ID " << vesselId << " already exists." << endl;
+        return false; // Vessel already exists
     } else {
         // Step 3: Create a new vessel record
         Vessel newVessel(vesselName, vesselId, HCLL, LCLL); // Create a new Vessel object with provided details
         fstream vesselFile("vessel.dat", ios::app | ios::binary ); // Open vessel file for writing
         if (!vesselFile.is_open()) {
-            return 402; // Error opening vessel file for writting.
+            cout << "Error opening vessel file for writing." << endl;
+            return false; // Error opening vessel file for writting.
         } else {
             newVessel.writeToFile(vesselFile); // creates the vessel record in file
-            return 400; // Vessel Successfully created
+            cout << "Vessel created successfully." << endl;
+            return true; // Vessel Successfully created
         }
     }
     
