@@ -89,7 +89,7 @@ void UI::displayCreateMenu() {
             case 1: {
                 string vesselName = getInput("Enter Vessel name (max: 25 characters): ");
                 string sailingId = getInput("Enter the sailing Id (format: xxx-dd-hh): ");
-                if (sailingControl.createSailing(sailingId, vesselName)) {
+                if (SailingControl::createSailing(sailingId, vesselName)) {
                     cout << "Sailing with vessel name " << vesselName << " successfully created." << endl;
                 } else {
                     cout << "Failed to create sailing with vessel name " << vesselName << "." << endl;
@@ -102,7 +102,7 @@ void UI::displayCreateMenu() {
                 string vesselName = getInput("Enter Vessel Name (max: 25 characters): ");
                 double LCLL = stod(getInput("Enter LCLL (max: 3600.0): "));
                 double HCLL = stod(getInput("Enter HCLL (max: 3600.0): "));
-                if (otherControl.createVessel(vesselName, HCLL, LCLL)) {
+                if (OtherControl.createVessel(vesselName, HCLL, LCLL)) {
                     cout << "Vessel successfully created." << endl;
                 } else {
                     cout << "Failed to create vessel." << endl;
