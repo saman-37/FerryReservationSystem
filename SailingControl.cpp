@@ -5,15 +5,15 @@
 
 #include <iostream>
 
-sailingControl::sailingControl() {
+SailingControl::sailingControl() {
     //Default Constructor
 }
 
-bool sailingControl::createSailing(const string& sailingId, const string& vesselName) {
+bool SailingControl::createSailing(const string& sailingId, const string& vesselName) {
     // if checkExist(vesselName)
 }
 
-bool sailingControl::deleteSailing(const string& sailingId) {
+bool SailingControl::deleteSailing(const string& sailingId) {
     if checkExist(sailingId){
         removeReservationsOnSailing(sailingId);
         removeSailing(sailingId);
@@ -25,7 +25,7 @@ bool sailingControl::deleteSailing(const string& sailingId) {
     }
 }
 
-void sailingControl::querySailing(const string& sailingId) {
+void SailingControl::querySailing(const string& sailingId) {
     if checkExist(sailingId) {
         // getName(sailingId);
         // getHRL(sailingId);
@@ -39,7 +39,7 @@ void sailingControl::querySailing(const string& sailingId) {
         return;
 }
 
-void sailingControl::printSailingReport(const string& sailingId) {
+void SailingControl::printSailingReport(const string& sailingId) {
     // getCapacity(sailingId);
     // getSailingInfo(sailingId);
     // getNext(); // What do we need this for?

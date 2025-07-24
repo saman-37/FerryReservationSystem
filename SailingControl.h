@@ -21,9 +21,10 @@ class SailingControl {
     public:
         SailingControl(); // Default Constructor
 
-        bool createSailing(const string& sailingId, const std::string& vesselName); // in: sailingId, vesselName
-        bool deleteSailing(const string& sailingId); // in: sailingId
-        void querySailing(const string& sailingId); // in: sailingId
-        void printSailingReport(const string& sailingId); // in: sailingId
+        static bool createSailing(const string& sailingId, const std::string& vesselName); // in: sailingId, vesselName
+        static bool deleteSailing(const string& sailingId); // in: sailingId
+        static void querySailing(const string& sailingId); // in: sailingId
+        static void printSailingReport(const string& sailingId); // in: sailingId
         
 };
+

@@ -3,22 +3,17 @@
 //************************************************************
 // Purpose: Implements the UI class for the Ferry Reservation System.
 // This file contains the user interface logic, including main and submenus.
-// July 20, 2025 Revision 1 - Darpandeep Kaur
+// July 20, 2025 Version 1 
 //************************************************************ 
 
-#include "ui.h"
-
+#include "UI.h"
 #include <iostream>
 #include <limits>
 #include "SailingControl.h"
-#include "OtherControl.h"
+#include "OtherControls.h"
 #include "Util.h"
 
 using namespace std;
-
-OtherControl otherControl; // Create an instance of OtherControl to manage reservations and vessels
-SailingControl sailingControl; // Create an instance of SailingControl to manage sailings
-Util util; // Create an instance of Util for system operations
 
 //************************************************************
 // Default Constructor
@@ -53,7 +48,6 @@ void UI::userInterface() {
                 break;
             case 0:
                 cout << "Exiting the application.Thank You for using Automobile FerryReserver!" << endl; // Exit message
-                util.shutdown(); // Call shutdown function
                 break;
             default:
                 cout << "Invalid choice. Please try again.\n" << endl; // Error message for invalid
@@ -94,7 +88,7 @@ void UI::displayCreateMenu() {
             case 1: {
                 string vesselName = getInput("Enter Vessel name (max: 25 characters): ");
                 string sailingId = getInput("Enter the sailing Id (format: xxx-dd-hh): ");
-                if (sailingControl.createSailing(sailingId, vesselName)) {
+                if (SailingControl::createSailing(sailingId, vesselName)) {
                     cout << "Sailing with vessel name " << vesselName << " successfully created." << endl;
                 } else {
                     cout << "Failed to create sailing with vessel name " << vesselName << "." << endl;
@@ -107,7 +101,7 @@ void UI::displayCreateMenu() {
                 string vesselName = getInput("Enter Vessel Name (max: 25 characters): ");
                 double LCLL = stod(getInput("Enter LCLL (max: 3600.0): "));
                 double HCLL = stod(getInput("Enter HCLL (max: 3600.0): "));
-                if (otherControl.createVessel(vesselName, HCLL, LCLL)) {
+                if (OtherControls::createVessel(vesselName, HCLL, LCLL)) {
                     cout << "Vessel successfully created." << endl;
                 } else {
                     cout << "Failed to create vessel." << endl;
@@ -120,7 +114,7 @@ void UI::displayCreateMenu() {
                 string LicensePlate = getInput("Enter Vehicle License Number (max: 10 characters): ");
                 string sailingId = getInput("Enter Sailing ID (format: xxx-dd-hh): ");
                 do {
-                    if (otherControl.createReservation(phoneNumber, sailingId, LicensePlate)) {
+                    if (OtherControls::createReservation(phoneNumber, sailingId, LicensePlate)) {
                         cout << "Reservation successfully created.\n" << endl;
                         getInput("Do you wish to create another reservation? (y/n): ");
                     } else {
@@ -159,7 +153,7 @@ void UI::displayDeleteMenu() {
         switch(choice) {
             case 1: {
                 string sailingId = getInput("Enter the sailing ID to delete (format: xxx-dd-hh): ");  
-                if (sailingControl.deleteSailing(sailingId)) {
+                if (SailingControl::deleteSailing(sailingId)) {
                     cout << "Sailing successfully deleted." <<endl;
                 } else {
                     cout << "Failed to delete sailing." << endl;
@@ -168,7 +162,7 @@ void UI::displayDeleteMenu() {
                 break;
             case 2: {
                 string sailingId = getInput("Enter Sailing ID (format: xxx-dd-hh): ");
-                if (otherControl.deleteReservation(sailingId)) {
+                if (OtherControls::deleteReservation(sailingId)) {
                     cout << "Reservation successfully deleted." << endl;
                 } else {
                     cout << "Failed to delete reservation." << endl;
@@ -194,12 +188,13 @@ void UI::displayDeleteMenu() {
 // Check-in vehicle
 //************************************************************
 void UI::CheckInVehicle() {
-    cout << "======================== Check-in Vehicle ======================" << endl;
+
+    cout << "======================== Check-in Vehicle ======================\n" << endl;
     string licensePlate = getInput("Enter vehicle License Plate: ");
-    string sailingId = getInput("Enter the sailing Id for check-in ");
-    OtherControl otherControl; // Create OtherControl object
-    if (otherControl.checkIn(licensePlate, sailingId)) {
-        cout << "Vehicle with license plate " << licensePlate << " has been successfully checked in " << endl;
+    string sailingId = getInput("Enter the sailing Id for check-in (ttt-dd-hh): ");
+    
+    if (OtherControls::checkIn(licensePlate, sailingId)) {
+        cout << "Vehicle with license plate " << licensePlate << " has been successfully checked in." << endl;
     } else { 
         cout << "Failed to check in vehicle with license plate " << licensePlate << "." << endl;
     }

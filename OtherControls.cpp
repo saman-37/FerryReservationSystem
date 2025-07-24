@@ -1,5 +1,5 @@
 //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-// July 12, 2025 Revision 1
+// July 12, 2025 Version 1
 //************************************************************
 #include "OtherControls.h"
 #include "Sailing.h"
@@ -127,11 +127,14 @@ bool deleteReservation(string &license, string &sailingId) // Deletes all reserv
   Reservation reservation;
   if (!Reservation::removeReservation(sailingId, license))
   {
-    return 207; // Failed to remove reservation
+     // Failed to remove reservation
+    cout << "Failed to delete the reservation. "<<endl;
+    return false;
   }
   else
   {
     cout << "Reservation successfully deleted." << endl;
+    return true;
   }
 
   // Step 5: add the space back to the sailing
@@ -146,13 +149,13 @@ bool checkIn(string &licensePlate, string &sailingId) // Checks in a vehicle to 
   // Step 1: Check if reservation exists
   if (!Reservation::checkExist(sailingId, licensePlate))
   {
-    cout << "Reservation does not exist." << endl;
+    
     return false; // Reservation does not exist
   }
 
   // Step 2: Set the reservation as checked in
   Reservation::setCheckedIn(sailingId, licensePlate);
-  cout << "Vehicle checked in successfully." << endl;
+  
   return true; // Successfully checked in
 };
 
