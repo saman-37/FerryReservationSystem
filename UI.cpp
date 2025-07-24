@@ -48,7 +48,6 @@ void UI::userInterface() {
                 break;
             case 0:
                 cout << "Exiting the application.Thank You for using Automobile FerryReserver!" << endl; // Exit message
-                util.shutdown(); // Call shutdown function
                 break;
             default:
                 cout << "Invalid choice. Please try again.\n" << endl; // Error message for invalid
@@ -102,7 +101,7 @@ void UI::displayCreateMenu() {
                 string vesselName = getInput("Enter Vessel Name (max: 25 characters): ");
                 double LCLL = stod(getInput("Enter LCLL (max: 3600.0): "));
                 double HCLL = stod(getInput("Enter HCLL (max: 3600.0): "));
-                if (OtherControl.createVessel(vesselName, HCLL, LCLL)) {
+                if (OtherControls::createVessel(vesselName, HCLL, LCLL)) {
                     cout << "Vessel successfully created." << endl;
                 } else {
                     cout << "Failed to create vessel." << endl;
