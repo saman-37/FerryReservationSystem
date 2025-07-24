@@ -5,7 +5,7 @@
 
 #include <iostream>
 
-SailingControl::sailingControl() {
+SailingControl::SailingControl() {
     //Default Constructor
 }
 
