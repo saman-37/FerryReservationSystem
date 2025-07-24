@@ -165,11 +165,19 @@ bool checkIn(string &licensePlate, string &sailingId) // Checks in a vehicle to 
 // out: returns true if vessel created successfully, false otherwise
 //************************************************************
 int createVessel(string &vesselName, string &vesselId, double HCLL, double LCLL) {
-  // Step 1: Check if vessel already exists
+  //Step 1: Check if all the parameters are valid
+  if (vesselName.length() > Vessel::NAME_LENGTH ||
+    vesselId.length() > Vessel::ID_LENGTH ||
+    HCLL <= 0 || LCLL <= 0 || HCLL > 3600.0 || LCLL > 3600.0){
+      cout << "Invalid format for vessel name or ID, or invalid HCLL or LCLL values." << endl;
+      return false; // Invalid vessel name or ID length
+  }
+  
+  // Step 2: Check if vessel already exists
     if (vessel.checkExist(vesselName)) {
         return 401; // Vessel already exists
     } else {
-        // Step 2: Create a new vessel record
+        // Step 3: Create a new vessel record
         Vessel newVessel(vesselName, vesselId, HCLL, LCLL); // Create a new Vessel object with provided details
         fstream vesselFile("vessel.dat", ios::app | ios::binary ); // Open vessel file for writing
         if (!vesselFile.is_open()) {
