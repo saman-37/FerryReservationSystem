@@ -26,7 +26,7 @@ class Vessel {
 
 
         Vessel(); // Default Constructor
-        Vessel(const string& vesselName, double HCLL, double LCLL); // in: vesselName, HCLL, LCLL
+        Vessel(const string& vesselName, const string& vesselId, double HCLL, double LCLL); // in: vesselName, HCLL, LCLL
 
         void writeToFile(fstream& file) const; // in-out: file
         void readFromFile(fstream& file); // in-out: file

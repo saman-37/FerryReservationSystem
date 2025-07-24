@@ -1,5 +1,5 @@
 //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-// Vehicle.cpp//400
+// Vessel.cpp//400
 //************************************************************
 // Purpose: Represents a binary-stored vehicle record with license,
 // phone, height, and length data. Used in reservations.
@@ -32,9 +32,12 @@ Vessel::Vessel() {
 // Initializes the vessel with provided values
 // in: vesselName, HCLL, LCLL
 //************************************************************
-Vessel::Vessel(const string& vesselName, double HCLL, double LCLL){
+Vessel::Vessel(const string& vesselName, const string& vesselId, double HCLL, double LCLL){
     strncpy(this->vesselName, vesselName.c_str(), NAME_LENGTH); // Copy vesselName string
     this->vesselName[NAME_LENGTH] = '\0'; // Null-terminate
+
+    strncpy(this->vesselId, vesselId.c_str(), ID_LENGTH); // Copy vesselId string
+    this->vesselId(ID_LENGTH) = '\0'; // Null-terminate
 
     this->HCLL = HCLL; // Set High Capacity Lane Length
     this->LCLL = LCLL; // Set Low Capacity Lane Length
@@ -50,6 +53,8 @@ void Vessel::writeToFile(fstream& file) const {
         file.write(vesselId, ID_LENGTH + 1); //Write vesselId
         file.write(reinterpret_cast<const char*>(&HCLL), sizeof(HCLL)); // Write High Capacity Lane Length
         file.write(reinterpret_cast<const char*>(&LCLL), sizeof(LCLL)); // Write Low Capacity Lane Length
+    } else {
+        cout << "Error opening file for writing." << endl; // Error message if file is not open
     }
 }
 
@@ -142,5 +147,5 @@ double Vessel::getLCLL() const {
 // out: capacity of the vessel
 //************************************************************
 int Vessel::getCapacity() const {
-    return static_cast<int>(HCLL + LCLL); // Return the sum of HCLL and LCLL as capacity
+    return std::round((HCLL + LCLL) * 100.0) / 100.0; // Return the sum of HCLL and LCLL as capacity with two decimal places
 }
