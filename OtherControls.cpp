@@ -33,7 +33,9 @@ int createReservation(string &sailingId, string &licensePlate) // Makes a new re
   // We dont need the attributes of found reservation to be saved, hence, passing only strings: license number and sailing id, to check its existence
   if (Reservation::checkExist(sailingId, licensePlate))
   {
-    return 202; // Reservation already exists
+    // Reservation already exists
+    cout<<"Reservation already exists"<<endl;
+    return false; 
   }
 
   // Step 4: check if vehicle exists
