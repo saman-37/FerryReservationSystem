@@ -140,13 +140,13 @@ bool checkIn(string &licensePlate, string &sailingId) // Checks in a vehicle to 
   // Step 1: Check if reservation exists
   if (!Reservation::checkExist(sailingId, licensePlate))
   {
-    cout << "Reservation does not exist." << endl;
+    
     return false; // Reservation does not exist
   }
 
   // Step 2: Set the reservation as checked in
   Reservation::setCheckedIn(sailingId, licensePlate);
-  cout << "Vehicle checked in successfully." << endl;
+
   return true; // Successfully checked in
 };
 
