@@ -195,7 +195,7 @@ void UI::displayDeleteMenu() {
 //************************************************************
 void UI::CheckInVehicle() {
     cout << "======================== Check-in Vehicle ======================" << endl;
-    string licensePlate = getInput("Enter the vehicle's license plate ");
+    string licensePlate = getInput("Enter vehicle License Plate: ");
     string sailingId = getInput("Enter the sailing Id for check-in ");
     OtherControl otherControl; // Create OtherControl object
     if (otherControl.checkIn(licensePlate, sailingId)) {
