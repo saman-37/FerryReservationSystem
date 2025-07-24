@@ -114,7 +114,7 @@ void UI::displayCreateMenu() {
                 string LicensePlate = getInput("Enter Vehicle License Number (max: 10 characters): ");
                 string sailingId = getInput("Enter Sailing ID (format: xxx-dd-hh): ");
                 do {
-                    if (otherControl.createReservation(phoneNumber, sailingId, LicensePlate)) {
+                    if (OtherControls::createReservation(phoneNumber, sailingId, LicensePlate)) {
                         cout << "Reservation successfully created.\n" << endl;
                         getInput("Do you wish to create another reservation? (y/n): ");
                     } else {

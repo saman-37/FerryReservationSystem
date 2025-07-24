@@ -27,3 +27,4 @@ class SailingControl {
         static void printSailingReport(const string& sailingId); // in: sailingId
         
 };
+
