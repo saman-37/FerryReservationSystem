@@ -159,7 +159,7 @@ void UI::displayDeleteMenu() {
         switch(choice) {
             case 1: {
                 string sailingId = getInput("Enter the sailing ID to delete (format: xxx-dd-hh): ");  
-                if (sailingControl.deleteSailing(sailingId)) {
+                if (SailingControl::deleteSailing(sailingId)) {
                     cout << "Sailing successfully deleted." <<endl;
                 } else {
                     cout << "Failed to delete sailing." << endl;
@@ -168,7 +168,7 @@ void UI::displayDeleteMenu() {
                 break;
             case 2: {
                 string sailingId = getInput("Enter Sailing ID (format: xxx-dd-hh): ");
-                if (otherControl.deleteReservation(sailingId)) {
+                if (OtherControls::deleteReservation(sailingId)) {
                     cout << "Reservation successfully deleted." << endl;
                 } else {
                     cout << "Failed to delete reservation." << endl;
