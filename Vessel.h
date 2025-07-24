@@ -1,5 +1,5 @@
 //************************************************************
-// vessel.h
+// Vessel.h
 //************************************************************
 // Purpose: Represents a ferry vessel that holds capacity values
 // used to initialize new sailings. Stored as binary data.

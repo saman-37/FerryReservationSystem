@@ -1,5 +1,5 @@
 //************************************************************
-// util.h
+// Util.h
 //************************************************************
 // Purpose: Provides system-level helper functions such as
 // startup, shutdown, and reset operations.

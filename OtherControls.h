@@ -1,5 +1,5 @@
 //************************************************************
-// otherControl.h
+// OtherControl.h
 //************************************************************
 // Purpose: Mid-level controller that coordinates reservation
 // creation, deletion, and check-in scenarios. Interfaces with

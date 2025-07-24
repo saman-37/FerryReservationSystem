@@ -1,5 +1,5 @@
 //************************************************************
-// ui.h
+// Ui.h
 //************************************************************
 // Purpose: Top-level UI class for the Ferry Reservation System.
 // This is the user interface layer responsible for managing

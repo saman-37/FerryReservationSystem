@@ -1,5 +1,5 @@
 //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-// ui.cpp
+// Ui.cpp
 //************************************************************
 // Purpose: Implements the UI class for the Ferry Reservation System.
 // This file contains the user interface logic, including main and submenus.

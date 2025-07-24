@@ -1,5 +1,5 @@
 //************************************************************
-// sailingControl.h
+// SailingControl.h
 //************************************************************
 // Purpose: Mid-level controller for managing sailings. Handles
 // the creation of sailings, querying individual sailings,

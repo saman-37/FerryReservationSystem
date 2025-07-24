@@ -1,5 +1,5 @@
 //************************************************************
-// reservation.h
+// Reservation.h
 //************************************************************
 // Purpose: Represents a binary-storable reservation record with
 // check-in status and file-level operations for managing ferry

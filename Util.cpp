@@ -1,5 +1,5 @@
 //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-// util.cpp
+// Util.cpp
 //************************************************************
 // Purpose: Provides system-level helper functions such as
 // startup, shutdown, and reset operations.

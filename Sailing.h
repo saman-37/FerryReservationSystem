@@ -1,5 +1,5 @@
 //************************************************************
-// sailing.h
+// Sailing.h
 //************************************************************
 // Purpose: Represents a ferry sailing with fixed-size binary fields
 // and supports lane management (HRL, LRL), file operations, and info retrieval.

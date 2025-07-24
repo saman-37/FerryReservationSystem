@@ -1,5 +1,5 @@
 //************************************************************
-// sailing.cpp
+// Sailing.cpp
 //************************************************************
 // Purpose: Implementation for Sailing class representing a ferry sailing.
 // July 21, 2025 Revision 1 - Team 18
