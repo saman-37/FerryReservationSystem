@@ -3,22 +3,17 @@
 //************************************************************
 // Purpose: Implements the UI class for the Ferry Reservation System.
 // This file contains the user interface logic, including main and submenus.
-// July 20, 2025 Revision 1 - Darpandeep Kaur
+// July 20, 2025 Version 1 
 //************************************************************ 
 
-#include "ui.h"
-
+#include "UI.h"
 #include <iostream>
 #include <limits>
 #include "SailingControl.h"
-#include "OtherControl.h"
+#include "OtherControls.h"
 #include "Util.h"
 
 using namespace std;
-
-OtherControl otherControl; // Create an instance of OtherControl to manage reservations and vessels
-SailingControl sailingControl; // Create an instance of SailingControl to manage sailings
-Util util; // Create an instance of Util for system operations
 
 //************************************************************
 // Default Constructor

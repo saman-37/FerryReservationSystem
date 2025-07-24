@@ -1,5 +1,5 @@
 //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-// July 12, 2025 Revision 1
+// July 12, 2025 Version 1
 //************************************************************
 #include "OtherControls.h"
 #include "Sailing.h"
@@ -33,9 +33,7 @@ int createReservation(string &sailingId, string &licensePlate) // Makes a new re
   // We dont need the attributes of found reservation to be saved, hence, passing only strings: license number and sailing id, to check its existence
   if (Reservation::checkExist(sailingId, licensePlate))
   {
-    // Reservation already exists
-    cout<<"Reservation already exists"<<endl;
-    return false; 
+    return 202; // Reservation already exists
   }
 
   // Step 4: check if vehicle exists
@@ -123,11 +121,14 @@ bool deleteReservation(string &license, string &sailingId) // Deletes all reserv
   Reservation reservation;
   if (!Reservation::removeReservation(sailingId, license))
   {
-    return 207; // Failed to remove reservation
+     // Failed to remove reservation
+    cout << "Failed to delete the reservation. "<<endl;
+    return false;
   }
   else
   {
     cout << "Reservation successfully deleted." << endl;
+    return true;
   }
 
   // Step 5: add the space back to the sailing
@@ -148,7 +149,7 @@ bool checkIn(string &licensePlate, string &sailingId) // Checks in a vehicle to 
 
   // Step 2: Set the reservation as checked in
   Reservation::setCheckedIn(sailingId, licensePlate);
-
+  
   return true; // Successfully checked in
 };
 
