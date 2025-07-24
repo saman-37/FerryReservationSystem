@@ -194,12 +194,13 @@ void UI::displayDeleteMenu() {
 // Check-in vehicle
 //************************************************************
 void UI::CheckInVehicle() {
+
     cout << "======================== Check-in Vehicle ======================\n" << endl;
     string licensePlate = getInput("Enter vehicle License Plate: ");
     string sailingId = getInput("Enter the sailing Id for check-in (ttt-dd-hh): ");
     
     if (OtherControls::checkIn(licensePlate, sailingId)) {
-        cout << "Vehicle with license plate " << licensePlate << " has been successfully checked in " << endl;
+        cout << "Vehicle with license plate " << licensePlate << " has been successfully checked in." << endl;
     } else { 
         cout << "Failed to check in vehicle with license plate " << licensePlate << "." << endl;
     }
