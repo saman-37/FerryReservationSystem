@@ -3,7 +3,7 @@
 //************************************************************
 // Purpose: Represents a ferry vessel that holds capacity values
 // used to initialize new sailings. Stored as binary data.
-// July 10, 2025 Version 1 - All team members
+// July 20, 2025 Version 2 - All team members
 //************************************************************
 
 #pragma once

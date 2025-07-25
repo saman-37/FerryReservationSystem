@@ -3,7 +3,7 @@
 //************************************************************
 // Unit test for Reservation.cpp
 // Purpose: Tests binary file I/O operations (write/read) for Reservation records
-// July 24, 2025 - Version 1 - Darpandeep Kaur
+// July 24, 2025 - Version 1 - Samanpreet Kaur
 //************************************************************
 
 #include <iostream>

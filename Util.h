@@ -3,7 +3,7 @@
 //************************************************************
 // Purpose: Provides system-level helper functions such as
 // startup, shutdown, and reset operations.
-// July 10, 2025 Version 1 - All team members
+// July 20, 2025 Version 2 - All team members
 //************************************************************
 
 #pragma once

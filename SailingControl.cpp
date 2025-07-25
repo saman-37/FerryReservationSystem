@@ -3,7 +3,7 @@
 //************************************************************
 // Purpose: Mid-level control module for sailing operations.
 // Handles creation, deletion, reporting, and querying sailings.
-// July 25, 2025 Revision 2 - Darpandeep Kaur
+// July 25, 2025 Version 1 - Yadhu
 //************************************************************
 
 #include "SailingControl.h"
