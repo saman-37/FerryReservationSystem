@@ -16,7 +16,7 @@ OtherControl::OtherControl() // Default Constructor
 }
 
 // Step 1: call from UI to create a reservation
-int createReservation(string &sailingId, string &licensePlate) // Makes a new reservation, in: sailingId, licensePlate
+bool createReservation(string &sailingId, string &licensePlate) // Makes a new reservation, in: sailingId, licensePlate
 {
 
   // Step 2: check if sailing exists
@@ -29,14 +29,18 @@ int createReservation(string &sailingId, string &licensePlate) // Makes a new re
   }
   else
   {
-    return 201; // Sailing does not exist
+    // Sailing does not exist
+    cout<<"The sailing with id "<<sailingId<<" does not exist."<<endl;
+    return false;
   }
 
   // Step 3: check if reservation already exists
   // We dont need the attributes of found reservation to be saved, hence, passing only strings: license number and sailing id, to check its existence
   if (Reservation::checkExist(sailingId, licensePlate))
   {
-    return 202; // Reservation already exists
+    // Reservation already exists
+    cout << "This reservation already exists." << endl;
+    return false;
   }
 
   // Step 4: check if vehicle exists
