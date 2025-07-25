@@ -1,10 +1,9 @@
 //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 // reservation.cpp
 /*
-Revision History:
-Rev. 2 - July 23, 2025 Modified by Saman
-       - to update the getTotalReservationsOnSailing method to use random access
-Rev. 1 -July 12, 2025 Original by Saman
+Version History:
+ver. 1 - July 23, 2025 by Saman
+      
 --------------------------------------------------------------
 This module provides the interface for the reservation file, functionality to add, delete, look for reservation records, using binary random access. The reservation file contains the unsorted fixed-length record which are not the best storage for access, yet provides faster inserts and deletes. All the attributes of a newly created reservation and functions to modify them are put together here for encapsulation.
 */

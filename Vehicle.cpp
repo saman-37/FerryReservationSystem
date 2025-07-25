@@ -3,7 +3,7 @@
 //************************************************************
 // Purpose: Represents a binary-stored vehicle record with license,
 // phone, height, and length data. Used in reservations.
-// July 20, 2025 Revision 1 - Darpandeep Kaur
+// July 20, 2025 Version 1 - Darpandeep Kaur
 //************************************************************
 
 #include "Vehicle.h"

@@ -3,7 +3,7 @@
 // testOtherControls.cpp
 //************************************************************
 // Purpose: Top-Down test on OtherControls to test createVessel function using stubbed Vessel class
-// 23 July, 2025 Revision 1 - Darpandeep Kaur
+// 23 July, 2025 Version 1 - Darpandeep Kaur
 //************************************************************
 
 #include "OtherControls.h"

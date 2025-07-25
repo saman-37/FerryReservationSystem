@@ -3,7 +3,7 @@
 //************************************************************
 // Purpose: Represents a ferry sailing with fixed-size binary fields
 // and supports lane management (HRL, LRL), file operations, and info retrieval.
-// July 10, 2025 Revision 1
+// July 10, 2025 Version 1
 //************************************************************
 
 #pragma once

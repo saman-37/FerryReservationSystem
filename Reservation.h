@@ -2,8 +2,8 @@
 // reservation.h
 /*
 
-Revision History:
-Rev. 1 -July 12, 2025 Original by Saman
+Version History:
+ver. 1 -July 12, 2025 Original by Saman
 --------------------------------------------------------------
 Purpose: Represents a binary-storable reservation record with check-in status and file-level operations for managing ferry reservations.
 
