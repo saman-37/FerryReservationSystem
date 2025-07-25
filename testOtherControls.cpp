@@ -25,7 +25,7 @@ int main()
 
     // Call the createVessel function with test data
 
-    bool result = vessel1.createVessel(vesselName, vesselId, HCLL, LCLL);
+    bool result = vessel1.createVessel(vesselName, HCLL, LCLL);
 
     if (result)
     {

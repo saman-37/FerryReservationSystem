@@ -1,9 +1,10 @@
+//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 //************************************************************
 // Sailing.h
 //************************************************************
-// Purpose: Represents a ferry sailing with fixed-size binary fields
-// and supports lane management (HRL, LRL), file operations, and info retrieval.
-// July 10, 2025 Version 1
+// Purpose: Represents a ferry sailing with fixed-size binary fields.
+// Supports lane management (HRL, LRL), file I/O, and lookup operations.
+// July 10, 2025 Version 1 - Team 18
 //************************************************************
 
 #pragma once
@@ -16,46 +17,153 @@ using namespace std;
 class Sailing
 {
 public:
-    static const int SAILING_ID_LENGTH = 9;                                                    // Length of the sailing ID
-    static const int VESSEL_NAME_LENGTH = 25;                                                   // Length of the vessel name
-    static const int RECORD_SIZE = SAILING_ID_LENGTH + VESSEL_NAME_LENGTH + sizeof(double) * 3; // Size of each record in bytes
+    static const int SAILING_ID_LENGTH = 9; // Length of sailing ID (8 chars + null terminator)
+    static const int VESSEL_NAME_LENGTH = 25; // Length of vessel name (24 chars + null terminator)
+    static const int RECORD_SIZE = SAILING_ID_LENGTH + VESSEL_NAME_LENGTH + sizeof(double) * 3;
+    // Total size of binary record: ID, vesselName, HRL, LRL (plus padding if any)
 
-  char sailingId[SAILING_ID_LENGTH + 1];   // Unique identifier for the sailing
-  char vesselName[VESSEL_NAME_LENGTH + 1]; // Name of the vessel
-  double HRL;                              // High Remaining Length in meters
-  double LRL;                              // Low Remaining Length in meters
+    char sailingId[SAILING_ID_LENGTH + 1]; // +1 for null terminator
+    char vesselName[VESSEL_NAME_LENGTH + 1]; // +1 for null terminator
+    double HRL; // High-ceiling remaining lane length
+    double LRL; // Low-ceiling remaining lane length
 
-    Sailing();                                                                          // Default Constructor
-    Sailing(const string &sailingId, const string &vesselName, double HRL, double LRL); // in: sailingId, vesselName, HRL, LRL
+    Sailing(); // Default constructor
 
-  void writeToFile(fstream &file) const; // Write sailing information to a file, in-out: file
-  void readFromFile(fstream &file);      // Read sailing information from a file, in-out: file
+    //************************************************************
+    // Parameterized constructor
+    //************************************************************
+    // in: sailingId, vesselName, HRL, LRL
+    // Initializes a sailing record with given parameters.
+    //************************************************************
+    Sailing(const char* sailingId, const char* vesselName, double HRL, double LRL);
 
-  string toString() const; // Convert sailing data to string for display, out: string
+    //************************************************************
+    // writeToFile
+    //************************************************************
+    // Writes this sailing object to the open binary file.
+    // in-out: file - must be open in binary write mode
+    //************************************************************
+    void writeToFile(fstream &file) const;
 
-  static bool Sailing::searchForSailing(const string &sailingId, Sailing &foundSailing); // Searches for a sailing by ID, in: sailingId, out: foundSailing and full record of the found sailing
+    //************************************************************
+    // readFromFile
+    //************************************************************
+    // Reads a full sailing object from binary file.
+    // in-out: file - must be open in binary read mode
+    //************************************************************
+    void readFromFile(fstream &file);
 
-  // Step 6: check if sailing has space available for this new reservation
-  /* Each sailing has High Ceiling Lane Length (HCLL) and Low Ceiling Lane Length (LCLL) capacity. If the low ceiling reserved space becomes full, low
-    vehicles can be reserved into the high ceiling lanes, so we need to check both capacities.
-    Check in the LCLL if regular vehicle, or check HCLL if not available in LCLL, and HCLL if special vehicle.
-    If space is available, write the reservation to the file.
-  */
+    //************************************************************
+    // toString
+    //************************************************************
+    // Converts this sailing record into a string format.
+    // out: formatted string for display
+    //************************************************************
+    string toString() const;
 
-  static bool isSpaceAvailable(const string &sailingId, bool isSpecial, double vehicleLength, double vehicleHeight); // Checks if space is available for a new reservation, in: sailingId, vehicleLength, isSpecial
+    //************************************************************
+    // searchForSailing
+    //************************************************************
+    // Searches the file for a sailing matching the given ID.
+    // in: sailingId
+    // out: foundSailing (by reference), true if found
+    //************************************************************
+    static bool searchForSailing(const string &sailingId, Sailing &foundSailing);
 
-  void open(const string &sailingId, const string &vesselName, double HRL, double LRL); // in: sailingID, vesselName, HRL, LRL
+    //************************************************************
+    // isSpaceAvailable
+    //************************************************************
+    // Checks whether a vehicle can be reserved on this sailing
+    // depending on height/length and lane space.
+    // in: sailingId, vehicleLength, isSpecial
+    // out: true if space is available
+    //************************************************************
+    static bool isSpaceAvailable(const string &sailingId, bool isSpecial, double vehicleLength, double vehicleHeight);
 
-  static Sailing getSailingInfo(const string &sailingId); // returns sailing information as a string, in: sailingId
+    //************************************************************
+    // open
+    //************************************************************
+    // Initializes this sailing object with given values.
+    // in: sailingId, vesselName, HRL, LRL
+    //************************************************************
+    void open(const string &sailingId, const string &vesselName, double HRL, double LRL);
 
-    static bool checkExist(string sailingId);                                                   // in: sailingId
-    static bool writeSailing(string &sailingId, string &vesselName, double HRL, double LRL);     // in: sailingId, vesselName, HRL, LRL
-    static bool removeSailing(string sailingId);                                                // in: sailingId
-    static bool isSpaceAvailable(const string &sailingId, double vehicleLength, bool isSpecial); // in: sailingId, vehicleLength, isSpecial
+    //************************************************************
+    // getSailingInfo
+    //************************************************************
+    // Retrieves a sailing object for the given ID.
+    // in: sailingId
+    // out: Sailing object (copy)
+    //************************************************************
+    static Sailing getSailingInfo(const string &sailingId);
 
-  static void reduceSpace(const string &sailingId, double vehicleLength, bool isSpecial); // in-out: modifies storage file
-  static void addSpace(const string &sailingId, double vehicleLength);                    // in-out: modifies storage file
+    //************************************************************
+    // checkExist
+    //************************************************************
+    // Checks whether a sailing ID exists in the file.
+    // in: sailingId
+    // out: true if exists
+    //************************************************************
+    static bool checkExist(string sailingId);
 
-  double getHRL(const string &sailingId) const; // getter for HRL (High Remaining Length), in: sailingId, out: HRL
-  double getLRL(const string &sailingId) const; // getter for LRL (Low Remaining Length), in: sailingId, out: LRL
+    //************************************************************
+    // writeSailing
+    //************************************************************
+    // Appends a new sailing record to the sailing.dat file.
+    // in: sailingId, vesselName, HRL, LRL
+    // out: true if write successful
+    //************************************************************
+    static bool writeSailing(string &sailingId, string &vesselName, double HRL, double LRL);
+
+    //************************************************************
+    // removeSailing
+    //************************************************************
+    // Deletes a sailing record by copying others to a temp file.
+    // in: sailingId
+    // out: true if successfully removed
+    //************************************************************
+    static bool removeSailing(string sailingId);
+
+    //************************************************************
+    // isSpaceAvailable (overload)
+    //************************************************************
+    // Alternate version to check if a sailing has space
+    // in: sailingId, vehicleLength, isSpecial
+    // out: true if there’s enough HRL or LRL for the vehicle
+    //************************************************************
+    static bool isSpaceAvailable(const string &sailingId, double vehicleLength, bool isSpecial);
+
+    //************************************************************
+    // reduceSpace
+    //************************************************************
+    // Deducts reserved vehicle length from LRL or HRL
+    // in-out: modifies sailing.dat
+    //************************************************************
+    static void reduceSpace(const string &sailingId, double vehicleLength, bool isSpecial);
+
+    //************************************************************
+    // addSpace
+    //************************************************************
+    // Adds back vehicle length (used when canceling reservation)
+    // in-out: modifies sailing.dat
+    //************************************************************
+    static void addSpace(const string &sailingId, double vehicleLength);
+
+    //************************************************************
+    // getHRL
+    //************************************************************
+    // Getter for HRL of given sailingId
+    // in: sailingId
+    // out: HRL as double
+    //************************************************************
+    double getHRL(const string &sailingId) const;
+
+    //************************************************************
+    // getLRL
+    //************************************************************
+    // Getter for LRL of given sailingId
+    // in: sailingId
+    // out: LRL as double
+    //************************************************************
+    double getLRL(const string &sailingId) const;
 };

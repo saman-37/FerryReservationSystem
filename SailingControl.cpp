@@ -2,6 +2,7 @@
 // SailingControl.cpp
 //************************************************************
 // Purpose: Mid-level control module for sailing operations.
+// Handles creation, deletion, reporting, and querying sailings.
 // July 25, 2025 Revision 2 - Darpandeep Kaur
 //************************************************************
 
@@ -14,14 +15,20 @@
 #include <iomanip>
 using namespace std;
 
+//************************************************************
+// Default constructor
+//************************************************************
 SailingControl::SailingControl() {
-    // Default constructor
+    // No initialization needed for this controller
 }
 
 //************************************************************
-// Creates a sailing record if it doesn't exist
-// in: sailingId, vesselName
-// out: true if successful
+// createSailing
+//************************************************************
+// Creates a new sailing if it does not already exist and the
+// vessel exists. Retrieves initial HRL and LRL from vessel.
+// in: sailingId (string), vesselName (string)
+// out: true if creation succeeded, false otherwise
 //************************************************************
 bool SailingControl::createSailing(const string& sailingId, const string& vesselName) {
     if (Sailing::checkExist(const_cast<string&>(sailingId))) {
@@ -37,13 +44,18 @@ bool SailingControl::createSailing(const string& sailingId, const string& vessel
 
     double hcll = vessel.getHCLL();
     double lcll = vessel.getLCLL();
-    return Sailing::writeSailing(const_cast<string&>(sailingId), const_cast<string&>(vesselName), hcll, lcll);
+
+    return Sailing::writeSailing(const_cast<string&>(sailingId),
+                                 const_cast<string&>(vesselName),
+                                 hcll, lcll);
 }
 
 //************************************************************
-// Deletes a sailing and all its reservations
-// in: sailingId
-// out: true if successful
+// deleteSailing
+//************************************************************
+// Deletes a sailing record and removes all associated reservations.
+// in: sailingId (string)
+// out: true if deletion was successful, false if sailing doesn't exist
 //************************************************************
 bool SailingControl::deleteSailing(const string& sailingId) {
     if (Sailing::checkExist(sailingId)) {
@@ -56,8 +68,11 @@ bool SailingControl::deleteSailing(const string& sailingId) {
 }
 
 //************************************************************
-// Queries a sailing and prints details
-// in: sailingId
+// querySailing
+//************************************************************
+// Retrieves a sailing by ID and prints all relevant details
+// including HRL, LRL, vehicle count, and capacity percentage.
+// in: sailingId (string)
 //************************************************************
 void SailingControl::querySailing(const string& sailingId) {
     if (!Sailing::checkExist(sailingId)) {
@@ -72,7 +87,7 @@ void SailingControl::querySailing(const string& sailingId) {
 
     int totalVehicles = Reservation::getTotalReservationsOnSailing(sailingId, Util::reservationFile);
     double totalCapacity = sailing.HRL + sailing.LRL;
-    double usedCapacity = totalCapacity - (sailing.HRL + sailing.LRL); // placeholder
+    double usedCapacity = totalCapacity - (sailing.HRL + sailing.LRL); // Placeholder calculation
     double percentage = (usedCapacity / totalCapacity) * 100.0;
 
     cout << "1) Vessel name: " << sailing.vesselName << endl;
@@ -83,7 +98,10 @@ void SailingControl::querySailing(const string& sailingId) {
 }
 
 //************************************************************
-// Prints a report of all sailings
+// printSailingReport
+//************************************************************
+// Displays a multi-entry report of all sailings stored in the file.
+// Allows users to view reports in chunks of 5 with paging prompt.
 //************************************************************
 void SailingControl::printSailingReport() {
     fstream file("sailing.dat", ios::in | ios::binary);
@@ -95,6 +113,7 @@ void SailingControl::printSailingReport() {
     vector<string> sailingIds;
     Sailing sailing;
 
+    // Collect sailing IDs from file
     while (file.read(reinterpret_cast<char*>(&sailing), Sailing::RECORD_SIZE)) {
         sailingIds.push_back(string(sailing.sailingId));
     }
@@ -105,6 +124,7 @@ void SailingControl::printSailingReport() {
         return;
     }
 
+    // Header
     cout << "=================== Sailing Report ===================\n";
     cout << left
          << setw(10) << "Date"
@@ -116,16 +136,18 @@ void SailingControl::printSailingReport() {
          << "% of lane\n";
 
     size_t count = 0;
+
+    // Display sailings in groups of 5
     while (count < sailingIds.size()) {
         size_t batchEnd = min(count + 5, sailingIds.size());
 
         for (size_t i = count; i < batchEnd; ++i) {
             Sailing s = Sailing::getSailingInfo(sailingIds[i]);
 
-            string date = sailingIds[i].substr(sailingIds[i].find('-') + 1); // e.g., 07-11
+            string date = sailingIds[i].substr(sailingIds[i].find('-') + 1); // e.g., extract date from ID
             int totalVehicles = Reservation::getTotalReservationsOnSailing(s.sailingId, Util::reservationFile);
             double total = s.HRL + s.LRL;
-            double used = total - (s.HRL + s.LRL); // placeholder
+            double used = total - (s.HRL + s.LRL); // Placeholder logic (should be real usage)
             double percent = (used / total) * 100.0;
 
             cout << left
@@ -139,8 +161,10 @@ void SailingControl::printSailingReport() {
         }
 
         count = batchEnd;
+
         if (count >= sailingIds.size()) break;
 
+        // Prompt user to continue or stop
         cout << "\nShow more sailings? (y/n): ";
         char choice;
         cin >> choice;

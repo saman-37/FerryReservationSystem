@@ -1,8 +1,10 @@
 //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-// ReservationUnitTest.cpp
-// Unit test for Reservation.cpp - Version 1
-// Version History:
-// July 24, 2025 - Created for Assignment 4 Unit Testing
+// ReservationTestDriver.cpp
+//************************************************************
+// Unit test for Reservation.cpp
+// Purpose: Tests binary file I/O operations (write/read) for Reservation records
+// July 24, 2025 - Version 1 - Darpandeep Kaur
+//************************************************************
 
 #include <iostream>
 #include <fstream>
@@ -15,8 +17,10 @@ int main()
 {
     cout << "UNIT TEST: Reservation Binary File I/O Write and Read \n";
 
-    // Create test reservation and write to file
-    Reservation r1("7786651002", "van-07-06", true);
+    //************************************************************
+    // Step 1: Create test reservation and write to file
+    //************************************************************
+    Reservation r1("7786651002", "van-07-06", true); // Create test reservation
 
     fstream outFile("test_reservation.dat", ios::out | ios::binary);
     if (!outFile)
@@ -25,10 +29,13 @@ int main()
         return 1;
     }
 
-    r1.writeToFile(outFile); // also closes the file
+    r1.writeToFile(outFile); // Write record to file (function closes the file internally)
 
-    // Read back into a new object
-    Reservation r2;
+    //************************************************************
+    // Step 2: Read back the reservation from file into a new object
+    //************************************************************
+    Reservation r2; // Empty object for comparison
+
     fstream inFile("test_reservation.dat", ios::in | ios::binary);
     if (!inFile)
     {
@@ -36,11 +43,13 @@ int main()
         return 1;
     }
 
-    r2.readFromFile(inFile);
-    inFile.close();
+    r2.readFromFile(inFile); // Load data from binary file
+    inFile.close();          // Close file after read
 
-    // Compare the two reservations
-    bool pass = true;
+    //************************************************************
+    // Step 3: Compare all fields between written and read record
+    //************************************************************
+    bool pass = true; // Flag for pass/fail result
 
     if (strcmp(r1.sailingId, r2.sailingId) != 0)
     {
@@ -60,11 +69,13 @@ int main()
         pass = false;
     }
 
-    // --- Output result ---
+    //************************************************************
+    // Step 4: Output unit test result to console
+    //************************************************************
     if (pass)
     {
         cout << "Reservation file write and read back test: Passed!\n";
-        cout << r2.toString();
+        cout << r2.toString(); // Display read-back data
     }
     else
     {
