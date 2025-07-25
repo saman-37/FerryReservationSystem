@@ -32,6 +32,7 @@ public:
     // vehicle existence, space availability, and special vehicle details.
     // in: sailingId, licensePlate
     // out: returns true if reservation successfully made
+    // Note: phoneNumber parameter is currently unused in implementation
     //************************************************************
     static bool createReservation(int phoneNumber, string &sailingId, string &licensePlate);
 
@@ -47,7 +48,7 @@ public:
     //************************************************************
     // deleteReservation
     //************************************************************
-    // Purpose: Deletes a reservation by sailingId (and license internally)
+    // Purpose: Deletes a reservation using license and sailing ID.
     // in: sailingId
     // out: returns true if deletion succeeded
     //************************************************************

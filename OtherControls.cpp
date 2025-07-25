@@ -3,7 +3,7 @@
 //************************************************************
 // Purpose: Implements control-level logic for reservations, vessels,
 // and check-in functionality for FerryReserver system.
-// July 12, 2025 Version 1 - Darpandeep Kaur
+// July 12, 2025 Version 1 - Darpandeep Kaur and Samanpreet 
 //************************************************************
 
 #include "OtherControls.h"
@@ -118,8 +118,9 @@ bool createReservation(string &sailingId, string &licensePlate) // Makes a new r
 
   // Step 6: check if sailing has space available for this new reservation
   /*
-  LCLL used for regular vehicles;
-  HCLL used for special vehicles or if LCLL full.
+  Compound conditional determines whether to use LCLL or HCLL space:
+  - If regular vehicle → LCLL
+  - If special or LCLL is full → HCLL
   */
   if (!Sailing::isSpaceAvailable(sailingId, isSpecial == 'y' || isSpecial == 'Y', length, height))
   {
@@ -128,6 +129,7 @@ bool createReservation(string &sailingId, string &licensePlate) // Makes a new r
   }
 
   // Step 7: Reduce the space available, if reservation is successful
+  // Adjusts space based on vehicle type (high ceiling or low ceiling)
   Sailing::reduceSpace(sailingId, length, isSpecial == 'y' || isSpecial == 'Y');
 }
 
@@ -148,7 +150,7 @@ bool deleteReservation(string &license, string &sailingId) // Deletes all reserv
 
   // Step 3: get length from the vehicle
   Vehicle vehicle;
-  int length = vehicle.getLength(license);
+  int length = vehicle.getLength(license); // Fetch vehicle length from file using license key
 
   // Step 4: remove the reservation record from the reservation file
   if (!Reservation::removeReservation(sailingId, license))
@@ -164,7 +166,8 @@ bool deleteReservation(string &license, string &sailingId) // Deletes all reserv
 
   // Step 5: add the space back to the sailing
   /*
-  Determine LCLL or HCLL based on vehicle type.
+  NOTE: This line is unreachable due to return statements above.
+  If space restoration is needed, consider moving this before return.
   */
   Sailing::addSpace(sailingId, length);
 };

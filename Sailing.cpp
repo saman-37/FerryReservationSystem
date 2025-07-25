@@ -1,7 +1,10 @@
+//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 //************************************************************
 // Sailing.cpp
 //************************************************************
 // Purpose: Implementation for Sailing class representing a ferry sailing.
+// Provides support for reading, writing, searching, adding, and removing
+// fixed-length binary records representing sailings.
 // July 21, 2025 Version 1 - Team 18
 //************************************************************
 
@@ -12,6 +15,10 @@
 
 using namespace std;
 
+//************************************************************
+// Default Constructor
+// Initializes all fields to zero or empty string
+//************************************************************
 Sailing::Sailing()
 {
     memset(sailingId, 0, sizeof(sailingId));
@@ -20,7 +27,11 @@ Sailing::Sailing()
     LRL = 0.0;
 }
 
-// Ensure this matches the declaration in Sailing.h
+//************************************************************
+// Parameterized Constructor
+// Initializes sailing with given ID, vessel name, and lane lengths
+// in: sailingId, vesselName, HRL, LRL
+//************************************************************
 Sailing::Sailing(const char* sailingId, const char* vesselName, double HRL, double LRL) {
     strncpy(this->sailingId, sailingId, SAILING_ID_LENGTH - 1);
     this->sailingId[SAILING_ID_LENGTH - 1] = '\0';
@@ -31,6 +42,12 @@ Sailing::Sailing(const char* sailingId, const char* vesselName, double HRL, doub
     this->HRL = HRL;
     this->LRL = LRL;
 }
+
+//************************************************************
+// open()
+// Sets the sailing fields from parameters, used to update object
+// in: id, vName, hrl, lrl
+//************************************************************
 void Sailing::open(const string& id, const string& vName, double hrl, double lrl) {
     strncpy(sailingId, id.c_str(), SAILING_ID_LENGTH);
     sailingId[SAILING_ID_LENGTH] = '\0';
@@ -42,11 +59,21 @@ void Sailing::open(const string& id, const string& vName, double hrl, double lrl
     LRL = lrl;
 }
 
+//************************************************************
+// writeToFile()
+// Writes the entire Sailing object to file as binary
+// in: file - open binary stream
+//************************************************************
 void Sailing::writeToFile(fstream &file) const
 {
     file.write(reinterpret_cast<const char *>(this), RECORD_SIZE);
 }
 
+//************************************************************
+// readFromFile()
+// Reads the entire Sailing object from file as binary
+// in: file - open binary stream
+//************************************************************
 void Sailing::readFromFile(fstream &file)
 {
     file.read(reinterpret_cast<char *>(this), RECORD_SIZE);
@@ -56,6 +83,12 @@ void Sailing::readFromFile(fstream &file)
 #include <fstream>
 #include <cstring> // for strcmp if needed
 
+//************************************************************
+// searchForSailing()
+// Searches for a sailing record by ID
+// in: sailingId
+// out: fills foundSailing and returns true if match found
+//************************************************************
 bool Sailing::searchForSailing(const string &sailingId, Sailing &foundSailing)
 {
     ifstream file("sailing.dat", ios::in | ios::binary);
@@ -70,7 +103,7 @@ bool Sailing::searchForSailing(const string &sailingId, Sailing &foundSailing)
     {
         if (strcmp(temp.sailingId, sailingId.c_str()) == 0)
         {
-            foundSailing = temp; // Copy found object into reference
+            foundSailing = temp; // Copy matched record
             file.close();
             return true;
         }
@@ -80,6 +113,10 @@ bool Sailing::searchForSailing(const string &sailingId, Sailing &foundSailing)
     return false; // Not found
 }
 
+//************************************************************
+// getSailingInfo()
+// Returns a Sailing object for the given sailingId
+//************************************************************
 Sailing Sailing::getSailingInfo(const string& sailingId) {
     fstream file("sailing.dat", ios::in | ios::binary);
     Sailing sailing;
@@ -92,9 +129,15 @@ Sailing Sailing::getSailingInfo(const string& sailingId) {
         }
     }
     file.close();
-    return Sailing(); // return empty/default sailing
+    return Sailing(); // Return empty/default sailing if not found
 }
 
+//************************************************************
+// checkExist()
+// Checks if a sailing record exists by ID
+// in: sailingId
+// out: true if found
+//************************************************************
 bool Sailing::checkExist(string sailingId) {
     fstream file("sailing.dat", ios::in | ios::binary);
     Sailing sailing;
@@ -110,6 +153,10 @@ bool Sailing::checkExist(string sailingId) {
     return false;
 }
 
+//************************************************************
+// writeSailing()
+// Appends a new sailing record to the sailing.dat file
+//************************************************************
 bool Sailing::writeSailing(std::string &sailingId, std::string &vesselName, double HRL, double LRL)
 {
     std::fstream file("sailing.dat", std::ios::out | std::ios::app | std::ios::binary);
@@ -122,6 +169,11 @@ bool Sailing::writeSailing(std::string &sailingId, std::string &vesselName, doub
     return true;
 }
 
+//************************************************************
+// removeSailing()
+// Removes a sailing record by copying all non-matching records
+// to a temp file and replacing the original
+//************************************************************
 bool Sailing::removeSailing(string sailingId) {
     fstream file("sailing.dat", ios::in | ios::binary);
     fstream temp("temp.dat", ios::out | ios::binary);
@@ -136,7 +188,7 @@ bool Sailing::removeSailing(string sailingId) {
         }
         else
         {
-            removed = true;
+            removed = true; // Skip writing matched sailing
         }
     }
 

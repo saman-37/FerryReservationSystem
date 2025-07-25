@@ -1,14 +1,22 @@
 //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 // reservation.cpp
+//************************************************************
+// Purpose: Implements all functionality for the Reservation entity,
+// including reading/writing fixed-length binary records, adding,
+// deleting, checking, and modifying reservation status. Uses 
+// unsorted records and random access for simplicity and speed.
+//************************************************************
+// Version History:
+// ver. 1 - July 23, 2025 by Saman and Noble
+//************************************************************
+
 /*
-Version History:
-ver. 1 - July 23, 2025 by Saman and Noble
-      
---------------------------------------------------------------
-This module provides the interface for the reservation file, functionality to add, delete, look for reservation records, using binary random access. The reservation file contains the unsorted fixed-length record which are not the best storage for access, yet provides faster inserts and deletes. All the attributes of a newly created reservation and functions to modify them are put together here for encapsulation.
+This module provides the interface for the reservation file,
+functionality to add, delete, and search for reservation records
+using binary random access. It encapsulates Reservation record
+structure and logic using fixed-length records.
 */
 
-//--------------------------------------------------------------
 #include "Reservation.h"
 #include "util.h"
 #include <iostream>
@@ -17,7 +25,6 @@ This module provides the interface for the reservation file, functionality to ad
 #include <cstring>
 #include <sstream>
 using namespace std;
-// --------------------------------------------------------------
 
 //************************************************************
 // Default Constructor
@@ -33,63 +40,61 @@ Reservation::Reservation()
 //************************************************************
 // Parameterized Constructor
 // Initializes the reservation with provided values
-// in: sailing_id, license, on_board
+// in: license, sailingId, onBoard
 //************************************************************
 Reservation::Reservation(const string &license, const string &sailingId, const bool &onBoard)
 {
     strcpy(this->sailingId, sailingId.c_str());
     strcpy(this->license, license.c_str());
-    this->sailingId[SAILING_ID_LENGTH] = '\0'; // Null-terminate the sailing ID attribute
-    this->license[LICENSE_LENGTH] = '\0';      // Null-terminate the license attribute
-    this->onBoard = onBoard;                   // Default to not on board
-};
+    this->sailingId[SAILING_ID_LENGTH] = '\0'; // Null-terminate sailing ID
+    this->license[LICENSE_LENGTH] = '\0';      // Null-terminate license
+    this->onBoard = onBoard;
+}
 
 //************************************************************
-// Pre-conditions: assume binary file stream is open, and in both input and output modes
-// Writes the reservation record to a binary file
-// in-out: file - binary file stream
+// writeToFile()
+// Writes this reservation record to a binary file.
+// Requires file stream to be open in binary append mode.
 //************************************************************
-void Reservation::writeToFile(fstream &file) const // in-out: file - binary file stream
+void Reservation::writeToFile(fstream &file) const
 {
-    // file stream object should be in append mode, so that entry is at end of file
-    if (file.is_open()) // file stream object is open and provided by util in all the 3 states of input, output and binary
+    if (file.is_open())
     {
-        file.write(license, sizeof(license));                                  // Write license, update, should be sizeOf(license) + 1 for null terminator
-        file.write(sailingId, sizeof(sailingId));                              // Write sailing ID
-        file.write(reinterpret_cast<const char *>(&onBoard), sizeof(onBoard)); // Write onBoard status; we need reinterpret cast as the type should be character memory address
-        file.flush();                                                          // Ensure data is written to disk
+        file.write(license, sizeof(license));                                  // Write license string
+        file.write(sailingId, sizeof(sailingId));                              // Write sailing ID string
+        file.write(reinterpret_cast<const char *>(&onBoard), sizeof(onBoard)); // Write onBoard flag
+        file.flush(); // Ensure it’s flushed to disk
     }
-
     else
     {
         cout << "Error opening file for writing." << endl;
     }
-};
+}
 
 //************************************************************
-// Pre-conditions: assume binary file stream is open, and in both input and output modes
-// Reads the reservation record from a binary file
-// in-out: file - binary file stream
+// readFromFile()
+// Reads this reservation record from a binary file.
+// Requires file stream to be open in binary input mode.
 //************************************************************
-void Reservation::readFromFile(fstream &file) // in-out: file - binary file stream
+void Reservation::readFromFile(fstream &file)
 {
-    if (file.is_open()) // file stream object is open and provided by util in all the 3 states of input, output and binary
+    if (file.is_open())
     {
-        file.read(license, sizeof(license));                            // Read into the license instance variable
-        file.read(sailingId, sizeof(sailingId));                        // Read sailingId instance variable
-        file.read(reinterpret_cast<char *>(&onBoard), sizeof(onBoard)); // Read onBoard status
+        file.read(license, sizeof(license));                            // Read license field
+        file.read(sailingId, sizeof(sailingId));                        // Read sailing ID
+        file.read(reinterpret_cast<char *>(&onBoard), sizeof(onBoard)); // Read onBoard flag
     }
     else
     {
         cout << "Error opening file for reading." << endl;
     }
-};
+}
 
 //************************************************************
-// Converts the reservation record to a formatted string
-// out: returns formatted string
+// toString()
+// Converts the reservation record into a displayable string.
 //************************************************************
-string Reservation::toString() const // out: returns formatted string
+string Reservation::toString() const
 {
     stringstream ss;
     ss << "Reservation Details:\n"
@@ -97,97 +102,91 @@ string Reservation::toString() const // out: returns formatted string
        << "License: " << license << "\n"
        << "On Board: " << (onBoard ? "Yes" : "No") << "\n";
     return ss.str();
-};
+}
 
 //************************************************************
-// Calculates the total number of reservations for a specific sailing ID
-// in: sailingId - the sailing ID to check
+// getTotalReservationsOnSailing()
+// Returns the number of reservations for a given sailing ID.
 //************************************************************
 int Reservation::getTotalReservationsOnSailing(const string &sailingId){
     return getTotalReservationsOnSailing(sailingId, file);
-} 
-int Reservation::getTotalReservationsOnSailing(const string &sailingId, fstream &file) // in: sailingID
+}
+int Reservation::getTotalReservationsOnSailing(const string &sailingId, fstream &file)
 {
-    // loop through all the records in the reservation file
-    // do random access and take pointer to the second attribute in each line/record to seek sailing id
-    // if it matches the sailingId, increment the counter
-
     if (file.is_open())
     {
-        file.clear();            // Clear any existing flags
-        file.seekg(0, ios::beg); // Move to the beginning of the file
+        file.clear();
+        file.seekg(0, ios::beg); // Start at file beginning
 
         Reservation reservation;
         int count = 0;
 
+        // Loop through records
         while (file.read(reinterpret_cast<char *>(&reservation), RECORD_SIZE))
         {
             if (strcmp(reservation.sailingId, sailingId.c_str()) == 0)
             {
-                count++;
+                count++; // Match found
             }
         }
 
-        file.close(); // Close the file after reading
-        return count; // Return the total count of reservations for the sailing ID
+        file.close();
+        return count;
     }
-
     else
     {
         cout << "Error opening file for reading." << endl;
     }
-};
+}
 
 //************************************************************
-// Removes a specific reservation based on sailing ID and license
-// in: sailingId - the sailing ID of the reservation to remove
+// removeReservation()
+// Removes a reservation with matching sailingId and license.
 //************************************************************
 bool Reservation::removeReservation(const string &sailingId, const string &license, fstream &file) {
     return removeReservation(sailingId, license, file);
 }
-bool Reservation::removeReservation(const string &sailingId, const string &license, fstream &file) // in: sailingID, license
+bool Reservation::removeReservation(const string &sailingId, const string &license, fstream &file)
 {
-
     if (file.is_open())
     {
-        file.clear();            // Clear any existing flags
-        file.seekg(0, ios::beg); // Move to the beginning of the file
+        file.clear();
+        file.seekg(0, ios::beg);
 
         Reservation reservation;
         bool found = false;
 
         while (file.read(reinterpret_cast<char *>(&reservation), RECORD_SIZE))
         {
-            if (strcmp(reservation.sailingId, sailingId.c_str()) == 0 && strcmp(reservation.license, license.c_str()) == 0)
+            if (strcmp(reservation.sailingId, sailingId.c_str()) == 0 &&
+                strcmp(reservation.license, license.c_str()) == 0)
             {
-                found = true; // Reservation found, do not write it to temp file
+                found = true;
             }
         }
 
         file.close();
-
-        return found; // Return true if reservation was found and removed, false otherwise
+        return found;
     }
-
     else
     {
         cout << "Error opening file for reading." << endl;
     }
-};
+}
 
 //************************************************************
-// Removes all reservations for a specific sailing ID
-// in: sailingId - the sailing ID for which to remove all reservations
+// removeReservationsOnSailing()
+// Removes all reservations that match the given sailing ID.
 //************************************************************
 bool Reservation::removeReservationsOnSailing(const std::string &sailingId){
     return removeReservationsOnSailing(sailingId, file);
-} 
-bool Reservation::removeReservationsOnSailing(const std::string &sailingId, fstream &file) // in: sailingId
+}
+bool Reservation::removeReservationsOnSailing(const std::string &sailingId, fstream &file)
 {
     if (file.is_open())
     {
-        file.clear();            // Clear any existing flags
-        file.seekg(0, ios::beg); // Move to the beginning of the file
+        file.clear();
+        file.seekg(0, ios::beg);
 
         Reservation reservation;
         bool found = false;
@@ -196,111 +195,109 @@ bool Reservation::removeReservationsOnSailing(const std::string &sailingId, fstr
         {
             if (strcmp(reservation.sailingId, sailingId.c_str()) == 0)
             {
-                found = true; // Reservation found, do not write it to temp file
+                found = true;
             }
         }
 
         file.close();
-
-        return found; // Return true if at least one reservation was found and removed, false otherwise
+        return found;
     }
-
     else
     {
         cout << "Error opening file for reading." << endl;
     }
-};
+}
 
 //************************************************************
-// Checks if a reservation exists for a specific sailing ID and license
-// in: sailingId - the sailing ID to check, license - the license to check
+// checkExist()
+// Returns true if a reservation exists for the given sailingId + license.
 //************************************************************
 bool Reservation::checkExist(const string &sailingId, const string &license){
     return checkExist(sailingId, license, file);
-} 
-bool Reservation::checkExist(const string &sailingId, const string &license, fstream &file) // in: sailingID, license
+}
+bool Reservation::checkExist(const string &sailingId, const string &license, fstream &file)
 {
-    // Check if a reservation exists for the given sailing ID and license
     if (file.is_open())
     {
-        file.clear();            // Clear any existing flags
-        file.seekg(0, ios::beg); // Move to the beginning of the file
+        file.clear();
+        file.seekg(0, ios::beg);
 
         Reservation reservation;
 
         while (file.read(reinterpret_cast<char *>(&reservation), RECORD_SIZE))
         {
-            if (strcmp(reservation.sailingId, sailingId.c_str()) == 0 && strcmp(reservation.license, license.c_str()) == 0)
+            if (strcmp(reservation.sailingId, sailingId.c_str()) == 0 &&
+                strcmp(reservation.license, license.c_str()) == 0)
             {
-                return true; // Reservation exists
+                return true;
             }
         }
 
-        file.close(); // Close the file after reading
-        return false; // Reservation does not exist
+        file.close();
+        return false;
     }
-
     else
     {
         cout << "Error opening file for reading." << endl;
     }
-};
+}
 
 //************************************************************
-// Writes a new reservation to the file
-// in: sailingId - the sailing ID, license - the license of the vehicle
+// writeReservation()
+// Appends a new reservation to the binary file.
 //************************************************************
 bool Reservation::writeReservation(const string &sailingId, const string &license) {
-    return writeReservation(const string &sailingId, const string &license, fstream &file);
+    return writeReservation(sailingId, license, file);
 }
-bool Reservation::writeReservation(const string &sailingId, const string &license, fstream &file) // in: sailingID, license, phone                                                                                                                                                                                              {
+bool Reservation::writeReservation(const string &sailingId, const string &license, fstream &file)
 {
-    // Write a new reservation to the file
     if (file.is_open())
     {
-        Reservation reservation(license, sailingId, false); // Create a new reservation object
-        reservation.writeToFile(file);                      // Write the reservation to the file
-        return true;                                        // Return true if written successfully
+        Reservation reservation(license, sailingId, false); // onBoard = false
+        reservation.writeToFile(file);
+        return true;
     }
     else
     {
         cout << "Error opening file for writing." << endl;
-        return false; // Return false if file could not be opened
+        return false;
     }
-};
+}
 
 //************************************************************
-// Sets the reservation as checked in
-// in: sailingId - the sailing ID, license - the license of the vehicle
+// setCheckedIn()
+// Marks a reservation as checked in and rewrites the record.
 //************************************************************
 void Reservation::setCheckedIn(const string &sailingId, const string &license) {
     return setCheckedIn(sailingId, license, file);
 }
-void Reservation::setCheckedIn(const string &sailingId, const string &license, fstream &file) // in: sailingID, license
+void Reservation::setCheckedIn(const string &sailingId, const string &license, fstream &file)
 {
-    // Set the reservation as checked in
     if (file.is_open())
     {
-        file.clear();            // Clear any existing flags
-        file.seekg(0, ios::beg); // Move to the beginning of the file
+        file.clear();
+        file.seekg(0, ios::beg);
 
         Reservation reservation;
 
         while (file.read(reinterpret_cast<char *>(&reservation), RECORD_SIZE))
         {
-            if (strcmp(reservation.sailingId, sailingId.c_str()) == 0 && strcmp(reservation.license, license.c_str()) == 0)
+            if (strcmp(reservation.sailingId, sailingId.c_str()) == 0 &&
+                strcmp(reservation.license, license.c_str()) == 0)
             {
-                reservation.onBoard = true;    // Set onBoard status to true
-                file.seekp(file.tellg());      // Move back to the position of the current record //// -RECORD_SIZE
-                reservation.writeToFile(file); // Write the updated reservation back to the file
-                break;                         // Exit loop after updating
+                reservation.onBoard = true;
+
+                // Move back to start of current record
+                file.seekp(file.tellg());
+                reservation.writeToFile(file);
+                break;
             }
         }
 
-        file.close(); // Close the file after writing
+        file.close();
     }
     else
     {
         cout << "Error opening file for writing." << endl;
     }
-};
+}
