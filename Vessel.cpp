@@ -45,11 +45,11 @@ Vessel::Vessel(const string &vesselName, double HCLL, double LCLL)
 //************************************************************
 void Vessel::writeToFile(fstream &file) const
 {
-    if (file.is_open())
+    if (Util::vesselFile.is_open())
     {
-        file.write(vesselName, NAME_LENGTH + 1);                         // Write vesselName
-        file.write(reinterpret_cast<const char *>(&HCLL), sizeof(HCLL)); // Write High Capacity Lane Length
-        file.write(reinterpret_cast<const char *>(&LCLL), sizeof(LCLL)); // Write Low Capacity Lane Length
+        Util::vesselFile.write(vesselName, NAME_LENGTH + 1);                         // Write vesselName
+        Util::vesselFile.write(reinterpret_cast<const char *>(&HCLL), sizeof(HCLL)); // Write High Capacity Lane Length
+        Util::vesselFile.write(reinterpret_cast<const char *>(&LCLL), sizeof(LCLL)); // Write Low Capacity Lane Length
     }
     else
     {
@@ -63,11 +63,11 @@ void Vessel::writeToFile(fstream &file) const
 //************************************************************
 void Vessel::readFromFile(fstream &file)
 {
-    if (file.is_open())
+    if (Util::vesselFile.is_open())
     {
-        file.read(vesselName, NAME_LENGTH + 1);                   // Read vesselName
-        file.read(reinterpret_cast<char *>(&HCLL), sizeof(HCLL)); // Read High Capacity Lane Length
-        file.read(reinterpret_cast<char *>(&LCLL), sizeof(LCLL)); // Read Low Capacity Lane Length
+        Util::vesselFile.read(vesselName, NAME_LENGTH + 1);                   // Read vesselName
+        Util::vesselFile.read(reinterpret_cast<char *>(&HCLL), sizeof(HCLL)); // Read High Capacity Lane Length
+        Util::vesselFile.read(reinterpret_cast<char *>(&LCLL), sizeof(LCLL)); // Read Low Capacity Lane Length
     }
 }
 
@@ -78,9 +78,8 @@ void Vessel::readFromFile(fstream &file)
 //************************************************************
 bool Vessel::checkExist(const string &vesselName)
 {
-    fstream file;
-    file.open("vessel.dat", ios::in | ios::binary); // Open vessel file for reading
-    if (!file.is_open())
+    Util::vesselFile.open("vessel.dat", ios::in | ios::binary); // Open vessel file for reading
+    if (!Util::vesselFile.is_open())
     {
         cout << "Error opening vessel file." << endl;
         return false; // File could not be opened
@@ -137,14 +136,34 @@ string Vessel::getName() const
     return string(vesselName); // Return vesselName as a string
 }
 
-double Vessel::getHCLL() const
+double Vessel::getHCLL(const string& vesselName) const
 {
-    return HCLL; // Return High Capacity Lane Length
+    Util::vesselFile.clear();
+    Util::vesselFile.seekg(0, std::ios::beg);
+
+    Vessel v;
+    while (Util::vesselFile.read(reinterpret_cast<char*>(&v), RECORD_SIZE)) {
+        if (strcmp(v.vesselName, vesselName.c_str()) == 0) {
+            return v.HCLL;
+        }
+    }
+
+    return -1; // Or throw, or signal not found
 }
 
-double Vessel::getLCLL() const
+double Vessel::getLCLL(const string& vesselName) const
 {
-    return LCLL; // Return Low Capacity Lane Length
+    Util::vesselFile.clear();
+    Util::vesselFile.seekg(0, std::ios::beg);
+
+    Vessel v;
+    while (Util::vesselFile.read(reinterpret_cast<char*>(&v), RECORD_SIZE)) {
+        if (strcmp(v.vesselName, vesselName.c_str()) == 0) {
+            return v.LCLL;
+        }
+    }
+
+    return -1; // Or throw, or signal not found
 }
 
 //************************************************************
