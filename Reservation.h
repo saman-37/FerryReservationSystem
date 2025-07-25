@@ -4,7 +4,7 @@
 // Purpose: Represents a binary-storable reservation record with
 // check-in status and provides all file-level operations for 
 // managing ferry reservations in a fixed-length format.
-// July 12, 2025 - ver. 1 - Created by all team members
+// July 24, 2025 - ver. 2 - Created by all team members
 //************************************************************
 
 #pragma once
