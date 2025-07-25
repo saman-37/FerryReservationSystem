@@ -83,8 +83,8 @@ void UI::displayMainMenu()
 void UI::displayCreateMenu()
 {
     cout << "======================== Create Menu ======================" << endl;
-    cout << "[1] Create Sailing " << endl;
-    cout << "[2] Create Vessel " << endl;
+    cout << "[1] Create Vessel " << endl;
+    cout << "[2] Create Sailing " << endl;
     cout << "[3] Create Reservation " << endl;
     cout << "[0] Back to Main Menu " << endl;
     cout << "Choose an option [0-3] and press Enter. " << endl;
@@ -95,31 +95,27 @@ void UI::displayCreateMenu()
     {
         switch (choice)
         {
-        case 1: // user chooses to create new sailing
+        
+        case 1://user chooses to create new vessel
         {
             char cont = 'y';
-            while (cont == 'y')
+            while (cont == 'y' || cont == 'Y')
             {
-                sailingCreation();
-                string in = getInput("Do you want to create another vessel (y/n): ");
+                vesselCreation();
+                string in = getInput("Do you want to create another vessel? (y/n): ");
                 cont = in[0];
-                
             }
             break;
         }
 
-        case 2:
+        case 2: // user chooses to create new sailing
         {
-            string vesselName = getInput("Enter Vessel Name (max: 25 characters): ");
-            int LCLL = stod(getInput("Enter LCLL (Positive integer, max: 3600): "));
-            int HCLL = stod(getInput("Enter HCLL (Positive integer, max: 3600): "));
-            if (OtherControls::createVessel(vesselName, HCLL, LCLL))
+            char cont = 'y';
+            while (cont == 'y' || cont == 'Y')
             {
-                cout << "Vessel successfully created." << endl;
-            }
-            else
-            {
-                cout << "Failed to create vessel." << endl;
+                sailingCreation();
+                string in = getInput("Do you wish to create another sailing? (y/n): ");
+                cont = in[0];
             }
             break;
         }
@@ -309,5 +305,18 @@ void UI::sailingCreation()
     else // failed to create the sailing
     {
         cout << "Failed to create sailing with vessel name " << vesselName << "." << endl;
+    }
+}
+void UI::vesselCreation(){
+    string vesselName = getInput("Enter Vessel Name (max: 25 characters): ");
+    int LCLL = stod(getInput("Enter LCLL (Positive integer, max: 3600): "));
+    int HCLL = stod(getInput("Enter HCLL (Positive integer, max: 3600): "));
+    if (OtherControls::createVessel(vesselName, HCLL, LCLL))
+    {
+        cout << "Vessel successfully created." << endl;
+    }
+    else
+    {
+        cout << "Failed to create vessel." << endl;
     }
 }
