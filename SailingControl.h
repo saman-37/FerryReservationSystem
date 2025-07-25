@@ -24,7 +24,7 @@ class SailingControl {
         static bool createSailing(const string& sailingId, const std::string& vesselName); // in: sailingId, vesselName
         static bool deleteSailing(const string& sailingId); // in: sailingId
         static void querySailing(const string& sailingId); // in: sailingId
-        static void printSailingReport(const string& sailingId); // in: sailingId
+        static void printSailingReport(); // in: sailingId
         
 };
 

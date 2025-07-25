@@ -39,7 +39,7 @@ void SailingControl::querySailing(const string& sailingId) {
         return;
 }
 
-void SailingControl::printSailingReport(const string& sailingId) {
+void SailingControl::printSailingReport() {
     // getCapacity(sailingId);
     // getSailingInfo(sailingId);
     // getNext(); // What do we need this for?

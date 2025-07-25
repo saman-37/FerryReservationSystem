@@ -124,7 +124,7 @@ bool deleteReservation(string &license, string &sailingId) // Deletes all reserv
   int length = vehicle.getLength(license);
 
   // Step 4: remove the reservation record from the reservation file
-  Reservation reservation;
+  
   if (!Reservation::removeReservation(sailingId, license))
   {
      // Failed to remove reservation

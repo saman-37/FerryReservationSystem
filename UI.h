@@ -27,5 +27,6 @@ class UI {
 
         int getUserChoice(int min, int max); // in: min, max
         std::string getInput(const std::string& prompt); // in: prompt - message to display
-
+        void UI::sailingCreation();
+        void UI::vesselCreation();
 };
