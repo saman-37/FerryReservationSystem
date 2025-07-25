@@ -5,7 +5,7 @@
 // This is the user interface layer responsible for managing
 // all menus, taking user input, and routing commands to
 // mid-level control modules.
-// July 10, 2025 Revision 1 - All team members
+// July 10, 2025 Version 1 - All team members
 //************************************************************
 
 #pragma once

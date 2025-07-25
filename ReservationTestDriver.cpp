@@ -1,6 +1,6 @@
 //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 // ReservationUnitTest.cpp
-// Unit test for Reservation.cpp - Revision 1
+// Unit test for Reservation.cpp - Version 1
 // Version History:
 // July 24, 2025 - Created for Assignment 4 Unit Testing
 

@@ -3,7 +3,7 @@
 //************************************************************
 // Purpose: Provides system-level helper functions such as
 // startup, shutdown, and reset operations.
-// July 20, 2025 Revision 1 - Darpandeep Kaur
+// July 20, 2025 Version 1 - Darpandeep Kaur
 //************************************************************
 
 #include "Util.h"

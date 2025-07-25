@@ -2,7 +2,7 @@
 // Sailing.cpp
 //************************************************************
 // Purpose: Implementation for Sailing class representing a ferry sailing.
-// July 21, 2025 Revision 1 - Team 18
+// July 21, 2025 Version 1 - Team 18
 //************************************************************
 
 #include "Sailing.h"

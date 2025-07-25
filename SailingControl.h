@@ -4,7 +4,7 @@
 // Purpose: Mid-level controller for managing sailings. Handles
 // the creation of sailings, querying individual sailings,
 // and generating sailing reports. Interfaces with the Sailing entity.
-// July 10, 2025 Revision 1
+// July 10, 2025 Version 1
 //************************************************************
 
 #pragma once
