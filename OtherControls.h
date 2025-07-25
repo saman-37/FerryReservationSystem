@@ -25,7 +25,7 @@ public:
     OtherControls(); // Default Constructor
 
     static bool createReservation(int phoneNumber, string &sailingId, string &licensePlate);  // Makes a new reservation, in: sailingId, licensePlate
-    static bool createVessel(string &vesselName, string &vesselId, int HCLL, int LCLL); // in: vesselName, HCLL, LCLL
+    static bool createVessel(string &vesselName, int HCLL, int LCLL); // in: vesselName, HCLL, LCLL
     static bool deleteReservation(string &sailingId);                                         // Deletes a sailing record, in: sailingId
     static bool checkIn(string &licensePlate, std::string &sailingId);                        // Checks in a vehicle to a sailing, in: sailingId, licensePlate
 };
