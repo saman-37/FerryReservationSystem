@@ -19,10 +19,17 @@ Sailing::Sailing() {
     LRL = 0.0;
 }
 
-Sailing::Sailing(const string& id, const string& vName, double hrl, double lrl) {
-    open(id, vName, hrl, lrl);
-}
+// Ensure this matches the declaration in Sailing.h
+Sailing::Sailing(const char* sailingId, const char* vesselName, double HRL, double LRL) {
+    strncpy(this->sailingId, sailingId, SAILING_ID_LENGTH - 1);
+    this->sailingId[SAILING_ID_LENGTH - 1] = '\0';
 
+    strncpy(this->vesselName, vesselName, VESSEL_NAME_LENGTH - 1);
+    this->vesselName[VESSEL_NAME_LENGTH - 1] = '\0';
+
+    this->HRL = HRL;
+    this->LRL = LRL;
+}
 void Sailing::open(const string& id, const string& vName, double hrl, double lrl) {
     strncpy(sailingId, id.c_str(), SAILING_ID_LENGTH);
     sailingId[SAILING_ID_LENGTH] = '\0';
@@ -70,17 +77,6 @@ bool Sailing::searchForSailing(const string &sailingId, Sailing &foundSailing)
     return false; // Not found
 }
 
-
-string Sailing::toString() const {
-    ostringstream out;
-    out << "Sailing ID: " << sailingId << "\n"
-        << "Vessel Name: " << vesselName << "\n"
-        << fixed << setprecision(1)
-        << "High Remaining Length: " << HRL << " m\n"
-        << "Low Remaining Length: " << LRL << " m\n";
-    return out.str();
-}
-
 Sailing Sailing::getSailingInfo(const string& sailingId) {
     fstream file("sailing.dat", ios::in | ios::binary);
     Sailing sailing;
@@ -94,7 +90,7 @@ Sailing Sailing::getSailingInfo(const string& sailingId) {
     return Sailing(); // return empty/default sailing
 }
 
-bool Sailing::checkExist(string& sailingId) {
+bool Sailing::checkExist(string sailingId) {
     fstream file("sailing.dat", ios::in | ios::binary);
     Sailing sailing;
     while (file.read(reinterpret_cast<char*>(&sailing), RECORD_SIZE)) {
@@ -110,13 +106,13 @@ bool Sailing::checkExist(string& sailingId) {
 bool Sailing::writeSailing(string& sailingId, string& vesselName, double HRL, double LRL) {
     fstream file("sailing.dat", ios::out | ios::app | ios::binary);
     if (!file.is_open()) return false;
-    Sailing s(sailingId, vesselName, HRL, LRL);
+    Sailing s(sailingId.c_str(), vesselName.c_str(), HRL, LRL);
     s.writeToFile(file);
     file.close();
     return true;
 }
 
-bool Sailing::removeSailing(string& sailingId) {
+bool Sailing::removeSailing(string sailingId) {
     fstream file("sailing.dat", ios::in | ios::binary);
     fstream temp("temp.dat", ios::out | ios::binary);
     Sailing s;
