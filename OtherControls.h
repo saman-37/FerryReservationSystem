@@ -30,3 +30,4 @@ class OtherControl {
         bool checkIn(string& licensePlate, std::string& sailingId); // Checks in a vehicle to a sailing, in: sailingId, licensePlate
 
 };
+

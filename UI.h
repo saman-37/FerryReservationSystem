@@ -29,4 +29,5 @@ class UI {
         std::string getInput(const std::string& prompt); // in: prompt - message to display
         void UI::sailingCreation();
         void UI::vesselCreation();
+        void UI::reservationCreation();
 };

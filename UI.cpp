@@ -122,29 +122,21 @@ void UI::displayCreateMenu()
 
         case 3:
         {
-            int phoneNumber = stoi(getInput("Enter Customer Phone Number (format: 10 digits): "));
-            string LicensePlate = getInput("Enter Vehicle License Number (max: 10 characters): ");
-            string sailingId = getInput("Enter Sailing ID (format: xxx-dd-hh): ");
-            do
+
+            char cont = 'y';
+            while (cont == 'y' || cont == 'Y')
             {
-                if (OtherControls::createReservation(phoneNumber, sailingId, LicensePlate))
-                {
-                    cout << "Reservation successfully created.\n"
-                         << endl;
-                    getInput("Do you wish to create another reservation? (y/n): ");
-                }
-                else
-                {
-                    cout << "Failed to create reservation.\n"
-                         << endl;
-                }
-            } while (getInput("Do you wish to create another reservation? (y/n): ") == "y");
+                reservationCreation();
+                string in = getInput("Do you wish to create another reservation? (y/n): ");
+                cont = in[0];
+            }
             break;
+            ;
         }
 
         case 0:
         {
-            cout << "Retruning to Main Menu..." << endl;
+            cout << "Returning to Main Menu..." << endl;
             displayMainMenu(); // Return to main menu
             break;
         }
@@ -318,5 +310,19 @@ void UI::vesselCreation(){
     else
     {
         cout << "Failed to create vessel." << endl;
+    }
+}
+void UI::reservationCreation()
+{
+    int phoneNumber = stoi(getInput("Enter Customer Phone Number (format: 10 digits): "));
+    string LicensePlate = getInput("Enter Vehicle License Number (max: 10 characters): ");
+    string sailingId = getInput("Enter Sailing ID (format: xxx-dd-hh): ");
+    if (OtherControls::createReservation(phoneNumber, sailingId, LicensePlate))
+    {
+        cout << "Reservation successfully created." << endl;
+    }
+    else
+    {
+        cout << "Failed to create reservation." << endl;
     }
 }
