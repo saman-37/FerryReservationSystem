@@ -3,7 +3,7 @@
 /*
 
 Version History:
-ver. 1 -July 12, 2025 Original by Saman
+ver. 1 -July 12, 2025 Original by  all team members
 --------------------------------------------------------------
 Purpose: Represents a binary-storable reservation record with check-in status and file-level operations for managing ferry reservations.
 
@@ -31,11 +31,17 @@ public:
     Reservation(const string &license, const string &sailingId, const bool &onBoard);             // in: sailingID, license, phone
     void writeToFile(fstream &file) const;                                                        // in-out: file - binary file stream
     void readFromFile(fstream &file);                                                             // in-out: file - binary file stream
+    static int getTotalReservationsOnSailing(const string &sailingId);                            // in: sailingID
     static int getTotalReservationsOnSailing(const string &sailingId, fstream &file);             // in: sailingID
+    static bool removeReservation(const string &sailingId, const string &license);                // in: sailingID, license
     static bool removeReservation(const string &sailingId, const string &license, fstream &file); // in: sailingID, license
+    static bool removeReservationsOnSailing(const string &sailingId);                             // in: sailingId
     static bool removeReservationsOnSailing(const string &sailingId, fstream &file);              // in: sailingId
+    static bool checkExist(const string &sailingId, const string &license);                       // in: sailingID, license
     static bool checkExist(const string &sailingId, const string &license, fstream &file);        // in: sailingID, license
     static bool writeReservation(const string &sailingId, const string &license, fstream &file);  // in: sailingID, license, phone
+    static bool writeReservation(const string &sailingId, const string &license);                 // in: sailingID, license, phone
+    static void setCheckedIn(const string &sailingId, const string &license);                     // in: sailingID, license
     static void setCheckedIn(const string &sailingId, const string &license, fstream &file);      // in: sailingID, license
     string toString() const;                                                                      // out: returns formatted string
 };

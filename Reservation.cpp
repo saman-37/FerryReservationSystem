@@ -2,7 +2,7 @@
 // reservation.cpp
 /*
 Version History:
-ver. 1 - July 23, 2025 by Saman
+ver. 1 - July 23, 2025 by Saman and Noble
       
 --------------------------------------------------------------
 This module provides the interface for the reservation file, functionality to add, delete, look for reservation records, using binary random access. The reservation file contains the unsorted fixed-length record which are not the best storage for access, yet provides faster inserts and deletes. All the attributes of a newly created reservation and functions to modify them are put together here for encapsulation.
@@ -103,6 +103,9 @@ string Reservation::toString() const // out: returns formatted string
 // Calculates the total number of reservations for a specific sailing ID
 // in: sailingId - the sailing ID to check
 //************************************************************
+int Reservation::getTotalReservationsOnSailing(const string &sailingId){
+    return getTotalReservationsOnSailing(sailingId, file);
+} 
 int Reservation::getTotalReservationsOnSailing(const string &sailingId, fstream &file) // in: sailingID
 {
     // loop through all the records in the reservation file
@@ -139,6 +142,9 @@ int Reservation::getTotalReservationsOnSailing(const string &sailingId, fstream 
 // Removes a specific reservation based on sailing ID and license
 // in: sailingId - the sailing ID of the reservation to remove
 //************************************************************
+bool Reservation::removeReservation(const string &sailingId, const string &license, fstream &file) {
+    return removeReservation(sailingId, license, file);
+}
 bool Reservation::removeReservation(const string &sailingId, const string &license, fstream &file) // in: sailingID, license
 {
 
@@ -173,6 +179,9 @@ bool Reservation::removeReservation(const string &sailingId, const string &licen
 // Removes all reservations for a specific sailing ID
 // in: sailingId - the sailing ID for which to remove all reservations
 //************************************************************
+bool Reservation::removeReservationsOnSailing(const std::string &sailingId){
+    return removeReservationsOnSailing(sailingId, file);
+} 
 bool Reservation::removeReservationsOnSailing(const std::string &sailingId, fstream &file) // in: sailingId
 {
     if (file.is_open())
@@ -206,6 +215,9 @@ bool Reservation::removeReservationsOnSailing(const std::string &sailingId, fstr
 // Checks if a reservation exists for a specific sailing ID and license
 // in: sailingId - the sailing ID to check, license - the license to check
 //************************************************************
+bool Reservation::checkExist(const string &sailingId, const string &license){
+    return checkExist(sailingId, license, file);
+} 
 bool Reservation::checkExist(const string &sailingId, const string &license, fstream &file) // in: sailingID, license
 {
     // Check if a reservation exists for the given sailing ID and license
@@ -238,6 +250,9 @@ bool Reservation::checkExist(const string &sailingId, const string &license, fst
 // Writes a new reservation to the file
 // in: sailingId - the sailing ID, license - the license of the vehicle
 //************************************************************
+bool Reservation::writeReservation(const string &sailingId, const string &license) {
+    return writeReservation(const string &sailingId, const string &license, fstream &file);
+}
 bool Reservation::writeReservation(const string &sailingId, const string &license, fstream &file) // in: sailingID, license, phone                                                                                                                                                                                              {
 {
     // Write a new reservation to the file
@@ -258,6 +273,9 @@ bool Reservation::writeReservation(const string &sailingId, const string &licens
 // Sets the reservation as checked in
 // in: sailingId - the sailing ID, license - the license of the vehicle
 //************************************************************
+void Reservation::setCheckedIn(const string &sailingId, const string &license) {
+    return setCheckedIn(sailingId, license, file);
+}
 void Reservation::setCheckedIn(const string &sailingId, const string &license, fstream &file) // in: sailingID, license
 {
     // Set the reservation as checked in

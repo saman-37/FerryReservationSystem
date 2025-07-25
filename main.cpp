@@ -6,7 +6,7 @@
 // main.cpp
 //************************************************************
 // Purpose: Main entry point for the FerryReserver application.
-// July 20, 2025 Revision 2 - Darpandeep Kaur
+// July 20, 2025 Version 1 - Darpandeep Kaur and Noble Sekhon
 //************************************************************
 
 //************************************************************
@@ -21,7 +21,7 @@ General Style:
 -	All .h files and .cpp files begin with a divider comment, file name, purpose and revision history
 -	Use consistent 4-space indentation throughout the project
 -	Opening braces ‘{‘ go on the next line as the function header and ‘}’ is placed on the next line from where function ended. The same rule applies to loops and switches.
-        E.g. function (string a) 
+        E.g. function (string a)
             {
                 // function body
             }
@@ -62,7 +62,7 @@ Comments:
 // [filename].h
 //************************************************************
 // Purpose: [Description of the class/module's role]
-// [Date] Revision 1 - [Team member(s)]
+// [Date] Version 1 - [Team member(s)]
 //************************************************************
 
 */
@@ -71,7 +71,7 @@ Comments:
 // Main entry point for the FerryReserver application.
 // This file initializes the system and starts the user interface loop.
 //************************************************************
-int main(int argc, char *argv[])
+int main()
 {
 
         Util::startup(); // Initialize the system
