@@ -174,7 +174,7 @@ bool createVessel(string &vesselName, int HCLL, int LCLL)
 {
   // Step 1: Check if all the parameters are valid
   if (vesselName.length() > Vessel::NAME_LENGTH ||
-      
+
       HCLL <= 0 || LCLL <= 0 || HCLL > 3600.0 || LCLL > 3600.0)
   {
     cout << "Invalid format for vessel name, or invalid HCLL or LCLL values." << endl;
@@ -184,13 +184,13 @@ bool createVessel(string &vesselName, int HCLL, int LCLL)
   // Step 2: Check if vessel already exists
   if (vessel.checkExist(vesselName))
   {
-    cout << "Vessel with Vessel Name " << vesseName << " already exists." << endl;
+    cout << "Vessel with Vessel Name " << vesselName << " already exists." << endl;
     return false; // Vessel already exists
   }
   else
   {
     // Step 3: Create a new vessel record
-    Vessel newVessel(vesselName, HCLL, LCLL);       // Create a new Vessel object with provided details
+    Vessel newVessel(vesselName, HCLL, LCLL);                 // Create a new Vessel object with provided details
     fstream vesselFile("vessel.dat", ios::app | ios::binary); // Open vessel file for writing
     if (!vesselFile.is_open())
     {
