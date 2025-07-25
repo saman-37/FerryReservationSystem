@@ -95,8 +95,8 @@ void UI::displayCreateMenu()
     {
         switch (choice)
         {
-        
-        case 1://user chooses to create new vessel
+
+        case 1: // user chooses to create new vessel
         {
             char cont = 'y';
             while (cont == 'y' || cont == 'Y')
@@ -184,7 +184,8 @@ void UI::displayDeleteMenu()
         {
             string sailingId = getInput("Enter Sailing ID (format: xxx-dd-hh): ");
             string cont = getInput("This will delete all the reservations on this sailing. Do you want to continue deleting the sailing [y/n]: ");
-             if(cont[0] == 'y' || cont[0] == 'Y'){
+            if (cont[0] == 'y' || cont[0] == 'Y')
+            {
                 if (OtherControls::deleteReservation(sailingId))
                 {
                     cout << "Reservation successfully deleted." << endl;
@@ -193,13 +194,14 @@ void UI::displayDeleteMenu()
                 {
                     cout << "Failed to delete reservation." << endl;
                 }
-             }
-             else{
-                cout<<"Deletion Terminated."<<endl;
-             }
-             break;
+            }
+            else
+            {
+                cout << "Deletion Terminated." << endl;
+            }
+            break;
         }
-        
+
         case 3:
         {
             cout << "Returning to Main Menu..." << endl;
@@ -292,8 +294,8 @@ string UI::getInput(const string &prompt)
     return input;        // Return the input string
 }
 
-//helper funtion that communicates with OtherControls module to create vessel
-void UI::sailingCreation() 
+// helper funtion that communicates with OtherControls module to create vessel
+void UI::sailingCreation()
 {
     string vesselName = getInput("Enter Vessel name (max: 25 characters): ");  // getting input from useer for the name of vessel for which sailing is beingcreated
     string sailingId = getInput("Enter the sailing Id (format: xxx-dd-hh): "); // getting user input for the sailing id of this new sailing
@@ -306,10 +308,11 @@ void UI::sailingCreation()
         cout << "Failed to create sailing with vessel name " << vesselName << "." << endl;
     }
 }
-void UI::vesselCreation(){
+void UI::vesselCreation()
+{
     string vesselName = getInput("Enter Vessel Name (max: 25 characters): ");
-    int LCLL = stod(getInput("Enter LCLL (Positive integer, max: 3600): "));
-    int HCLL = stod(getInput("Enter HCLL (Positive integer, max: 3600): "));
+    int LCLL = stoi(getInput("Enter LCLL (Positive integer, max: 3600): "));
+    int HCLL = stoi(getInput("Enter HCLL (Positive integer, max: 3600): "));
     if (OtherControls::createVessel(vesselName, HCLL, LCLL))
     {
         cout << "Vessel successfully created." << endl;
@@ -333,4 +336,3 @@ void UI::reservationCreation()
         cout << "Failed to create reservation." << endl;
     }
 }
-

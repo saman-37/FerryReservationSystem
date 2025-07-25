@@ -19,13 +19,13 @@ using namespace std;
 
 #include <string>
 
-class OtherControl
+class OtherControls
 {
 public:
-    OtherControl(); // Default Constructor
+    OtherControls(); // Default Constructor
 
-    bool createReservation(int phoneNumber, string &sailingId, string &licensePlate);  // Makes a new reservation, in: sailingId, licensePlate
-    bool createVessel(string &vesselName, string &vesselId, double HCLL, double LCLL); // in: vesselName, HCLL, LCLL
-    bool deleteReservation(string &sailingId);                                                                 // Deletes a sailing record, in: sailingId
-    bool checkIn(string &licensePlate, std::string &sailingId);                        // Checks in a vehicle to a sailing, in: sailingId, licensePlate
+    static bool createReservation(int phoneNumber, string &sailingId, string &licensePlate);  // Makes a new reservation, in: sailingId, licensePlate
+    static bool createVessel(string &vesselName, int HCLL, int LCLL); // in: vesselName, HCLL, LCLL
+    static bool deleteReservation(string &sailingId);                                         // Deletes a sailing record, in: sailingId
+    static bool checkIn(string &licensePlate, std::string &sailingId);                        // Checks in a vehicle to a sailing, in: sailingId, licensePlate
 };
