@@ -1,8 +1,9 @@
 //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 // Vessel.cpp
 //************************************************************
-// Purpose: Represents a binary-stored vehicle record with license,
-// phone, height, and length data. Used in reservations.
+// Purpose: Represents a binary-stored vessel record with name,
+// high-capacity lane length (HCLL), and low-capacity lane length (LCLL).
+// Used for defining sailings in the reservation system.
 // July 21, 2025 Version 1 - Darpandeep Kaur
 //************************************************************
 
@@ -22,8 +23,8 @@ Vessel::Vessel()
 {
     strncpy(vesselName, "", NAME_LENGTH); // Initialize vesselName to empty string
     vesselName[NAME_LENGTH] = '\0';       // Null-terminate
-    HCLL = 3600.0;                        // Initialize High Capacity Lane Length to 0.0
-    LCLL = 3600.0;                        // Initialize Low Capacity Lane Length to 0.0
+    HCLL = 3600.0;                         // Default High Capacity Lane Length
+    LCLL = 3600.0;                         // Default Low Capacity Lane Length
 }
 
 //************************************************************
@@ -34,46 +35,44 @@ Vessel::Vessel()
 Vessel::Vessel(const string &vesselName, double HCLL, double LCLL)
 {
     strncpy(this->vesselName, vesselName.c_str(), NAME_LENGTH); // Copy vesselName string
-    this->vesselName[NAME_LENGTH] = '\0';                       // Null-terminate
-    this->HCLL = HCLL; // Set High Capacity Lane Length
-    this->LCLL = LCLL; // Set Low Capacity Lane Length
+    this->vesselName[NAME_LENGTH] = '\0';                        // Null-terminate
+    this->HCLL = HCLL;                                           // Set High Capacity Lane Length
+    this->LCLL = LCLL;                                           // Set Low Capacity Lane Length
 }
 
 //************************************************************
-// Writes the vessel record to a binary file
-// in-out: file - binary file stream
+// Writes the vessel record to the binary file
 //************************************************************
 void Vessel::writeToFile(fstream &file) const
 {
     if (Util::vesselFile.is_open())
     {
         Util::vesselFile.write(vesselName, NAME_LENGTH + 1);                         // Write vesselName
-        Util::vesselFile.write(reinterpret_cast<const char *>(&HCLL), sizeof(HCLL)); // Write High Capacity Lane Length
-        Util::vesselFile.write(reinterpret_cast<const char *>(&LCLL), sizeof(LCLL)); // Write Low Capacity Lane Length
+        Util::vesselFile.write(reinterpret_cast<const char *>(&HCLL), sizeof(HCLL)); // Write HCLL
+        Util::vesselFile.write(reinterpret_cast<const char *>(&LCLL), sizeof(LCLL)); // Write LCLL
     }
     else
     {
-        cout << "Error opening file for writing." << endl; // Error message if file is not open
+        cout << "Error opening file for writing." << endl;
     }
 }
 
 //************************************************************
-// Reads the vessel record from a binary file
-// in-out: file - binary file stream
+// Reads a vessel record from the binary file
 //************************************************************
 void Vessel::readFromFile(fstream &file)
 {
     if (Util::vesselFile.is_open())
     {
         Util::vesselFile.read(vesselName, NAME_LENGTH + 1);                   // Read vesselName
-        Util::vesselFile.read(reinterpret_cast<char *>(&HCLL), sizeof(HCLL)); // Read High Capacity Lane Length
-        Util::vesselFile.read(reinterpret_cast<char *>(&LCLL), sizeof(LCLL)); // Read Low Capacity Lane Length
+        Util::vesselFile.read(reinterpret_cast<char *>(&HCLL), sizeof(HCLL)); // Read HCLL
+        Util::vesselFile.read(reinterpret_cast<char *>(&LCLL), sizeof(LCLL)); // Read LCLL
     }
 }
 
 //************************************************************
-// Checks if a vessel with the given ID exists
-// in: vesselId
+// Checks if a vessel with the given name exists
+// in: vesselName
 // out: true if exists, false otherwise
 //************************************************************
 bool Vessel::checkExist(const string &vesselName)
@@ -82,95 +81,104 @@ bool Vessel::checkExist(const string &vesselName)
     if (!Util::vesselFile.is_open())
     {
         cout << "Error opening vessel file." << endl;
-        return false; // File could not be opened
+        return false;
     }
-    Vessel vessel; // Create a Vessel object to read records
+
+    Vessel vessel;
     while (Util::vesselFile.read(reinterpret_cast<char *>(&vessel), RECORD_SIZE))
-    { // Read each record
+    {
         if (strcmp(vessel.vesselName, vesselName.c_str()) == 0)
-        {                // Compare vesselId
-            return true; // Vessel with the given ID exists
+        {
+            return true; // Vessel found
         }
     }
-    return false; // Vessel with the given ID does not exist
+    return false; // Not found
 }
 
 //************************************************************
-// Writes a new vessel record to the file
-// in: vesselName, vesselId, HCLL, LCLL
+// Writes a new vessel record to the binary file
+// in: vesselName, HCLL, LCLL
 // out: true if written successfully, false otherwise
 //************************************************************
 bool Vessel::writeVessel(const string &VesselName, double HCLL, double LCLL)
 {
-    if (checkExist(vesselName))
+    if (checkExist(vesselName)) // Should be VesselName here; fix this in code logic
     {
         cout << "Vessel with Name " << vesselName << " already exists." << endl;
-        return false; // Vessel already exists
+        return false;
     }
 
-    Vessel vessel(vesselName, HCLL, LCLL); // Create a Vessel object with provided values
-    Util::vesselFile.clear();                        // Clear any existing flags
-    Util::vesselFile.seekg(0, ios::end);             // Move to the end of the file
-    vessel.writeToFile(Util::vesselFile);            // Write the vessel record to the file
-    Util::vesselFile.flush();                        // Ensure data is written to disk
+    Vessel vessel(VesselName, HCLL, LCLL);
+    Util::vesselFile.clear();             // Clear file flags
+    Util::vesselFile.seekg(0, ios::end);  // Move to end
+    vessel.writeToFile(Util::vesselFile); // Write vessel
+    Util::vesselFile.flush();             // Save to disk
+
+    return true;
 }
 
 //************************************************************
-// Converts the vessel record to a formatted string
-// out: formatted string representation of the vessel
+// Converts the vessel data into a formatted string
 //************************************************************
 string Vessel::toString() const
 {
-    stringstream ss; // Create a string stream to format the output
-    ss << "Vessel Name: " << vesselName << ", "
-       << "High Capacity Lane Legth (HCLL): " << HCLL << "m, "
-       << "Low Capacity Lane Length (LCLL): " << LCLL << "m. ";
-    return ss.str(); // Return the formatted string
+    stringstream ss;
+    ss << "Vessel Name: " << vesselName
+       << ", High Capacity Lane Length (HCLL): " << HCLL << "m"
+       << ", Low Capacity Lane Length (LCLL): " << LCLL << "m";
+    return ss.str();
 }
 
 //************************************************************
-// Getters
+// Getter for vessel name
 //************************************************************
 string Vessel::getName() const
 {
-    return string(vesselName); // Return vesselName as a string
+    return string(vesselName);
 }
 
-double Vessel::getHCLL(const string& vesselName) const
+//************************************************************
+// Getter for HCLL based on vessel name
+//************************************************************
+double Vessel::getHCLL(const string &vesselName) const
 {
     Util::vesselFile.clear();
-    Util::vesselFile.seekg(0, std::ios::beg);
+    Util::vesselFile.seekg(0, ios::beg);
 
     Vessel v;
-    while (Util::vesselFile.read(reinterpret_cast<char*>(&v), RECORD_SIZE)) {
-        if (strcmp(v.vesselName, vesselName.c_str()) == 0) {
+    while (Util::vesselFile.read(reinterpret_cast<char *>(&v), RECORD_SIZE))
+    {
+        if (strcmp(v.vesselName, vesselName.c_str()) == 0)
+        {
             return v.HCLL;
         }
     }
-
-    return -1; // Or throw, or signal not found
+    return -1; // Not found
 }
 
-double Vessel::getLCLL(const string& vesselName) const
+//************************************************************
+// Getter for LCLL based on vessel name
+//************************************************************
+double Vessel::getLCLL(const string &vesselName) const
 {
     Util::vesselFile.clear();
-    Util::vesselFile.seekg(0, std::ios::beg);
+    Util::vesselFile.seekg(0, ios::beg);
 
     Vessel v;
-    while (Util::vesselFile.read(reinterpret_cast<char*>(&v), RECORD_SIZE)) {
-        if (strcmp(v.vesselName, vesselName.c_str()) == 0) {
+    while (Util::vesselFile.read(reinterpret_cast<char *>(&v), RECORD_SIZE))
+    {
+        if (strcmp(v.vesselName, vesselName.c_str()) == 0)
+        {
             return v.LCLL;
         }
     }
-
-    return -1; // Or throw, or signal not found
+    return -1; // Not found
 }
 
 //************************************************************
-// Returns the capacity of the vessel
-// out: capacity of the vessel
+// Calculates and returns total capacity (HCLL + LCLL)
 //************************************************************
 int Vessel::getCapacity() const
 {
-    return std::round((HCLL + LCLL) * 100.0) / 100.0; // Return the sum of HCLL and LCLL as capacity with two decimal places
+    return std::round((HCLL + LCLL) * 100.0) / 100.0;
 }

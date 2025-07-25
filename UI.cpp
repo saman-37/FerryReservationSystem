@@ -11,7 +11,6 @@
 #include "UI.h"
 #include "OtherControls.h"
 #include "SailingControl.h"
-
 #include "Util.h"
 
 using namespace std;
@@ -25,45 +24,44 @@ UI::UI()
 }
 
 //************************************************************
-// Main user interface loop
+// Main user interface loop that handles menu interaction
 //************************************************************
 void UI::userInterface()
 {
     int choice;
     do
     {
-        displayMainMenu();
-        choice = getUserChoice(0, 5); // Get user choice from main menu
+        displayMainMenu();                             // Show main menu options
+        choice = getUserChoice(0, 5);                   // Get validated choice between 0 and 5
         switch (choice)
         {
         case 1:
-            displayCreateMenu(); // Display create menu
+            displayCreateMenu();                        // Navigate to create menu
             break;
         case 2:
-            displayDeleteMenu(); // Display delete menu
+            displayDeleteMenu();                        // Navigate to delete menu
             break;
         case 3:
-            CheckInVehicle(); // Check-in vehicle
+            CheckInVehicle();                           // Call check-in process
             break;
         case 4:
-            displayQuery(); // Query sailing
+            displayQuery();                             // Query sailing info
             break;
         case 5:
-            displaySailingReport(); // Print sailing report
+            displaySailingReport();                     // Show sailing report
             break;
         case 0:
-            cout << "Exiting the application.Thank You for using Automobile FerryReserver!" << endl; // Exit message
+            cout << "Exiting the application.Thank You for using Automobile FerryReserver!" << endl;
             break;
         default:
-            cout << "Invalid choice. Please try again.\n"
-                 << endl; // Error message for invalid
+            cout << "Invalid choice. Please try again.\n" << endl;
             break;
         }
-    } while (choice != 0); // Loop until user chooses to exit
+    } while (choice != 0);                              // Repeat until user exits
 }
 
 //************************************************************
-// Displays the main menu
+// Displays the main menu to the user
 //************************************************************
 void UI::displayMainMenu()
 {
@@ -78,7 +76,7 @@ void UI::displayMainMenu()
 }
 
 //************************************************************
-// Displays the create menu
+// Displays the create submenu and handles creation logic
 //************************************************************
 void UI::displayCreateMenu()
 {
@@ -90,68 +88,58 @@ void UI::displayCreateMenu()
     cout << "Choose an option [0-3] and press Enter. " << endl;
 
     int choice;
-    choice = getUserChoice(0, 3); // Get user choice from create menu
+    choice = getUserChoice(0, 3);
     do
     {
         switch (choice)
         {
-
-        case 1: // user chooses to create new vessel
+        case 1:
         {
             char cont = 'y';
             while (cont == 'y' || cont == 'Y')
             {
-                vesselCreation();
+                vesselCreation();                                // Collect info and create vessel
                 string in = getInput("Do you want to create another vessel? (y/n): ");
                 cont = in[0];
             }
             break;
         }
-
-        case 2: // user chooses to create new sailing
+        case 2:
         {
             char cont = 'y';
             while (cont == 'y' || cont == 'Y')
             {
-                sailingCreation();
+                sailingCreation();                               // Collect info and create sailing
                 string in = getInput("Do you wish to create another sailing? (y/n): ");
                 cont = in[0];
             }
             break;
         }
-
         case 3:
         {
-
             char cont = 'y';
             while (cont == 'y' || cont == 'Y')
             {
-                reservationCreation();
+                reservationCreation();                           // Collect info and create reservation
                 string in = getInput("Do you wish to create another reservation? (y/n): ");
                 cont = in[0];
             }
             break;
-            ;
         }
-
         case 0:
-        {
             cout << "Returning to Main Menu..." << endl;
-            displayMainMenu(); // Return to main menu
+            displayMainMenu();                                  // Go back to main menu
             break;
-        }
         default:
-        {
-            cout << "Invalid choice. Please try again.\n"
-                 << endl;        // Error message for invalid choice
-            displayCreateMenu(); // Redisplay create menu
+            cout << "Invalid choice. Please try again.\n" << endl;
+            displayCreateMenu();                                // Redisplay menu
             break;
         }
-        }
-    } while (choice != 0); // Loop until user chooses to return to main menu
+    } while (choice != 0); // Keep showing menu until user exits
 }
+
 //************************************************************
-// Displays the delete menu
+// Displays delete menu and handles reservation or sailing deletion
 //************************************************************
 void UI::displayDeleteMenu()
 {
@@ -162,7 +150,7 @@ void UI::displayDeleteMenu()
     cout << "Choose an option [1-3] and press Enter: " << endl;
 
     int choice;
-    choice = getUserChoice(0, 2); // Get user choice from delete menu
+    choice = getUserChoice(0, 2);
     do
     {
         switch (choice)
@@ -171,29 +159,21 @@ void UI::displayDeleteMenu()
         {
             string sailingId = getInput("Enter the sailing ID to delete (format: xxx-dd-hh): ");
             if (SailingControl::deleteSailing(sailingId))
-            {
                 cout << "Sailing successfully deleted." << endl;
-            }
             else
-            {
                 cout << "Failed to delete sailing." << endl;
-            }
+            break;
         }
-        break;
         case 2:
         {
             string sailingId = getInput("Enter Sailing ID (format: xxx-dd-hh): ");
-            string cont = getInput("This will delete all the reservations on this sailing. Do you want to continue deleting the sailing [y/n]: ");
+            string cont = getInput("This will delete all reservations on this sailing. Continue? [y/n]: ");
             if (cont[0] == 'y' || cont[0] == 'Y')
             {
                 if (OtherControls::deleteReservation(sailingId))
-                {
                     cout << "Reservation successfully deleted." << endl;
-                }
                 else
-                {
                     cout << "Failed to delete reservation." << endl;
-                }
             }
             else
             {
@@ -201,138 +181,122 @@ void UI::displayDeleteMenu()
             }
             break;
         }
-
         case 3:
-        {
             cout << "Returning to Main Menu..." << endl;
-            displayMainMenu(); // Return to main menu
+            displayMainMenu(); // Exit to main
             break;
-        }
-
         default:
-        {
-            cout << "Invalid choice. Please try again.\n"
-                 << endl;        // Error message for invalid choice
-            displayDeleteMenu(); // Redisplay delete menu
+            cout << "Invalid choice. Please try again.\n" << endl;
+            displayDeleteMenu(); // Show menu again
             break;
         }
-        }
-    } while (choice != 0); // Loop until user chooses to return to main menu
+    } while (choice != 0);
 }
 
 //************************************************************
-// Check-in vehicle
+// Allows check-in of a vehicle for a sailing
 //************************************************************
 void UI::CheckInVehicle()
 {
-
-    cout << "======================== Check-in Vehicle ======================\n"
-         << endl;
+    cout << "======================== Check-in Vehicle ======================\n" << endl;
     string licensePlate = getInput("Enter vehicle License Plate: ");
     string sailingId = getInput("Enter the sailing Id for check-in (ttt-dd-hh): ");
 
     if (OtherControls::checkIn(licensePlate, sailingId))
-    {
         cout << "Vehicle with license plate " << licensePlate << " has been successfully checked in." << endl;
-    }
     else
-    {
         cout << "Failed to check in vehicle with license plate " << licensePlate << "." << endl;
-    }
 }
 
 //************************************************************
-// Displays query options for sailings
+// Queries sailing based on user input
 //************************************************************
 void UI::displayQuery()
 {
     cout << "================== Inquiry =======================" << endl;
     string sailingId = getInput("Enter the sailing id (ttt-dd-hh): ");
-
-    SailingControl::querySailing(sailingId); // Query the sailing
+    SailingControl::querySailing(sailingId);
 }
 
 //************************************************************
-// Print sailing report
+// Displays summary report of all sailings
 //************************************************************
 void UI::displaySailingReport()
 {
-    SailingControl::printSailingReport(); // Print the sailing report
+    SailingControl::printSailingReport(); // Generate report
 }
 
 //************************************************************
-// Get user choice within a specified range
+// Gets an integer choice between [min, max] from user
 //************************************************************
 int UI::getUserChoice(int min, int max)
 {
     int choice;
     while (true)
     {
-        cin >> choice; // Get user input
+        cin >> choice;
         if (cin.fail() || choice < min || choice > max)
         {
-            cin.clear();                                         // Clear the error flag
-            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Ignore invalid input
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
             cout << "Invalid input. Please enter a number between " << min << " and " << max << ": ";
         }
         else
         {
-            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Ignore the rest of the line
-            return choice;                                       // Return valid choice
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            return choice;
         }
     }
 }
 
 //************************************************************
-// Get input from user with a prompt
+// Gets input string from user with prompt
 //************************************************************
 string UI::getInput(const string &prompt)
 {
     string input;
-    cout << prompt;      // Display the prompt
-    getline(cin, input); // Get the entire line of input
-    return input;        // Return the input string
+    cout << prompt;
+    getline(cin, input);
+    return input;
 }
 
-// helper funtion that communicates with OtherControls module to create vessel
+//************************************************************
+// Creates a sailing by prompting user for input
+//************************************************************
 void UI::sailingCreation()
 {
-    string vesselName = getInput("Enter Vessel name (max: 25 characters): ");  // getting input from useer for the name of vessel for which sailing is beingcreated
-    string sailingId = getInput("Enter the sailing Id (format: xxx-dd-hh): "); // getting user input for the sailing id of this new sailing
-    if (SailingControl::createSailing(sailingId, vesselName))                  // sailing successfully created
-    {
+    string vesselName = getInput("Enter Vessel name (max: 25 characters): ");
+    string sailingId = getInput("Enter the sailing Id (format: xxx-dd-hh): ");
+    if (SailingControl::createSailing(sailingId, vesselName))
         cout << "Sailing with vessel name " << vesselName << " successfully created." << endl;
-    }
-    else // failed to create the sailing
-    {
+    else
         cout << "Failed to create sailing with vessel name " << vesselName << "." << endl;
-    }
 }
+
+//************************************************************
+// Creates a vessel by prompting user for name and capacities
+//************************************************************
 void UI::vesselCreation()
 {
     string vesselName = getInput("Enter Vessel Name (max: 25 characters): ");
     int LCLL = stoi(getInput("Enter LCLL (Positive integer, max: 3600): "));
     int HCLL = stoi(getInput("Enter HCLL (Positive integer, max: 3600): "));
     if (OtherControls::createVessel(vesselName, HCLL, LCLL))
-    {
         cout << "Vessel successfully created." << endl;
-    }
     else
-    {
         cout << "Failed to create vessel." << endl;
-    }
 }
+
+//************************************************************
+// Creates a reservation by gathering required info
+//************************************************************
 void UI::reservationCreation()
 {
     int phoneNumber = stoi(getInput("Enter Customer Phone Number (format: 10 digits): "));
     string LicensePlate = getInput("Enter Vehicle License Number (max: 10 characters): ");
     string sailingId = getInput("Enter Sailing ID (format: xxx-dd-hh): ");
     if (OtherControls::createReservation(phoneNumber, sailingId, LicensePlate))
-    {
         cout << "Reservation successfully created." << endl;
-    }
     else
-    {
         cout << "Failed to create reservation." << endl;
-    }
 }

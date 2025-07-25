@@ -18,212 +18,244 @@ using namespace std;
 
 //************************************************************
 // Default Constructor
+// Initializes a vehicle with default values.
 //************************************************************
 Vehicle::Vehicle()
 {
-    // Initializes the vehicle with default values
-    strcpy(license, ""); // Initialize license to empty string
-    strcpy(phone, "");   // Initialize phone to empty string
-    height = 2.0f;       // Initialize height to 2.0f
-    length = 7.0f;       // Initialize length to 7.0f
+    strcpy(license, ""); // Set license to empty string
+    strcpy(phone, "");   // Set phone to empty string
+    height = 2.0f;       // Default height
+    length = 7.0f;       // Default length
 }
 
 //************************************************************
 // Parameterized Constructor
+// Initializes a vehicle with provided values.
 // in: license, phone, height, length
 //************************************************************
 Vehicle::Vehicle(const string &license, const string &phone, float height, float length)
 {
-    // Initializes the vehicle with provided values
-    // Ensure the license and phone are null-terminated strings
-    strncpy(this->license, license.c_str(), LICENSE_PLATE_LENGTH); // Copy license string
-    this->license[LICENSE_PLATE_LENGTH] = '\0';                    // Null-terminate
+    strncpy(this->license, license.c_str(), LICENSE_PLATE_LENGTH); // Set license
+    this->license[LICENSE_PLATE_LENGTH] = '\0'; // Null-terminate
 
-    strncpy(this->phone, phone.c_str(), PHONE_LENGTH); // Copy phone string
-    this->phone[PHONE_LENGTH] = '\0';                  // Null-terminate
+    strncpy(this->phone, phone.c_str(), PHONE_LENGTH); // Set phone
+    this->phone[PHONE_LENGTH] = '\0'; // Null-terminate
 
     this->height = height; // Set height
     this->length = length; // Set length
 }
 
 //************************************************************
-// Writes the vehicle record to a binary file
-// in-out: file - binary file stream
+// Writes a vehicle record to binary file.
+// in-out: file - binary stream to write into
 //************************************************************
 void Vehicle::writeToFile(fstream &file) const
 {
-    // Check if the file is open before writing using
     if (file.is_open())
     {
-        file.write(license, LICENSE_PLATE_LENGTH + 1);                       // Write license
-        file.write(phone, PHONE_LENGTH + 1);                                 // Write phone
-        file.write(reinterpret_cast<const char *>(&height), sizeof(height)); // Write height
-        file.write(reinterpret_cast<const char *>(&length), sizeof(length)); // Write length
+        file.write(license, LICENSE_PLATE_LENGTH + 1);
+        file.write(phone, PHONE_LENGTH + 1);
+        file.write(reinterpret_cast<const char *>(&height), sizeof(height));
+        file.write(reinterpret_cast<const char *>(&length), sizeof(length));
     }
     else
     {
-        cout << "Error opening file for writing." << endl; // Error opening file for writing
+        cout << "Error opening file for writing." << endl;
     }
 }
 
 //************************************************************
-// Reads the vehicle record from a binary file
-// in-out: file - binary file stream
+// Reads a vehicle record from binary file.
+// in-out: file - binary stream to read from
 //************************************************************
 void Vehicle::readFromFile(fstream &file)
 {
     if (file.is_open())
     {
-        file.read(license, LICENSE_PLATE_LENGTH + 1);                 // Read license
-        file.read(phone, PHONE_LENGTH + 1);                           // Read phone
-        file.read(reinterpret_cast<char *>(&height), sizeof(height)); // Read height
-        file.read(reinterpret_cast<char *>(&length), sizeof(length)); // Read length
+        file.read(license, LICENSE_PLATE_LENGTH + 1);
+        file.read(phone, PHONE_LENGTH + 1);
+        file.read(reinterpret_cast<char *>(&height), sizeof(height));
+        file.read(reinterpret_cast<char *>(&length), sizeof(length));
     }
 }
 
 //************************************************************
-// Checks if a vehicle with the given license exists
-// in: license - vehicle license plate
-// out: returns true if exists, false otherwise
+// Checks if a vehicle with a given license exists in the file.
+// in: license
+// out: true if found, false otherwise
 //************************************************************
 bool Vehicle::checkExist(const string &license)
 {
-    Util::vehicleFile.clear();            // Clear any existing flags
-    Util::vehicleFile.seekg(0, ios::beg); // Move to the beginning
+    Util::vehicleFile.clear();
+    Util::vehicleFile.seekg(0, ios::beg);
 
-    Vehicle vehicle; // Create a Vehicle object
+    Vehicle vehicle;
     while (Util::vehicleFile.read(reinterpret_cast<char *>(&vehicle), RECORD_SIZE))
     {
         if (strcmp(vehicle.license, license.c_str()) == 0)
         {
-            return true; // Vehicle with the given license exists
+            return true;
         }
     }
-    return false; // Vehicle with the given license does not exist
+    return false;
 }
 
 //************************************************************
-// Writes a new vehicle record to the file
-// in: license - vehicle license plate, phone, height, length
-// out: returns true if written successfully, false otherwise
+// Writes a new vehicle record to the file if it doesn't exist.
+// in: license, phone, height, length
+// out: true if successfully written, false otherwise
 //************************************************************
 bool Vehicle::writeVehicle(const string& license, 
-                            const string& phone, 
-                            double height, 
-                            double length){
-    if (checkExist(license)){
-        cout << "Vehicle with License " << license << "already exists." << endl;
-        return false; // Vehicle already exists
+                           const string& phone, 
+                           double height, 
+                           double length)
+{
+    if (checkExist(license)) {
+        cout << "Vehicle with License " << license << " already exists." << endl;
+        return false;
     }
 
-    Vehicle vehicle(license, phone, height, length); // Create a Vehicle object
-    Util::vehicleFile.clear();                       // Clear any existing flags
-    Util::vehicleFile.seekp(0, ios::end);            // Move to the end
-    vehicle.writeToFile(Util::vehicleFile);          // Write the vehicle record to the file
-    Util::vehicleFile.flush();                       // Ensure data is written to disk
+    Vehicle vehicle(license, phone, height, length);
+    Util::vehicleFile.clear();
+    Util::vehicleFile.seekp(0, ios::end);
+    vehicle.writeToFile(Util::vehicleFile);
+    Util::vehicleFile.flush();
+    return true;
 }
 
+//************************************************************
+// Returns a formatted string representation of the vehicle.
+// out: formatted string
+//************************************************************
 string Vehicle::toString() const
 {
-    stringstream ss; // Create a string stream for formatting
+    stringstream ss;
     ss << "License: " << license
        << ", Phone: " << phone
        << ", Height: " << height
        << "m, Length: " << length << "m";
-    return ss.str(); // Return the formatted string
+    return ss.str();
 }
 
 //************************************************************
 // Getters
 //************************************************************
+
+//************************************************************
+// Searches for a vehicle and returns the license if found.
+// in: license
+// out: matching license or empty string
+//************************************************************
 string Vehicle::getLicense(string license) const
 {
-    Util::vehicleFile.clear();            // Clear any existing flags
-    Util::vehicleFile.seekg(0, ios::beg); // Move to the beginning
+    Util::vehicleFile.clear();
+    Util::vehicleFile.seekg(0, ios::beg);
 
-    Vehicle vehicle; // Create a Vehicle object
+    Vehicle vehicle;
     while (Util::vehicleFile.read(reinterpret_cast<char *>(&vehicle), RECORD_SIZE))
     {
         if (strcmp(vehicle.license, license.c_str()) == 0)
         {
             cout << "License: " << license << " found." << endl;
-            return license; // Vehicle with the given license exists
+            return license;
         }
     }
     cout << "License: " << license << " not found." << endl;
-    return "" ; // Vehicle with the given license does not exist
+    return "";
 }
 
+//************************************************************
+// Gets the height of a vehicle with a given license.
+// in: license
+// out: height (rounded to 2 decimal places), or -1 if not found
+//************************************************************
 double Vehicle::getHeight(string license) const
 {
     if (!Util::vehicleFile.is_open()) {
         cout << "Vehicle file is not open." << endl;
-        return -1; // Return -1 if file is not open
+        return -1;
     }
 
-    Util::vehicleFile.clear(); // Clear any existing flags
-    Util::vehicleFile.seekg(0, ios::beg); // Move to the beginning
+    Util::vehicleFile.clear();
+    Util::vehicleFile.seekg(0, ios::beg);
 
-    char licenseBuffer[LICENSE_PLATE_LENGTH + 1]; // Buffer for license
-    float heightBuffer; // Buffers for height and length
+    char licenseBuffer[LICENSE_PLATE_LENGTH + 1];
+    float heightBuffer;
 
-    while(true) {
-        Util::vehicleFile.read(licenseBuffer, LICENSE_PLATE_LENGTH + 1); // Read license
-        if (Util::vehicleFile.eof()) break; // Break if end of file reached
-        
-        if (strncpy(licenseBuffer, license.c_str(), LICENSE_PLATE_LENGTH == 0)) {
+    while (true) {
+        Util::vehicleFile.read(licenseBuffer, LICENSE_PLATE_LENGTH + 1);
+        if (Util::vehicleFile.eof()) break;
+
+        // NOTE: The comparison logic below is likely incorrect.
+        if (strncpy(licenseBuffer, license.c_str(), LICENSE_PLATE_LENGTH) == 0) {
             return std::round(heightBuffer * 100.0) / 100.0;
         }
     }
+
     cout << "Vehicle with license " << license << " not found." << endl;
-    return -1; // Return -1 if vehicle not found
+    return -1;
 }
 
 //************************************************************
-// Get Length
-// in: license - vehicle license plate
-// out: returns the length of the vehicle if found, -1 otherwise
+// Gets the length of a vehicle with a given license.
+// in: license
+// out: length (rounded to 2 decimal places), or -1 if not found
 //************************************************************
-double Vehicle::getLength(string license) const {
+double Vehicle::getLength(string license) const
+{
     if (!Util::vehicleFile.is_open()) {
         cout << "Vehicle file is not open." << endl;
-        return -1; // Return -1 if file is not open
+        return -1;
     }
 
-    Util::vehicleFile.clear(); // Clear any existing flags
-    Util::vehicleFile.seekg(0, ios::beg); // Move to the beginning
+    Util::vehicleFile.clear();
+    Util::vehicleFile.seekg(0, ios::beg);
 
-    char licenseBuffer[LICENSE_PLATE_LENGTH + 1]; // Buffer for license
-    float lengthBuffer; // Buffers for height and length
+    char licenseBuffer[LICENSE_PLATE_LENGTH + 1];
+    float lengthBuffer;
 
-    while(true) {
-        Util::vehicleFile.read(licenseBuffer, LICENSE_PLATE_LENGTH + 1); // Read license
-        if (Util::vehicleFile.eof()) break; // Break if end of file reached
-        
-        if (strncpy(licenseBuffer, license.c_str(), (size_t)(LICENSE_PLATE_LENGTH) == 0)) {
+    while (true) {
+        Util::vehicleFile.read(licenseBuffer, LICENSE_PLATE_LENGTH + 1);
+        if (Util::vehicleFile.eof()) break;
+
+        // NOTE: The comparison logic below is likely incorrect.
+        if (strncpy(licenseBuffer, license.c_str(), LICENSE_PLATE_LENGTH) == 0) {
             return std::round(lengthBuffer * 100.0) / 100.0;
         }
     }
+
     cout << "Vehicle with license " << license << " not found." << endl;
-    return -1; // Return -1 if vehicle not found
+    return -1;
 }
 
 //************************************************************
 // Setters
 //************************************************************
 
+//************************************************************
+// Sets the vehicle license.
+// in: license
+//************************************************************
 void Vehicle::setLicense(string license)
 {
-    strncpy(this->license, license.c_str(), LICENSE_PLATE_LENGTH); // Copy license string
-    this->license[LICENSE_PLATE_LENGTH] = '\0';                    // Null-terminate
+    strncpy(this->license, license.c_str(), LICENSE_PLATE_LENGTH);
+    this->license[LICENSE_PLATE_LENGTH] = '\0';
 }
 
+//************************************************************
+// Sets the vehicle height.
+// in: height
+//************************************************************
 void Vehicle::setHeight(double height)
 {
-    this->height = height; // Set height
+    this->height = height;
 }
 
+//************************************************************
+// Sets the vehicle length.
+// in: length
+//************************************************************
 void Vehicle::setLength(double length)
 {
-    this->length = length; // Set length
+    this->length = length;
 }

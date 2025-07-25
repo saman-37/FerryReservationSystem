@@ -5,7 +5,7 @@
 // This is the user interface layer responsible for managing
 // all menus, taking user input, and routing commands to
 // mid-level control modules.
-// July 10, 2025 Version 2 - All team members
+// July 24, 2025 Version 2 - All team members
 //************************************************************
 
 #pragma once
@@ -17,17 +17,68 @@ class UI
 public:
     UI(); // Default Constructor
 
+    //************************************************************
+    // Launches the main user interface loop
+    //************************************************************
     static void userInterface();
+
+    //************************************************************
+    // Displays the main menu with options for different operations
+    //************************************************************
     static void displayMainMenu();
+
+    //************************************************************
+    // Displays the menu for creating records (vessel, sailing, reservation)
+    //************************************************************
     static void displayCreateMenu();
+
+    //************************************************************
+    // Displays the menu for deleting records (sailing, reservation)
+    //************************************************************
     static void displayDeleteMenu();
+
+    //************************************************************
+    // Handles the check-in process for a vehicle
+    //************************************************************
     static void CheckInVehicle();
+
+    //************************************************************
+    // Displays a menu to query a sailing's details
+    //************************************************************
     static void displayQuery();
+
+    //************************************************************
+    // Displays a report of all sailings
+    //************************************************************
     static void displaySailingReport();
 
-    static int getUserChoice(int min, int max);      // in: min, max
-    static std::string getInput(const std::string &prompt); // in: prompt - message to display
+    //************************************************************
+    // Utility method to safely get user input for menu choices
+    // in: min - minimum valid choice
+    // in: max - maximum valid choice
+    // out: validated choice within range
+    //************************************************************
+    static int getUserChoice(int min, int max);
+
+    //************************************************************
+    // Prompts the user for string input
+    // in: prompt - message to display
+    // out: user input string
+    //************************************************************
+    static std::string getInput(const std::string &prompt);
+
+    //************************************************************
+    // Helper method to facilitate sailing creation
+    //************************************************************
     static void sailingCreation();
+
+    //************************************************************
+    // Helper method to facilitate vessel creation
+    //************************************************************
     static void vesselCreation();
+
+    //************************************************************
+    // Helper method to facilitate reservation creation
+    //************************************************************
     static void reservationCreation();
 };
