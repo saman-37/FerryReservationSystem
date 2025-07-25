@@ -15,7 +15,7 @@ int main()
 {
     cout << "UNIT TEST: OtherControls - createVessel function\n";
 
-    OtherControl vessel1; // Create an instance of OtherControl to access createVessel function
+    OtherControls vessel1; // Create an instance of OtherControl to access createVessel function
 
     // Test data for creating vessel 1
     string vesselName = "Test Vessel 1.0";
