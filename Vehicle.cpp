@@ -51,12 +51,12 @@ Vehicle::Vehicle(const string &license, const string &phone, float height, float
 //************************************************************
 void Vehicle::writeToFile(fstream &file) const
 {
-    if (file.is_open())
+    if (Util::vehicleFile.is_open())
     {
-        file.write(license, LICENSE_PLATE_LENGTH + 1);
-        file.write(phone, PHONE_LENGTH + 1);
-        file.write(reinterpret_cast<const char *>(&height), sizeof(height));
-        file.write(reinterpret_cast<const char *>(&length), sizeof(length));
+        Util::vehicleFile.write(license, LICENSE_PLATE_LENGTH + 1);
+        Util::vehicleFile.write(phone, PHONE_LENGTH + 1);
+        Util::vehicleFile.write(reinterpret_cast<const char *>(&height), sizeof(height));
+        Util::vehicleFile.write(reinterpret_cast<const char *>(&length), sizeof(length));
     }
     else
     {
@@ -70,12 +70,12 @@ void Vehicle::writeToFile(fstream &file) const
 //************************************************************
 void Vehicle::readFromFile(fstream &file)
 {
-    if (file.is_open())
+    if (Util::vehicleFile.is_open())
     {
-        file.read(license, LICENSE_PLATE_LENGTH + 1);
-        file.read(phone, PHONE_LENGTH + 1);
-        file.read(reinterpret_cast<char *>(&height), sizeof(height));
-        file.read(reinterpret_cast<char *>(&length), sizeof(length));
+        Util::vehicleFile.read(license, LICENSE_PLATE_LENGTH + 1);
+        Util::vehicleFile.read(phone, PHONE_LENGTH + 1);
+        Util::vehicleFile.read(reinterpret_cast<char *>(&height), sizeof(height));
+        Util::vehicleFile.read(reinterpret_cast<char *>(&length), sizeof(length));
     }
 }
 
