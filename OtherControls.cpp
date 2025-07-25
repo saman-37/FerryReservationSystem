@@ -11,7 +11,7 @@ using namespace std;
 
 Vessel vessel; // Global instance of Vessel to be used in createVessel function
 
-OtherControl::OtherControl() // Default Constructor
+OtherControls::OtherControls() // Default Constructor
 {
 }
 
