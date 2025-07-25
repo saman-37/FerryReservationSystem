@@ -18,16 +18,16 @@ public:
     UI(); // Default Constructor
 
     static void userInterface();
-    void displayMainMenu();
-    void displayCreateMenu();
-    void displayDeleteMenu();
-    void CheckInVehicle();
-    void displayQuery();
-    void displaySailingReport();
+    static void displayMainMenu();
+    static void displayCreateMenu();
+    static void displayDeleteMenu();
+    static void CheckInVehicle();
+    static void displayQuery();
+    static void displaySailingReport();
 
-    int getUserChoice(int min, int max);             // in: min, max
-    std::string getInput(const std::string &prompt); // in: prompt - message to display
-    void UI::sailingCreation();
-    void UI::vesselCreation();
-    void UI::reservationCreation();
+    static int getUserChoice(int min, int max);      // in: min, max
+    static std::string getInput(const std::string &prompt); // in: prompt - message to display
+    static void sailingCreation();
+    static void vesselCreation();
+    static void reservationCreation();
 };
