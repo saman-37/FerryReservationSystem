@@ -42,8 +42,8 @@ bool SailingControl::createSailing(const string& sailingId, const string& vessel
         return false;
     }
 
-    double hcll = vessel.getHCLL();
-    double lcll = vessel.getLCLL();
+    double hcll = vessel.getHCLL(vesselName);
+    double lcll = vessel.getLCLL(vesselName);
 
     return Sailing::writeSailing(const_cast<string&>(sailingId),
                                  const_cast<string&>(vesselName),

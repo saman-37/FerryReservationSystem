@@ -17,15 +17,29 @@ Vessel vessel; // Global instance of Vessel to be used in createVessel function
 const int Vessel::NAME_LENGTH; // Length of the vessel name
 const int Vessel::RECORD_SIZE; // Size of the record in bytes
 
-Vessel::Vessel(const string &vesselName, double HCLL, double LCLL)
+Vessel::Vessel() 
 {
-    // Stub constructor does not initialize any member variables
+    cout << "[STUB] Default Vessel constructor called" << endl;
+}
+
+Vessel::Vessel(const string &vesselName, double HCLL, double LCLL) 
+{
     cout << "[STUB] Vessel created with name: " << vesselName << endl;
 }
 
-bool Vessel::writeVessel(const string &vesselName, double HCLL, double LCLL)
+bool Vessel::writeVessel(const string &vesselName, double HCLL, double LCLL) 
 {
-    cout << "[STUB] Writing vessel with name: " << vesselName <<  ", HCLL: " << HCLL << ", LCLL: " << LCLL << endl;
-    // Stub simulates successful write
+    cout << "[STUB] Writing vessel with name: " << vesselName
+         << ", HCLL: " << HCLL << ", LCLL: " << LCLL << endl;
     return true;
+}
+
+bool Vessel::checkExist(const string &vesselName) 
+{
+    cout << "[STUB] Checking existence of vessel: " << vesselName << endl;
+    return false; // Simulate not found
+}
+
+void Vessel::writeToFile(fstream& file) const {
+    cout << "[STUB] Writing vessel to file (no-op)" << endl;
 }
