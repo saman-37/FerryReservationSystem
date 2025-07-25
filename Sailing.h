@@ -26,7 +26,7 @@ public:
   double LRL;                              // Low Remaining Length in meters
 
     Sailing();                                                                          // Default Constructor
-    Sailing(const string &sailingId, const string &vesselName, double HRL, double LRL); // in: sailingId, vesselName, HRL, LRL
+    Sailing(const char* sailingId, const char* vesselName, double HRL, double LRL); // in: sailingId, vesselName, HRL, LRL
 
   void writeToFile(fstream &file) const; // Write sailing information to a file, in-out: file
   void readFromFile(fstream &file);      // Read sailing information from a file, in-out: file
