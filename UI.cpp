@@ -311,8 +311,8 @@ void UI::sailingCreation()
 void UI::vesselCreation()
 {
     string vesselName = getInput("Enter Vessel Name (max: 25 characters): ");
-    int LCLL = stod(getInput("Enter LCLL (Positive integer, max: 3600): "));
-    int HCLL = stod(getInput("Enter HCLL (Positive integer, max: 3600): "));
+    int LCLL = stoi(getInput("Enter LCLL (Positive integer, max: 3600): "));
+    int HCLL = stoi(getInput("Enter HCLL (Positive integer, max: 3600): "));
     if (OtherControls::createVessel(vesselName, HCLL, LCLL))
     {
         cout << "Vessel successfully created." << endl;

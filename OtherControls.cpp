@@ -170,7 +170,7 @@ bool checkIn(string &licensePlate, string &sailingId) // Checks in a vehicle to 
 // in: vesselName, HCLL, LCLL
 // out: returns true if vessel created successfully, false otherwise
 //************************************************************
-bool createVessel(string &vesselName, string &vesselId, double HCLL, double LCLL)
+bool createVessel(string &vesselName, string &vesselId, int HCLL, int LCLL)
 {
   // Step 1: Check if all the parameters are valid
   if (vesselName.length() > Vessel::NAME_LENGTH ||
