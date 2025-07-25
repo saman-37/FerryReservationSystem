@@ -16,9 +16,9 @@ class Util
 public:
     Util(); // Default Constructor
 
-    void startup();  // Initializes the system (e.g., opens data files)
-    void shutdown(); // Gracefully closes resources/files
-    void reset();    // Resets system data (e.g., clears files)
+    static void startup();  // Initializes the system (e.g., opens data files)
+    static void shutdown(); // Gracefully closes resources/files
+    static void reset();    // Resets system data (e.g., clears files)
 
     // Shared static file handles
     static std::fstream vesselFile;
