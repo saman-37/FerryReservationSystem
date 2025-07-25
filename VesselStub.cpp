@@ -15,26 +15,17 @@ using namespace std;
 Vessel vessel; // Global instance of Vessel to be used in createVessel function
 
 const int Vessel::NAME_LENGTH; // Length of the vessel name
-const int Vessel::ID_LENGTH;   // Length of the vessel ID
 const int Vessel::RECORD_SIZE; // Size of the record in bytes
 
-Vessel::Vessel(const string &vesselName, const string &vesselId, double HCLL, double LCLL)
+Vessel::Vessel(const string &vesselName, double HCLL, double LCLL)
 {
     // Stub constructor does not initialize any member variables
-    cout << "[STUB] Vessel created with name: " << vesselName << ", ID: " << vesselId << endl;
+    cout << "[STUB] Vessel created with name: " << vesselName << endl;
 }
 
-bool Vessel::checkExist(const string &vesselId)
+bool Vessel::writeVessel(const string &vesselName, double HCLL, double LCLL)
 {
-    cout << "[STUB] Checking if vessel with ID " << vesselId << " exists." << endl;
-    // Stub always returns false to simulate that the vessel does not exist
-    return false;
-}
-
-bool Vessel::writeVessel(const string &vesselName, const string &vesselId, double HCLL, double LCLL)
-{
-    cout << "[STUB] Writing vessel with name: " << vesselName << ", ID: " << vesselId
-         << ", HCLL: " << HCLL << ", LCLL: " << LCLL << endl;
+    cout << "[STUB] Writing vessel with name: " << vesselName <<  ", HCLL: " << HCLL << ", LCLL: " << LCLL << endl;
     // Stub simulates successful write
     return true;
 }
