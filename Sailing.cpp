@@ -20,7 +20,6 @@ Sailing::Sailing()
     LRL = 0.0;
 }
 
-<<<<<<< HEAD
 // Ensure this matches the declaration in Sailing.h
 Sailing::Sailing(const char* sailingId, const char* vesselName, double HRL, double LRL) {
     strncpy(this->sailingId, sailingId, SAILING_ID_LENGTH - 1);
@@ -33,15 +32,6 @@ Sailing::Sailing(const char* sailingId, const char* vesselName, double HRL, doub
     this->LRL = LRL;
 }
 void Sailing::open(const string& id, const string& vName, double hrl, double lrl) {
-=======
-Sailing::Sailing(const string &id, const string &vName, double hrl, double lrl)
-{
-    open(id, vName, hrl, lrl);
-}
-
-void Sailing::open(const string &id, const string &vName, double hrl, double lrl)
-{
->>>>>>> fb57e86e11e1bd8b21ef6a2a1808a055f0606f79
     strncpy(sailingId, id.c_str(), SAILING_ID_LENGTH);
     sailingId[SAILING_ID_LENGTH] = '\0';
 

@@ -14,7 +14,6 @@
 #include <iomanip>
 using namespace std;
 
-<<<<<<< HEAD
 SailingControl::SailingControl() {
     // Default constructor
 }
@@ -52,34 +51,10 @@ bool SailingControl::deleteSailing(const string& sailingId) {
         reservation.removeReservationsOnSailing(sailingId, Util::reservationFile);
         return Sailing::removeSailing(sailingId);
     } else {
-=======
-SailingControl::SailingControl()
-{
-    // Default Constructor
-}
-
-bool SailingControl::createSailing(const string &sailingId, const string &vesselName)
-{
-    // if checkExist(vesselName)
-}
-
-bool SailingControl::deleteSailing(const string &sailingId)
-{
-    if checkExist (sailingId)
-    {
-        removeReservationsOnSailing(sailingId);
-        removeSailing(sailingId);
-        return true;
-    }
-    else
-    {
-        // cout << "Sailing does not exist..." << endl;
->>>>>>> fb57e86e11e1bd8b21ef6a2a1808a055f0606f79
         return false;
     }
 }
 
-<<<<<<< HEAD
 //************************************************************
 // Queries a sailing and prints details
 // in: sailingId
@@ -87,21 +62,6 @@ bool SailingControl::deleteSailing(const string &sailingId)
 void SailingControl::querySailing(const string& sailingId) {
     if (!Sailing::checkExist(sailingId)) {
         cout << "No sailing with such ID exist" << endl;
-=======
-void SailingControl::querySailing(const string &sailingId)
-{
-    if checkExist (sailingId)
-    {
-        // getName(sailingId);
-        // getHRL(sailingId);
-        // getLRL(sailingId);
-        // getLCLL(sailingId);
-        // getHCLL(sailingId);
-        // getTotalReservationsOnSailing(sailingId);
-        // What to do next?
-    }
-    else
->>>>>>> fb57e86e11e1bd8b21ef6a2a1808a055f0606f79
         return;
     }
 
@@ -122,7 +82,6 @@ void SailingControl::querySailing(const string &sailingId)
     cout << "5) Percentage of capacity occupied: " << fixed << setprecision(0) << percentage << "%\n";
 }
 
-<<<<<<< HEAD
 //************************************************************
 // Prints a report of all sailings
 //************************************************************
@@ -132,14 +91,6 @@ void SailingControl::printSailingReport() {
         cout << "Unable to open sailing.dat for reading." << endl;
         return;
     }
-=======
-void SailingControl::printSailingReport()
-{
-    // getCapacity(sailingId);
-    // getSailingInfo(sailingId);
-    // getNext(); // What do we need this for?
-    // getTotalReservationsOnSailing(sailingId);
->>>>>>> fb57e86e11e1bd8b21ef6a2a1808a055f0606f79
 
     vector<string> sailingIds;
     Sailing sailing;

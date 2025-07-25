@@ -16,7 +16,7 @@ using namespace std;
 class Sailing
 {
 public:
-    static const int SAILING_ID_LENGTH = 15;                                                    // Length of the sailing ID
+    static const int SAILING_ID_LENGTH = 9;                                                    // Length of the sailing ID
     static const int VESSEL_NAME_LENGTH = 25;                                                   // Length of the vessel name
     static const int RECORD_SIZE = SAILING_ID_LENGTH + VESSEL_NAME_LENGTH + sizeof(double) * 3; // Size of each record in bytes
 
@@ -48,9 +48,9 @@ public:
 
   static Sailing getSailingInfo(const string &sailingId); // returns sailing information as a string, in: sailingId
 
-    static bool checkExist(string &sailingId);                                                   // in: sailingId
+    static bool checkExist(string sailingId);                                                   // in: sailingId
     static bool writeSailing(string &sailingId, string &vesselName, double HRL, double LRL);     // in: sailingId, vesselName, HRL, LRL
-    static bool removeSailing(string &sailingId);                                                // in: sailingId
+    static bool removeSailing(string sailingId);                                                // in: sailingId
     static bool isSpaceAvailable(const string &sailingId, double vehicleLength, bool isSpecial); // in: sailingId, vehicleLength, isSpecial
 
   static void reduceSpace(const string &sailingId, double vehicleLength, bool isSpecial); // in-out: modifies storage file
