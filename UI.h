@@ -26,7 +26,7 @@ public:
     static void displaySailingReport();
 
     static int getUserChoice(int min, int max);      // in: min, max
-    std::string getInput(const std::string &prompt); // in: prompt - message to display
+    static std::string getInput(const std::string &prompt); // in: prompt - message to display
     static void sailingCreation();
     static void vesselCreation();
     static void reservationCreation();
