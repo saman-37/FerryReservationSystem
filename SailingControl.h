@@ -15,16 +15,14 @@ using namespace std;
 
 #include <string>
 
+class SailingControl
+{
 
-class SailingControl {
+public:
+    SailingControl(); // Default Constructor
 
-    public:
-        SailingControl(); // Default Constructor
-
-        static bool createSailing(const string& sailingId, const std::string& vesselName); // in: sailingId, vesselName
-        static bool deleteSailing(const string& sailingId); // in: sailingId
-        static void querySailing(const string& sailingId); // in: sailingId
-        static void printSailingReport(); // in: sailingId
-        
+    static bool createSailing(const string &sailingId, const std::string &vesselName); // in: sailingId, vesselName
+    static bool deleteSailing(const string &sailingId);                                // in: sailingId
+    static void querySailing(const string &sailingId);                                 // in: sailingId
+    static void printSailingReport();                                                  // in: sailingId
 };
-

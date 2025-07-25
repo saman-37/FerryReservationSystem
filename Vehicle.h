@@ -40,7 +40,7 @@ public:
     this method returns the length of a specific vehicle via random access; as needed when deleting a reservation, so that sailing can be given the capacity back
     it takes license, which is the primary key of the vehicle, to find the specific vehicle record in the file.
     */
-    double getLength(const string& license) const; // out: length
+    double getLength(const string &license) const; // out: length
 
     void setLicense(string license); // in: license
     void setPhone(string phone);     // in: phone

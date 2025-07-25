@@ -30,7 +30,7 @@ bool createReservation(string &sailingId, string &licensePlate) // Makes a new r
   else
   {
     // Sailing does not exist
-    cout<<"The sailing with id "<<sailingId<<" does not exist."<<endl;
+    cout << "The sailing with id " << sailingId << " does not exist." << endl;
     return false;
   }
 
@@ -99,7 +99,7 @@ bool createReservation(string &sailingId, string &licensePlate) // Makes a new r
   }
 
   // Step 6: check if sailing has space available for this new reservation
-  /* 
+  /*
   Each sailing has High Ceiling Lane Length (HCLL) and Low Ceiling Lane Length (LCLL) capacity. If the low ceiling reserved space becomes full, low
   vehicles can be reserved into the high ceiling lanes, so we need to check both capacities.
   Check in the LCLL if regular vehicle, or check HCLL if not available in LCLL, and HCLL if special vehicle.
@@ -107,7 +107,7 @@ bool createReservation(string &sailingId, string &licensePlate) // Makes a new r
   */
   if (!Sailing::isSpaceAvailable(sailingId, isSpecial == 'y' || isSpecial == 'Y', length, height))
   {
-    cout<<"No space available on sailing."<<endl;
+    cout << "No space available on sailing." << endl;
     return false; // No space available
   }
 
@@ -122,24 +122,24 @@ bool deleteReservation(string &license, string &sailingId) // Deletes all reserv
   // Step 2: check if reservation exists
   if (!Reservation::checkExist(sailingId, license))
   { // Reservation doesnt exist in the system.
-    cout << "Reservation not found in the system." <<endl;
-    return false; 
+    cout << "Reservation not found in the system." << endl;
+    return false;
   }
   // Step 3: get length from the vehicle
   Vehicle vehicle;
   int length = vehicle.getLength(license);
 
   // Step 4: remove the reservation record from the reservation file
-  
+
   if (!Reservation::removeReservation(sailingId, license))
   {
-     // Failed to remove reservation
-    
+    // Failed to remove reservation
+
     return false;
   }
   else
   {
-    //reservation deletion successful
+    // reservation deletion successful
     return true;
   }
 
@@ -155,13 +155,13 @@ bool checkIn(string &licensePlate, string &sailingId) // Checks in a vehicle to 
   // Step 1: Check if reservation exists
   if (!Reservation::checkExist(sailingId, licensePlate))
   {
-    
+
     return false; // Reservation does not exist
   }
 
   // Step 2: Set the reservation as checked in
   Reservation::setCheckedIn(sailingId, licensePlate);
-  
+
   return true; // Successfully checked in
 };
 
@@ -170,32 +170,38 @@ bool checkIn(string &licensePlate, string &sailingId) // Checks in a vehicle to 
 // in: vesselName, HCLL, LCLL
 // out: returns true if vessel created successfully, false otherwise
 //************************************************************
-bool createVessel(string &vesselName, string &vesselId, double HCLL, double LCLL) {
-  //Step 1: Check if all the parameters are valid
+bool createVessel(string &vesselName, string &vesselId, double HCLL, double LCLL)
+{
+  // Step 1: Check if all the parameters are valid
   if (vesselName.length() > Vessel::NAME_LENGTH ||
-    vesselId.length() > Vessel::ID_LENGTH ||
-    HCLL <= 0 || LCLL <= 0 || HCLL > 3600.0 || LCLL > 3600.0){
-      cout << "Invalid format for vessel name or ID, or invalid HCLL or LCLL values." << endl;
-      return false; // Invalid vessel name or ID length
+      vesselId.length() > Vessel::ID_LENGTH ||
+      HCLL <= 0 || LCLL <= 0 || HCLL > 3600.0 || LCLL > 3600.0)
+  {
+    cout << "Invalid format for vessel name or ID, or invalid HCLL or LCLL values." << endl;
+    return false; // Invalid vessel name or ID length
   }
-  
-  // Step 2: Check if vessel already exists
-    if (vessel.checkExist(vesselName)) {
-        cout << "Vessel with ID " << vesselId << " already exists." << endl;
-        return false; // Vessel already exists
-    } else {
-        // Step 3: Create a new vessel record
-        Vessel newVessel(vesselName, vesselId, HCLL, LCLL); // Create a new Vessel object with provided details
-        fstream vesselFile("vessel.dat", ios::app | ios::binary ); // Open vessel file for writing
-        if (!vesselFile.is_open()) {
-            cout << "Error opening vessel file for writing." << endl;
-            return false; // Error opening vessel file for writting.
-        } else {
-            newVessel.writeToFile(vesselFile); // creates the vessel record in file
-            cout << "Vessel created successfully." << endl;
-            return true; // Vessel Successfully created
-        }
-    }
-    
-};
 
+  // Step 2: Check if vessel already exists
+  if (vessel.checkExist(vesselName))
+  {
+    cout << "Vessel with ID " << vesselId << " already exists." << endl;
+    return false; // Vessel already exists
+  }
+  else
+  {
+    // Step 3: Create a new vessel record
+    Vessel newVessel(vesselName, vesselId, HCLL, LCLL);       // Create a new Vessel object with provided details
+    fstream vesselFile("vessel.dat", ios::app | ios::binary); // Open vessel file for writing
+    if (!vesselFile.is_open())
+    {
+      cout << "Error opening vessel file for writing." << endl;
+      return false; // Error opening vessel file for writting.
+    }
+    else
+    {
+      newVessel.writeToFile(vesselFile); // creates the vessel record in file
+      cout << "Vessel created successfully." << endl;
+      return true; // Vessel Successfully created
+    }
+  }
+};

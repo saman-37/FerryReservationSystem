@@ -12,22 +12,22 @@
 
 #include <string>
 
+class UI
+{
+public:
+    UI(); // Default Constructor
 
-class UI {
-    public:
-        UI();         // Default Constructor
+    void userInterface();
+    void displayMainMenu();
+    void displayCreateMenu();
+    void displayDeleteMenu();
+    void CheckInVehicle();
+    void displayQuery();
+    void displaySailingReport();
 
-        void userInterface();
-        void displayMainMenu();
-        void displayCreateMenu();
-        void displayDeleteMenu();
-        void CheckInVehicle();
-        void displayQuery();
-        void displaySailingReport();
-
-        int getUserChoice(int min, int max); // in: min, max
-        std::string getInput(const std::string& prompt); // in: prompt - message to display
-        void UI::sailingCreation();
-        void UI::vesselCreation();
-        void UI::reservationCreation();
+    int getUserChoice(int min, int max);             // in: min, max
+    std::string getInput(const std::string &prompt); // in: prompt - message to display
+    void UI::sailingCreation();
+    void UI::vesselCreation();
+    void UI::reservationCreation();
 };

@@ -12,18 +12,21 @@
 
 using namespace std;
 
-Sailing::Sailing() {
+Sailing::Sailing()
+{
     memset(sailingId, 0, sizeof(sailingId));
     memset(vesselName, 0, sizeof(vesselName));
     HRL = 0.0;
     LRL = 0.0;
 }
 
-Sailing::Sailing(const string& id, const string& vName, double hrl, double lrl) {
+Sailing::Sailing(const string &id, const string &vName, double hrl, double lrl)
+{
     open(id, vName, hrl, lrl);
 }
 
-void Sailing::open(const string& id, const string& vName, double hrl, double lrl) {
+void Sailing::open(const string &id, const string &vName, double hrl, double lrl)
+{
     strncpy(sailingId, id.c_str(), SAILING_ID_LENGTH);
     sailingId[SAILING_ID_LENGTH] = '\0';
 
@@ -34,12 +37,14 @@ void Sailing::open(const string& id, const string& vName, double hrl, double lrl
     LRL = lrl;
 }
 
-void Sailing::writeToFile(fstream& file) const {
-    file.write(reinterpret_cast<const char*>(this), RECORD_SIZE);
+void Sailing::writeToFile(fstream &file) const
+{
+    file.write(reinterpret_cast<const char *>(this), RECORD_SIZE);
 }
 
-void Sailing::readFromFile(fstream& file) {
-    file.read(reinterpret_cast<char*>(this), RECORD_SIZE);
+void Sailing::readFromFile(fstream &file)
+{
+    file.read(reinterpret_cast<char *>(this), RECORD_SIZE);
 }
 
 #include "Sailing.h"
@@ -56,7 +61,7 @@ bool Sailing::searchForSailing(const string &sailingId, Sailing &foundSailing)
     }
 
     Sailing temp;
-    while (file.read(reinterpret_cast<char*>(&temp), sizeof(Sailing)))
+    while (file.read(reinterpret_cast<char *>(&temp), sizeof(Sailing)))
     {
         if (strcmp(temp.sailingId, sailingId.c_str()) == 0)
         {
@@ -70,8 +75,8 @@ bool Sailing::searchForSailing(const string &sailingId, Sailing &foundSailing)
     return false; // Not found
 }
 
-
-string Sailing::toString() const {
+string Sailing::toString() const
+{
     ostringstream out;
     out << "Sailing ID: " << sailingId << "\n"
         << "Vessel Name: " << vesselName << "\n"
@@ -81,11 +86,14 @@ string Sailing::toString() const {
     return out.str();
 }
 
-Sailing Sailing::getSailingInfo(const string& sailingId) {
+Sailing Sailing::getSailingInfo(const string &sailingId)
+{
     fstream file("sailing.dat", ios::in | ios::binary);
     Sailing sailing;
-    while (file.read(reinterpret_cast<char*>(&sailing), RECORD_SIZE)) {
-        if (strcmp(sailing.sailingId, sailingId.c_str()) == 0) {
+    while (file.read(reinterpret_cast<char *>(&sailing), RECORD_SIZE))
+    {
+        if (strcmp(sailing.sailingId, sailingId.c_str()) == 0)
+        {
             file.close();
             return sailing;
         }
@@ -94,11 +102,14 @@ Sailing Sailing::getSailingInfo(const string& sailingId) {
     return Sailing(); // return empty/default sailing
 }
 
-bool Sailing::checkExist(string& sailingId) {
+bool Sailing::checkExist(string &sailingId)
+{
     fstream file("sailing.dat", ios::in | ios::binary);
     Sailing sailing;
-    while (file.read(reinterpret_cast<char*>(&sailing), RECORD_SIZE)) {
-        if (strcmp(sailing.sailingId, sailingId.c_str()) == 0) {
+    while (file.read(reinterpret_cast<char *>(&sailing), RECORD_SIZE))
+    {
+        if (strcmp(sailing.sailingId, sailingId.c_str()) == 0)
+        {
             file.close();
             return true;
         }
@@ -107,25 +118,32 @@ bool Sailing::checkExist(string& sailingId) {
     return false;
 }
 
-bool Sailing::writeSailing(string& sailingId, string& vesselName, double HRL, double LRL) {
+bool Sailing::writeSailing(string &sailingId, string &vesselName, double HRL, double LRL)
+{
     fstream file("sailing.dat", ios::out | ios::app | ios::binary);
-    if (!file.is_open()) return false;
+    if (!file.is_open())
+        return false;
     Sailing s(sailingId, vesselName, HRL, LRL);
     s.writeToFile(file);
     file.close();
     return true;
 }
 
-bool Sailing::removeSailing(string& sailingId) {
+bool Sailing::removeSailing(string &sailingId)
+{
     fstream file("sailing.dat", ios::in | ios::binary);
     fstream temp("temp.dat", ios::out | ios::binary);
     Sailing s;
     bool removed = false;
 
-    while (file.read(reinterpret_cast<char*>(&s), RECORD_SIZE)) {
-        if (strcmp(s.sailingId, sailingId.c_str()) != 0) {
-            temp.write(reinterpret_cast<char*>(&s), RECORD_SIZE);
-        } else {
+    while (file.read(reinterpret_cast<char *>(&s), RECORD_SIZE))
+    {
+        if (strcmp(s.sailingId, sailingId.c_str()) != 0)
+        {
+            temp.write(reinterpret_cast<char *>(&s), RECORD_SIZE);
+        }
+        else
+        {
             removed = true;
         }
     }

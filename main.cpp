@@ -6,7 +6,7 @@
 //************************************************************
 // Purpose: Main entry point for the FerryReserver application.
 // July 20, 2025 Revision 2 - Darpandeep Kaur
-//************************************************************ 
+//************************************************************
 
 //************************************************************
 // Coding Convention for FerryReserver Project (CMPT 276 A3)
@@ -29,7 +29,7 @@ General Style:
 -	One space after comma is used in argument lists.
         E.g. function( int a, int b, int c)
 
-Spelling: 
+Spelling:
 ---------
 -	The first letter of a function is lower case, and the first letter of every embedded word in a function name is capitalized.
         E.g. void printSailingReport();
@@ -60,7 +60,7 @@ Comments:
 //************************************************************
 // Purpose: [Description of the class/module's role]
 // [Date] Revision 1 - [Team member(s)]
-//************************************************************ 
+//************************************************************
 
 */
 
@@ -68,12 +68,13 @@ Comments:
 // Main entry point for the FerryReserver application.
 // This file initializes the system and starts the user interface loop.
 //************************************************************
-int main(int argc, char* argv[]) {
-   Util util; // Create Util object
-   util.startup(); // Initialize the system
+int main(int argc, char *argv[])
+{
+        Util util;      // Create Util object
+        util.startup(); // Initialize the system
 
-   UI ui; // Create UI object with command-line arguments
-   ui.userInterface(); // Start the user interface loop
+        UI ui;              // Create UI object with command-line arguments
+        ui.userInterface(); // Start the user interface loop
 
-   return 0; // Exit the application
+        return 0; // Exit the application
 }

@@ -11,17 +11,18 @@
 #include <fstream>
 #include <string>
 
-class Util {
-    public:
-        Util(); // Default Constructor
+class Util
+{
+public:
+    Util(); // Default Constructor
 
-        void startup(); // Initializes the system (e.g., opens data files)
-        void shutdown(); // Gracefully closes resources/files
-        void reset(); // Resets system data (e.g., clears files)
+    void startup();  // Initializes the system (e.g., opens data files)
+    void shutdown(); // Gracefully closes resources/files
+    void reset();    // Resets system data (e.g., clears files)
 
-        //Shared static file handles
-        static std::fstream vesselFile;
-        static std::fstream sailingFile;
-        static std::fstream reservationFile;
-        static std::fstream vehicleFile; 
+    // Shared static file handles
+    static std::fstream vesselFile;
+    static std::fstream sailingFile;
+    static std::fstream reservationFile;
+    static std::fstream vehicleFile;
 };

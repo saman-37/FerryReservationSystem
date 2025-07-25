@@ -4,14 +4,15 @@
 //************************************************************
 // Purpose: Top-Down test on OtherControls to test createVessel function using stubbed Vessel class
 // 23 July, 2025 Revision 1 - Darpandeep Kaur
-//************************************************************ 
+//************************************************************
 
 #include "OtherControls.h"
 #include <iostream>
 
 using namespace std;
 
-int main() {
+int main()
+{
     cout << "UNIT TEST: OtherControls - createVessel function\n";
 
     OtherControl vessel1; // Create an instance of OtherControl to access createVessel function
@@ -25,14 +26,15 @@ int main() {
     // Call the createVessel function with test data
 
     bool result = vessel1.createVessel(vesselName, vesselId, HCLL, LCLL);
-    
-    if (result) {
+
+    if (result)
+    {
         cout << " PASS: Vessel created successfully.\n";
-    } else {
+    }
+    else
+    {
         cout << " FAIL: Vessel creation failed with error code: " << endl;
     }
 
     return 0;
-
 }
-
