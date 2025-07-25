@@ -190,7 +190,7 @@ bool createVessel(string &vesselName, string &vesselId, double HCLL, double LCLL
   else
   {
     // Step 3: Create a new vessel record
-    Vessel newVessel(vesselName, vesselId, HCLL, LCLL);       // Create a new Vessel object with provided details
+    Vessel newVessel(vesselName, vesselId, HCLL, LCLL);    // Create a new Vessel object with provided details
     fstream vesselFile("vessel.dat", ios::app | ios::binary); // Open vessel file for writing
     if (!vesselFile.is_open())
     {
