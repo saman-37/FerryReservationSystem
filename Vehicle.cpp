@@ -151,7 +151,7 @@ string Vehicle::getLicense(string license) const
         }
     }
     cout << "License: " << license << " not found." << endl;
-    return ; // Vehicle with the given license does not exist
+    return "" ; // Vehicle with the given license does not exist
 }
 
 double Vehicle::getHeight(string license) const
@@ -200,7 +200,7 @@ double Vehicle::getLength(string license) const {
         Util::vehicleFile.read(licenseBuffer, LICENSE_PLATE_LENGTH + 1); // Read license
         if (Util::vehicleFile.eof()) break; // Break if end of file reached
         
-        if (strncpy(licenseBuffer, license.c_str(), LICENSE_PLATE_LENGTH == 0)) {
+        if (strncpy(licenseBuffer, license.c_str(), (size_t)(LICENSE_PLATE_LENGTH) == 0)) {
             return std::round(lengthBuffer * 100.0) / 100.0;
         }
     }

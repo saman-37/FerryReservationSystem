@@ -142,8 +142,8 @@ int Reservation::getTotalReservationsOnSailing(const string &sailingId, fstream 
 // removeReservation()
 // Removes a reservation with matching sailingId and license.
 //************************************************************
-bool Reservation::removeReservation(const string &sailingId, const string &license, fstream &file) {
-    return removeReservation(sailingId, license, file);
+bool Reservation::removeReservation(const string &sailingId, const string &license) {
+    return removeReservation(sailingId, license);
 }
 bool Reservation::removeReservation(const string &sailingId, const string &license, fstream &file)
 {
