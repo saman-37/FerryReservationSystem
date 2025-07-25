@@ -9,6 +9,7 @@
 //************************************************************
 
 #include "Sailing.h"
+#include "Util.h"
 #include <iostream>
 #include <iomanip>
 #include <cstring>
@@ -66,7 +67,7 @@ void Sailing::open(const string& id, const string& vName, double hrl, double lrl
 //************************************************************
 void Sailing::writeToFile(fstream &file) const
 {
-    file.write(reinterpret_cast<const char *>(this), RECORD_SIZE);
+    Util::sailingFile.write(reinterpret_cast<const char *>(this), RECORD_SIZE);
 }
 
 //************************************************************
@@ -76,7 +77,7 @@ void Sailing::writeToFile(fstream &file) const
 //************************************************************
 void Sailing::readFromFile(fstream &file)
 {
-    file.read(reinterpret_cast<char *>(this), RECORD_SIZE);
+    Util::sailingFile.read(reinterpret_cast<char *>(this), RECORD_SIZE);
 }
 
 #include "Sailing.h"
@@ -91,25 +92,22 @@ void Sailing::readFromFile(fstream &file)
 //************************************************************
 bool Sailing::searchForSailing(const string &sailingId, Sailing &foundSailing)
 {
-    ifstream file("sailing.dat", ios::in | ios::binary);
-    if (!file)
+    if (!Util::sailingFile)
     {
-        cerr << "Could not open sailing.dat for reading." << endl;
+        cout << "Could not open sailing.dat for reading." << endl;
         return false;
     }
 
     Sailing temp;
-    while (file.read(reinterpret_cast<char *>(&temp), sizeof(Sailing)))
+    while (Util::sailingFile.read(reinterpret_cast<char *>(&temp), sizeof(Sailing)))
     {
         if (strcmp(temp.sailingId, sailingId.c_str()) == 0)
         {
             foundSailing = temp; // Copy matched record
-            file.close();
             return true;
         }
     }
 
-    file.close();
     return false; // Not found
 }
 
@@ -118,17 +116,16 @@ bool Sailing::searchForSailing(const string &sailingId, Sailing &foundSailing)
 // Returns a Sailing object for the given sailingId
 //************************************************************
 Sailing Sailing::getSailingInfo(const string& sailingId) {
-    fstream file("sailing.dat", ios::in | ios::binary);
     Sailing sailing;
-    while (file.read(reinterpret_cast<char *>(&sailing), RECORD_SIZE))
+    while (Util::sailingFile.read(reinterpret_cast<char *>(&sailing), RECORD_SIZE))
     {
         if (strcmp(sailing.sailingId, sailingId.c_str()) == 0)
         {
-            file.close();
+            Util::sailingFile.close();
             return sailing;
         }
     }
-    file.close();
+    Util::sailingFile.close();
     return Sailing(); // Return empty/default sailing if not found
 }
 
@@ -139,17 +136,16 @@ Sailing Sailing::getSailingInfo(const string& sailingId) {
 // out: true if found
 //************************************************************
 bool Sailing::checkExist(string sailingId) {
-    fstream file("sailing.dat", ios::in | ios::binary);
     Sailing sailing;
-    while (file.read(reinterpret_cast<char *>(&sailing), RECORD_SIZE))
+    while (Util::sailingFile.read(reinterpret_cast<char *>(&sailing), RECORD_SIZE))
     {
         if (strcmp(sailing.sailingId, sailingId.c_str()) == 0)
         {
-            file.close();
+            Util::sailingFile.close();
             return true;
         }
     }
-    file.close();
+    Util::sailingFile.close();
     return false;
 }
 
@@ -159,13 +155,12 @@ bool Sailing::checkExist(string sailingId) {
 //************************************************************
 bool Sailing::writeSailing(std::string &sailingId, std::string &vesselName, double HRL, double LRL)
 {
-    std::fstream file("sailing.dat", std::ios::out | std::ios::app | std::ios::binary);
-    if (!file.is_open()) {
+    if (!Util::sailingFile.is_open()) {
         return false;
     }
     Sailing s(sailingId.c_str(), vesselName.c_str(), HRL, LRL);
-    s.writeToFile(file);
-    file.close();
+    Util::sailingFile.seekp(0, std::ios::end);
+    s.writeToFile(Util::sailingFile);
     return true;
 }
 
@@ -175,26 +170,33 @@ bool Sailing::writeSailing(std::string &sailingId, std::string &vesselName, doub
 // to a temp file and replacing the original
 //************************************************************
 bool Sailing::removeSailing(string sailingId) {
-    fstream file("sailing.dat", ios::in | ios::binary);
-    fstream temp("temp.dat", ios::out | ios::binary);
-    Sailing s;
+
+    Util::sailingFile.clear();
+    Util::sailingFile.seekg(0, ios::beg);
+
+    vector<Sailing> sailings;
+    Sailing temp;
     bool removed = false;
 
-    while (file.read(reinterpret_cast<char *>(&s), RECORD_SIZE))
-    {
-        if (strcmp(s.sailingId, sailingId.c_str()) != 0)
-        {
-            temp.write(reinterpret_cast<char *>(&s), RECORD_SIZE);
-        }
-        else
-        {
-            removed = true; // Skip writing matched sailing
+    
+    // Step 1: Read all records into memory except the one to remove
+    while (Util::sailingFile.read(reinterpret_cast<char*>(&temp), RECORD_SIZE)) {
+        if (strcmp(temp.sailingId, sailingId.c_str()) != 0) {
+            sailings.push_back(temp);
+        } else {
+            removed = true;
         }
     }
 
-    file.close();
-    temp.close();
-    remove("sailing.dat");
-    rename("temp.dat", "sailing.dat");
+    // Step 2: Truncate the file
+    Util::sailingFile.close();
+    Util::sailingFile.open("sailing.dat", ios::in | ios::out | ios::binary | ios::trunc);
+
+    // Step 3: Write back the kept records
+    for (const auto& s : sailings) {
+        Util::sailingFile.write(reinterpret_cast<const char*>(&s), RECORD_SIZE);
+    }
+
+    Util::sailingFile.flush();
     return removed;
 }
