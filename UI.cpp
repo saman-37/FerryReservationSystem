@@ -183,16 +183,23 @@ void UI::displayDeleteMenu()
         case 2:
         {
             string sailingId = getInput("Enter Sailing ID (format: xxx-dd-hh): ");
-            if (OtherControls::deleteReservation(sailingId))
-            {
-                cout << "Reservation successfully deleted." << endl;
-            }
-            else
-            {
-                cout << "Failed to delete reservation." << endl;
-            }
+            string cont = getInput("This will delete all the reservations on this sailing. Do you want to continue deleting the sailing [y/n]: ");
+             if(cont[0] == 'y' || cont[0] == 'Y'){
+                if (OtherControls::deleteReservation(sailingId))
+                {
+                    cout << "Reservation successfully deleted." << endl;
+                }
+                else
+                {
+                    cout << "Failed to delete reservation." << endl;
+                }
+             }
+             else{
+                cout<<"Deletion Terminated."<<endl;
+             }
+             break;
         }
-        break;
+        
         case 3:
         {
             cout << "Returning to Main Menu..." << endl;
@@ -326,3 +333,4 @@ void UI::reservationCreation()
         cout << "Failed to create reservation." << endl;
     }
 }
+
