@@ -12,6 +12,7 @@
 #include <iomanip>
 #include <cstring>
 #include <sstream>
+#include <fstream>
 
 using namespace std;
 
@@ -106,10 +107,11 @@ bool Vehicle::checkExist(const string &license)
 // in: license - vehicle license plate, phone, height, length
 // out: returns true if written successfully, false otherwise
 //************************************************************
-bool Vehicle::writeVehicle(const string &license, const string &phone, double height, double length)
-{
-    if (checkExist(license))
-    {
+bool Vehicle::writeVehicle(const string& license, 
+                            const string& phone, 
+                            double height, 
+                            double length){
+    if (checkExist(license)){
         cout << "Vehicle with License " << license << "already exists." << endl;
         return false; // Vehicle already exists
     }
@@ -149,13 +151,33 @@ double Vehicle::getHeight() const
     return height; // Return height
 }
 
-/*
-this method returns the length of a specific vehicle via random access; as needed when deleting a reservation, so that sailing can be given the capacity back
+//************************************************************
+// Get Length
+// in: license - vehicle license plate
+// out: returns the length of the vehicle if found, -1 otherwise
+//************************************************************
+double Vehicle::getLength(string license) const {
+    if (!Util::vehicleFile.is_open()) {
+        cout << "Vehicle file is not open." << endl;
+        return -1; // Return -1 if file is not open
+    }
 
-*/
-double Vehicle::getLength() const
-{
-    return length; // Return length
+    Util::vehicleFile.clear(); // Clear any existing flags
+    Util::vehicleFile.seekg(0, ios::beg); // Move to the beginning
+
+    char licenseBuffer[LICENSE_PLATE_LENGTH + 1]; // Buffer for license
+    float lengthBuffer; // Buffers for height and length
+
+    while(true) {
+        Util::vehicleFile.read(licenseBuffer, LICENSE_PLATE_LENGTH + 1); // Read license
+        if (Util::vehicleFile.eof()) break; // Break if end of file reached
+        
+        if (strncpy(licenseBuffer, license.c_str(), LICENSE_PLATE_LENGTH == 0)) {
+            return std::round(lengthBuffer * 100.0) / 100.0;
+        }
+    }
+    cout << "Vehicle with license " << license << " not found." << endl;
+    return -1; // Return -1 if vehicle not found
 }
 
 //************************************************************
