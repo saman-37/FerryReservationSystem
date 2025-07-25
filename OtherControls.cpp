@@ -9,6 +9,8 @@
 #include <iostream>
 using namespace std;
 
+Vessel vessel; // Global instance of Vessel to be used in createVessel function
+
 OtherControl::OtherControl() // Default Constructor
 {
 }
@@ -20,6 +22,7 @@ int createReservation(string &sailingId, string &licensePlate) // Makes a new re
   // Step 2: check if sailing exists
   //  created a sailing instance,pass it by referance, such that if sailing found, can be filled with other attributes, to refer later to sailing capacity
   Sailing foundSailing;
+  Reservation reservation; // Reservation instance to be used later
   if (Sailing::searchForSailing(sailingId, foundSailing))
   {
     // Sailing found, and foundSailing contains it
@@ -59,8 +62,10 @@ int createReservation(string &sailingId, string &licensePlate) // Makes a new re
     cin >> length;
 
     // Check for correct format and data range of height and length
-    /*Height: Special vehicle height max 9.9 meters. Range 2.1 to 9.9m. Precision 0.1 [If not stated, -0.5 marks]
-    • Length: Special vehicle length max 99.9 meters. Range 7.1-999.9m. Precision .1 [If not stated, -0.5 marks]*/
+    /*
+    Height: Special vehicle height max 9.9 meters. Range 2.1 to 9.9m. Precision 0.1 [If not stated, -0.5 marks]
+    Length: Special vehicle length max 99.9 meters. Range 7.1-999.9m. Precision .1 [If not stated, -0.5 marks]
+    */
     if (height < 2.1 || height > 9.9 || length < 7.1 || length > 99.9)
     {
       cout << "Invalid height or length for special vehicle." << endl;
@@ -89,10 +94,11 @@ int createReservation(string &sailingId, string &licensePlate) // Makes a new re
   }
 
   // Step 6: check if sailing has space available for this new reservation
-  /* Each sailing has High Ceiling Lane Length (HCLL) and Low Ceiling Lane Length (LCLL) capacity. If the low ceiling reserved space becomes full, low
-    vehicles can be reserved into the high ceiling lanes, so we need to check both capacities.
-    Check in the LCLL if regular vehicle, or check HCLL if not available in LCLL, and HCLL if special vehicle.
-   If space is available, write the reservation to the file.
+  /* 
+  Each sailing has High Ceiling Lane Length (HCLL) and Low Ceiling Lane Length (LCLL) capacity. If the low ceiling reserved space becomes full, low
+  vehicles can be reserved into the high ceiling lanes, so we need to check both capacities.
+  Check in the LCLL if regular vehicle, or check HCLL if not available in LCLL, and HCLL if special vehicle.
+  If space is available, write the reservation to the file.
   */
   if (!Sailing::isSpaceAvailable(sailingId, isSpecial == 'y' || isSpecial == 'Y', length, height))
   {
@@ -153,8 +159,38 @@ bool checkIn(string &licensePlate, string &sailingId) // Checks in a vehicle to 
   return true; // Successfully checked in
 };
 
-bool createVessel(string &vesselName, double HCLL, double LCLL) // in: vesselName, HCLL, LCLL
-{
+//************************************************************
+// Creates a new vessel record
+// in: vesselName, HCLL, LCLL
+// out: returns true if vessel created successfully, false otherwise
+//************************************************************
+bool createVessel(string &vesselName, string &vesselId, double HCLL, double LCLL) {
+  //Step 1: Check if all the parameters are valid
+  if (vesselName.length() > Vessel::NAME_LENGTH ||
+    vesselId.length() > Vessel::ID_LENGTH ||
+    HCLL <= 0 || LCLL <= 0 || HCLL > 3600.0 || LCLL > 3600.0){
+      cout << "Invalid format for vessel name or ID, or invalid HCLL or LCLL values." << endl;
+      return false; // Invalid vessel name or ID length
+  }
+  
+  // Step 2: Check if vessel already exists
+    if (vessel.checkExist(vesselName)) {
+        cout << "Vessel with ID " << vesselId << " already exists." << endl;
+        return false; // Vessel already exists
+    } else {
+        // Step 3: Create a new vessel record
+        Vessel newVessel(vesselName, vesselId, HCLL, LCLL); // Create a new Vessel object with provided details
+        fstream vesselFile("vessel.dat", ios::app | ios::binary ); // Open vessel file for writing
+        if (!vesselFile.is_open()) {
+            cout << "Error opening vessel file for writing." << endl;
+            return false; // Error opening vessel file for writting.
+        } else {
+            newVessel.writeToFile(vesselFile); // creates the vessel record in file
+            cout << "Vessel created successfully." << endl;
+            return true; // Vessel Successfully created
+        }
+    }
+    
 };
 
 bool deleteSailing(string &sailingId) // Deletes a sailing record, in: sailingId

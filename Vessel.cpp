@@ -37,7 +37,7 @@ Vessel::Vessel(const string& vesselName, const string& vesselId, double HCLL, do
     this->vesselName[NAME_LENGTH] = '\0'; // Null-terminate
 
     strncpy(this->vesselId, vesselId.c_str(), ID_LENGTH); // Copy vesselId string
-    this->vesselId(ID_LENGTH) = '\0'; // Null-terminate
+    this->vesselId[ID_LENGTH] = '\0'; // Null-terminate
 
     this->HCLL = HCLL; // Set High Capacity Lane Length
     this->LCLL = LCLL; // Set Low Capacity Lane Length
@@ -103,7 +103,7 @@ bool Vessel::writeVessel(const string& VesselName, const string& vesselId, doubl
         return false; // Vessel already exists
     }
 
-    Vessel vessel(vesselName, HCLL, LCLL); // Create a Vessel object with provided values
+    Vessel vessel(vesselName,vesselId, HCLL, LCLL); // Create a Vessel object with provided values
     Util::vesselFile.clear(); // Clear any existing flags
     Util::vesselFile.seekg(0, ios::end); // Move to the end of the file
     vessel.writeToFile(Util::vesselFile); // Write the vessel record to the file
