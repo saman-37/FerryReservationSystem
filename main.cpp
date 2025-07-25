@@ -70,11 +70,11 @@ Comments:
 //************************************************************
 int main(int argc, char *argv[])
 {
-        Util util;      // Create Util object
-        util.startup(); // Initialize the system
+       
+        Util::startup(); // Initialize the system
 
-        UI ui;              // Create UI object with command-line arguments
-        ui.userInterface(); // Start the user interface loop
+       
+        UI::userInterface(); // Start the user interface loop
 
         return 0; // Exit the application
 }

@@ -39,7 +39,7 @@ public:
   /* Each sailing has High Ceiling Lane Length (HCLL) and Low Ceiling Lane Length (LCLL) capacity. If the low ceiling reserved space becomes full, low
     vehicles can be reserved into the high ceiling lanes, so we need to check both capacities.
     Check in the LCLL if regular vehicle, or check HCLL if not available in LCLL, and HCLL if special vehicle.
-   If space is available, write the reservation to the file.
+    If space is available, write the reservation to the file.
   */
 
   static bool isSpaceAvailable(const string &sailingId, bool isSpecial, double vehicleLength, double vehicleHeight); // Checks if space is available for a new reservation, in: sailingId, vehicleLength, isSpecial

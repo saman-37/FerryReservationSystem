@@ -17,7 +17,7 @@ class UI
 public:
     UI(); // Default Constructor
 
-    void userInterface();
+    static void userInterface();
     void displayMainMenu();
     void displayCreateMenu();
     void displayDeleteMenu();
