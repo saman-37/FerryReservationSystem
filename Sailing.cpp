@@ -125,7 +125,6 @@ Sailing Sailing::getSailingInfo(const string& sailingId) {
             return sailing;
         }
     }
-    Util::sailingFile.close();
     return Sailing(); // Return empty/default sailing if not found
 }
 
@@ -145,7 +144,6 @@ bool Sailing::checkExist(string sailingId) {
             return true;
         }
     }
-    Util::sailingFile.close();
     return false;
 }
 
