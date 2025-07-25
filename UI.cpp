@@ -6,11 +6,13 @@
 // July 20, 2025 Version 1 
 //************************************************************ 
 
-#include "UI.h"
+
 #include <iostream>
 #include <limits>
-#include "SailingControl.h"
+#include "UI.h"
 #include "OtherControls.h"
+#include "SailingControl.h"
+
 #include "Util.h"
 
 using namespace std;
