@@ -73,7 +73,7 @@ bool createReservation(string &sailingId, string &licensePlate) // Makes a new r
     if (height < 2.1 || height > 9.9 || length < 7.1 || length > 99.9)
     {
       cout << "Invalid height or length for special vehicle." << endl;
-      return 203; // Invalid height or length
+      return false; // Invalid height or length
     }
 
     // Phone number is needed to save the vehicle record
@@ -84,7 +84,8 @@ bool createReservation(string &sailingId, string &licensePlate) // Makes a new r
     if (phone.length() != 14)
     {
       cout << "Invalid phone number format. Must be 14 digits." << endl;
-      return 204; // Invalid phone number format
+      // Invalid phone number format
+      return false;
     }
 
     // Write the vehicle to the file
@@ -106,7 +107,8 @@ bool createReservation(string &sailingId, string &licensePlate) // Makes a new r
   */
   if (!Sailing::isSpaceAvailable(sailingId, isSpecial == 'y' || isSpecial == 'Y', length, height))
   {
-    return 205; // No space available
+    cout<<"No space available on sailing."<<endl;
+    return false; // No space available
   }
 
   // Step 7: Reduce the space available, if reservation is successful
@@ -119,10 +121,10 @@ bool deleteReservation(string &license, string &sailingId) // Deletes all reserv
 {
   // Step 2: check if reservation exists
   if (!Reservation::checkExist(sailingId, license))
-  {
-    return 206; // Reservation doesnt exist in the system.
+  { // Reservation doesnt exist in the system.
+    cout << "Reservation not found in the system." <<endl;
+    return false; 
   }
-
   // Step 3: get length from the vehicle
   Vehicle vehicle;
   int length = vehicle.getLength(license);
@@ -132,12 +134,12 @@ bool deleteReservation(string &license, string &sailingId) // Deletes all reserv
   if (!Reservation::removeReservation(sailingId, license))
   {
      // Failed to remove reservation
-    cout << "Failed to delete the reservation. "<<endl;
+    
     return false;
   }
   else
   {
-    cout << "Reservation successfully deleted." << endl;
+    //reservation deletion successful
     return true;
   }
 
@@ -197,6 +199,3 @@ bool createVessel(string &vesselName, string &vesselId, double HCLL, double LCLL
     
 };
 
-bool deleteSailing(string &sailingId) // Deletes a sailing record, in: sailingId
-{
-};
