@@ -1,12 +1,12 @@
 //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 // ************************************************************
-// OtherControl.h
+// OtherControls.h
 // ************************************************************
 // Purpose: Mid-level controller that coordinates reservation
 // creation, deletion, and check-in scenarios. Interfaces with
 // entity classes like Vehicle, Sailing, Vessel, and Reservation
 // to manage ferry system operations.
-// July 10, 2025 Revision 1
+// July 10, 2025 Version 1
 // ************************************************************
 
 #pragma once
