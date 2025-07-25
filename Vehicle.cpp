@@ -136,19 +136,47 @@ string Vehicle::toString() const
 //************************************************************
 // Getters
 //************************************************************
-string Vehicle::getLicense() const
+string Vehicle::getLicense(string license) const
 {
-    return string(license); // Return license as a string
+    Util::vehicleFile.clear();            // Clear any existing flags
+    Util::vehicleFile.seekg(0, ios::beg); // Move to the beginning
+
+    Vehicle vehicle; // Create a Vehicle object
+    while (Util::vehicleFile.read(reinterpret_cast<char *>(&vehicle), RECORD_SIZE))
+    {
+        if (strcmp(vehicle.license, license.c_str()) == 0)
+        {
+            cout << "License: " << license << " found." << endl;
+            return license; // Vehicle with the given license exists
+        }
+    }
+    cout << "License: " << license << " not found." << endl;
+    return ; // Vehicle with the given license does not exist
 }
 
-string Vehicle::getPhone() const
+double Vehicle::getHeight(string license) const
 {
-    return string(phone); // Return phone as a string
-}
+    if (!Util::vehicleFile.is_open()) {
+        cout << "Vehicle file is not open." << endl;
+        return -1; // Return -1 if file is not open
+    }
 
-double Vehicle::getHeight() const
-{
-    return height; // Return height
+    Util::vehicleFile.clear(); // Clear any existing flags
+    Util::vehicleFile.seekg(0, ios::beg); // Move to the beginning
+
+    char licenseBuffer[LICENSE_PLATE_LENGTH + 1]; // Buffer for license
+    float heightBuffer; // Buffers for height and length
+
+    while(true) {
+        Util::vehicleFile.read(licenseBuffer, LICENSE_PLATE_LENGTH + 1); // Read license
+        if (Util::vehicleFile.eof()) break; // Break if end of file reached
+        
+        if (strncpy(licenseBuffer, license.c_str(), LICENSE_PLATE_LENGTH == 0)) {
+            return std::round(heightBuffer * 100.0) / 100.0;
+        }
+    }
+    cout << "Vehicle with license " << license << " not found." << endl;
+    return -1; // Return -1 if vehicle not found
 }
 
 //************************************************************
@@ -188,12 +216,6 @@ void Vehicle::setLicense(string license)
 {
     strncpy(this->license, license.c_str(), LICENSE_PLATE_LENGTH); // Copy license string
     this->license[LICENSE_PLATE_LENGTH] = '\0';                    // Null-terminate
-}
-
-void Vehicle::setPhone(string phone)
-{
-    strncpy(this->phone, phone.c_str(), PHONE_LENGTH); // Copy phone string
-    this->phone[PHONE_LENGTH] = '\0';                  // Null-terminate
 }
 
 void Vehicle::setHeight(double height)

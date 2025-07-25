@@ -32,13 +32,11 @@ public:
     void writeToFile(fstream &file) const; // in-out: file
     void readFromFile(fstream &file);      // in-out: file
 
-    string getLicense() const; // out: license
-    string getPhone() const;   // out: phone
-    double getHeight() const;  // out: height
+    string getLicense(const string license) const; // out: license
+    double getHeight(const string license) const;  // out: height
     double getLength(const string license) const; // out: length
 
     void setLicense(string license); // in: license
-    void setPhone(string phone);     // in: phone
     void setHeight(double height);   // in: height
     void setLength(double length);   // in: length
 
