@@ -19,8 +19,9 @@ General Style:
 --------------
 -	All .h files and .cpp files begin with a divider comment, file name, purpose and revision history
 -	Use consistent 4-space indentation throughout the project
--	Opening braces ‘{‘ go on the same line as the function header and ‘}’ is placed on the next line from where function ended. The same rule applies to loops and switches.
-        E.g. function (string a) {
+-	Opening braces ‘{‘ go on the next line as the function header and ‘}’ is placed on the next line from where function ended. The same rule applies to loops and switches.
+        E.g. function (string a) 
+            {
                 // function body
             }
 -	Always include spaces around assignment and arithmetic operators ( ‘=’ , ‘+’, ‘-‘ ).
@@ -55,6 +56,7 @@ Comments:
 ---------
 -	Use single-line comments for brief explanations and multi-line comments for detailed descriptions.
 -	Each file begins with the following pattern:
+//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 //************************************************************
 // [filename].h
 //************************************************************

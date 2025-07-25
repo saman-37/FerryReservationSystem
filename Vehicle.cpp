@@ -1,5 +1,5 @@
 //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-// Vehicle.cpp//300
+// Vehicle.cpp
 //************************************************************
 // Purpose: Represents a binary-stored vehicle record with license,
 // phone, height, and length data. Used in reservations.
