@@ -167,10 +167,11 @@ void UI::displayDeleteMenu()
         case 2:
         {
             string sailingId = getInput("Enter Sailing ID (format: xxx-dd-hh): ");
+            string license = getInput("Enter License (max: 10): ");
             string cont = getInput("This will delete all reservations on this sailing. Continue? [y/n]: ");
             if (cont[0] == 'y' || cont[0] == 'Y')
             {
-                if (OtherControls::deleteReservation(sailingId))
+                if (OtherControls::deleteReservation(license, sailingId))
                     cout << "Reservation successfully deleted." << endl;
                 else
                     cout << "Failed to delete reservation." << endl;

@@ -36,7 +36,7 @@ OtherControls::OtherControls() // Default Constructor
 // - reservation creation
 // Also adjusts space based on vehicle size.
 //************************************************************
-bool createReservation(string &sailingId, string &licensePlate) // Makes a new reservation, in: sailingId, licensePlate
+bool OtherControls::createReservation(int phoneNumber, string &sailingId, string &licensePlate) // Makes a new reservation, in: sailingId, licensePlate
 {
   // Step 2: check if sailing exists
   // Created a sailing instance; pass it by reference so it can be filled with file data if found
@@ -139,7 +139,7 @@ bool createReservation(string &sailingId, string &licensePlate) // Makes a new r
 // Removes a reservation and returns the vehicle’s reserved
 // space back to the sailing (LCLL or HCLL as appropriate).
 //************************************************************
-bool deleteReservation(string &license, string &sailingId) // Deletes all reservations for a sailing, in: sailingId
+bool OtherControls::deleteReservation(string &license, string &sailingId) // Deletes all reservations for a sailing, in: sailingId
 {
   // Step 2: check if reservation exists
   if (!Reservation::checkExist(sailingId, license))
@@ -177,7 +177,7 @@ bool deleteReservation(string &license, string &sailingId) // Deletes all reserv
 //************************************************************
 // Marks a reservation as checked in if it exists.
 //************************************************************
-bool checkIn(string &licensePlate, string &sailingId) // Checks in a vehicle to a sailing, in: sailingId, licensePlate
+bool OtherControls::checkIn(string &licensePlate, string &sailingId) // Checks in a vehicle to a sailing, in: sailingId, licensePlate
 {
   // Step 1: Check if reservation exists
   if (!Reservation::checkExist(sailingId, licensePlate))
@@ -196,7 +196,7 @@ bool checkIn(string &licensePlate, string &sailingId) // Checks in a vehicle to 
 //************************************************************
 // Writes a new vessel record to file if parameters are valid.
 //************************************************************
-bool createVessel(string &vesselName, int HCLL, int LCLL)
+bool OtherControls::createVessel(string &vesselName, int HCLL, int LCLL)
 {
   // Step 1: Check if all the parameters are valid
   if (vesselName.length() > Vessel::NAME_LENGTH ||

@@ -13,6 +13,7 @@
 #include <iostream>
 #include <iomanip>
 #include <cstring>
+#include <vector>
 
 using namespace std;
 
@@ -168,7 +169,7 @@ bool Sailing::writeSailing(std::string &sailingId, std::string &vesselName, doub
 // to a temp file and replacing the original
 //************************************************************
 bool Sailing::removeSailing(string sailingId) {
-
+    
     Util::sailingFile.clear();
     Util::sailingFile.seekg(0, ios::beg);
 
@@ -176,15 +177,15 @@ bool Sailing::removeSailing(string sailingId) {
     Sailing temp;
     bool removed = false;
 
-    
-    // Step 1: Read all records into memory except the one to remove
-    while (Util::sailingFile.read(reinterpret_cast<char*>(&temp), RECORD_SIZE)) {
-        if (strcmp(temp.sailingId, sailingId.c_str()) != 0) {
-            sailings.push_back(temp);
-        } else {
-            removed = true;
-        }
+// Step 1: Read all records into memory except the one to remove
+while (Util::sailingFile.read(reinterpret_cast<char*>(&temp), RECORD_SIZE)) {
+    if (strcmp(temp.sailingId, sailingId.c_str()) != 0) {
+        sailings.push_back(temp);
     }
+    else {
+        removed = true;
+    }
+}
 
     // Step 2: Truncate the file
     Util::sailingFile.close();
@@ -197,4 +198,61 @@ bool Sailing::removeSailing(string sailingId) {
 
     Util::sailingFile.flush();
     return removed;
+}
+
+//************************************************************
+// isSpaceAvailable()
+// Checks whether a vehicle can be reserved on this sailing
+// depending on height/length and lane space.
+//************************************************************
+bool Sailing::isSpaceAvailable(const string &sailingId, bool isSpecial, double vehicleLength, double vehicleHeight)
+{
+    Util::sailingFile.clear();
+    Util::sailingFile.seekg(0, ios::beg);
+
+    Sailing sailing;
+    while (Util::sailingFile.read(reinterpret_cast<char*>(&sailing), RECORD_SIZE)) {
+        if (strcmp(sailing.sailingId, sailingId.c_str()) == 0) {
+            if (isSpecial) {
+                return sailing.HRL >= vehicleLength;
+            } else {
+                return sailing.LRL >= vehicleLength;
+            }
+        }
+    }
+
+    return false;
+}
+
+//************************************************************
+// reduceSpace()
+// Deducts reserved vehicle length from LCLL or HRL
+//************************************************************
+void Sailing::reduceSpace(const string &sailingId, double vehicleLength, bool isSpecial)
+{
+    Util::sailingFile.clear();
+    Util::sailingFile.seekg(0, ios::beg);
+
+    Sailing sailing;
+    streampos pos;
+
+    while (Util::sailingFile.read(reinterpret_cast<char*>(&sailing), RECORD_SIZE)) {
+        if (strcmp(sailing.sailingId, sailingId.c_str()) == 0) {
+            // Calculate current position and go back to overwrite
+            pos = Util::sailingFile.tellg();
+            pos -= RECORD_SIZE;
+
+            if (isSpecial) {
+                sailing.HRL -= vehicleLength;
+            } else {
+                sailing.LRL -= vehicleLength;
+            }
+
+            Util::sailingFile.clear();
+            Util::sailingFile.seekp(pos);
+            Util::sailingFile.write(reinterpret_cast<const char*>(&sailing), RECORD_SIZE);
+            Util::sailingFile.flush();
+            break;
+        }
+    }
 }

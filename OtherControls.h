@@ -52,7 +52,7 @@ public:
     // in: sailingId
     // out: returns true if deletion succeeded
     //************************************************************
-    static bool deleteReservation(string &sailingId);
+    static bool deleteReservation(string &license, string &sailingId);
 
     //************************************************************
     // checkIn
