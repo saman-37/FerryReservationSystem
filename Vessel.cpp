@@ -45,11 +45,11 @@ Vessel::Vessel(const string &vesselName, int HCLL, int LCLL)
 //************************************************************
 void Vessel::writeToFile(fstream &file) const
 {
-    if (Util::vesselFile.is_open())
+    if (file.is_open())
     {
-        Util::vesselFile.write(vesselName, NAME_LENGTH + 1);                        // Write vesselName
-        Util::vesselFile.write(reinterpret_cast<const char *>(&HCLL), sizeof(int)); // Write HCLL
-        Util::vesselFile.write(reinterpret_cast<const char *>(&LCLL), sizeof(int)); // Write LCLL
+        file.write(vesselName, NAME_LENGTH + 1);                        // Write vesselName
+        file.write(reinterpret_cast<const char *>(&HCLL), sizeof(int)); // Write HCLL
+        file.write(reinterpret_cast<const char *>(&LCLL), sizeof(int)); // Write LCLL
     }
     else
     {
