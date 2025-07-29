@@ -52,12 +52,12 @@ Vehicle::Vehicle(const string &license, const string &phone, float height, float
 //************************************************************
 void Vehicle::writeToFile(fstream &file) const
 {
-    if (Util::vehicleFile.is_open())
+    if (file.is_open())
     {
-        Util::vehicleFile.write(license, LICENSE_PLATE_LENGTH + 1);
-        Util::vehicleFile.write(phone, PHONE_LENGTH + 1);
-        Util::vehicleFile.write(reinterpret_cast<const char *>(&height), sizeof(height));
-        Util::vehicleFile.write(reinterpret_cast<const char *>(&length), sizeof(length));
+        file.write(license, LICENSE_PLATE_LENGTH + 1);
+        file.write(phone, PHONE_LENGTH + 1);
+        file.write(reinterpret_cast<const char *>(&height), sizeof(int));
+        file.write(reinterpret_cast<const char *>(&length), sizeof(int));
     }
     else
     {
@@ -71,12 +71,12 @@ void Vehicle::writeToFile(fstream &file) const
 //************************************************************
 void Vehicle::readFromFile(fstream &file)
 {
-    if (Util::vehicleFile.is_open())
+    if (file.is_open())
     {
-        Util::vehicleFile.read(license, LICENSE_PLATE_LENGTH + 1);
-        Util::vehicleFile.read(phone, PHONE_LENGTH + 1);
-        Util::vehicleFile.read(reinterpret_cast<char *>(&height), sizeof(height));
-        Util::vehicleFile.read(reinterpret_cast<char *>(&length), sizeof(length));
+        file.read(license, LICENSE_PLATE_LENGTH + 1);
+        file.read(phone, PHONE_LENGTH + 1);
+        file.read(reinterpret_cast<char *>(&height), sizeof(height));
+        file.read(reinterpret_cast<char *>(&length), sizeof(length));
     }
 }
 
@@ -89,6 +89,12 @@ bool Vehicle::checkExist(const string &license)
 {
     Util::vehicleFile.clear();
     Util::vehicleFile.seekg(0, ios::beg);
+
+    if (!Util::vehicleFile.is_open())
+    {
+        cout << "Error opening vehicle file." << endl;
+        return false;
+    }
 
     Vehicle vehicle;
     while (Util::vehicleFile.read(reinterpret_cast<char *>(&vehicle), RECORD_SIZE))
@@ -106,10 +112,7 @@ bool Vehicle::checkExist(const string &license)
 // in: license, phone, height, length
 // out: true if successfully written, false otherwise
 //************************************************************
-bool Vehicle::writeVehicle(const string& license, 
-                           const string& phone, 
-                           double height, 
-                           double length)
+bool Vehicle::writeVehicle(const string& license, const string& phone, double height, double length)
 {
     if (checkExist(license)) {
         cout << "Vehicle with License " << license << " already exists." << endl;
@@ -170,7 +173,7 @@ string Vehicle::getLicense(string license) const
 // in: license
 // out: height (rounded to 2 decimal places), or -1 if not found
 //************************************************************
-double Vehicle::getHeight(string license) const
+double Vehicle::getHeight(string license)
 {
     if (!Util::vehicleFile.is_open()) {
         cout << "Vehicle file is not open." << endl;
