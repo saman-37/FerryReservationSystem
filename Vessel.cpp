@@ -78,18 +78,21 @@ void Vessel::readFromFile(fstream &file)
 //************************************************************
 bool Vessel::checkExist(const string &vesselName)
 {
-
     if (!Util::vesselFile.is_open())
     {
         cout << "Error opening vessel file." << endl;
         return false;
     }
+    cout << "Lets check for the existing vessel!!" <<endl;
+    Util::vesselFile.clear();
+    Util::vesselFile.seekg(0, ios::beg);
 
     Vessel vessel;
-    while (Util::vesselFile.read(reinterpret_cast<char *>(&vessel), RECORD_SIZE))
+    while (Util::vesselFile.read(reinterpret_cast<char *>(&vessel), sizeof(vessel)))
     {
         if (strcmp(vessel.vesselName, vesselName.c_str()) == 0)
         {
+            cout << "Vessel existing: " << vessel.vesselName << endl;
             return true; // Vessel found
         }
     }
@@ -103,12 +106,6 @@ bool Vessel::checkExist(const string &vesselName)
 //************************************************************
 bool Vessel::writeVessel(const string &VesselName, int HCLL, int LCLL)
 {
-    if (checkExist(VesselName)) // Should be VesselName here; fix this in code logic
-    {
-        cout << "Vessel with Name " << VesselName << " already exists." << endl;
-        return false;
-    }
-
     Vessel vessel(VesselName, HCLL, LCLL);
     Util::vesselFile.clear();             // Clear file flags
     Util::vesselFile.seekg(0, ios::end);  // Move to end
