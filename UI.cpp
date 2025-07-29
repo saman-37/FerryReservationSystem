@@ -90,60 +90,58 @@ void UI::displayCreateMenu()
 
     int choice;
     choice = getUserChoice(0, 3);
-    do
+    char cont;
+    while (choice >= 0)
     {
         switch (choice)
         {
-        case 1:
-        {
-            bool go = true;
-            char cont;
-            while (go)
+            case 0:
             {
-                vesselCreation(); // Collect info and create vessel
-                cont = getCharInput("Do you want to create another vessel? (y/n): ");
-                cout << cont;
-                if (cont != 'y' && cont !='Y')
+                cout << "Returning to Main Menu..." << endl;
+                userInterface();
+            }
+            case 1:
+            {
+                cont = 'y';
+                while (cont == 'y' || cont == 'Y')
                 {
-                    go = false;
+                    vesselCreation(); // Collect info and create vessel
+                    cont = getCharInput("Do you want to create another vessel? (y/n): ");
                 }
-                
-            } 
-        
-            
-            break;
-        }
-        case 2:
-        {
-            char cont = 'y';
-            while (cont == 'y' || cont == 'Y')
-            {
-                sailingCreation(); // Collect info and create sailing
-                cont = getCharInput("Do you wish to create another sailing? (y/n): ");
+
+                break;
             }
-            break;
-        }
-        case 3:
-        {
-            char cont = 'y';
-            while (cont == 'y' || cont == 'Y')
+            case 2:
             {
-                reservationCreation(); // Collect info and create reservation
-                cont = getCharInput("Do you wish to create another reservation? (y/n): ");
+                cont = 'y';
+                while (cont == 'y' || cont == 'Y')
+                {
+                    sailingCreation(); // Collect info and create sailing
+                    cont = getCharInput("Do you wish to create another sailing? (y/n): ");
+                }
+                break;
             }
-            break;
-        }
-        case 0:
-            cout << "Returning to Main Menu..." << endl;
-            displayMainMenu(); // Go back to main menu
-            break;
-        default:
-            cout << "Invalid choice. Please try again.\n"
-                 << endl;
-            displayCreateMenu(); // Redisplay menu
-            break;
-        }
-    } while (choice != 0); // Keep showing menu until user exits
+            case 3:
+            {
+                cont = 'y';
+                while (cont == 'y' || cont == 'Y')
+                {
+                    reservationCreation(); // Collect info and create reservation
+                    cont = getCharInput("Do you wish to create another reservation? (y/n): ");
+                }
+                break;
+            }
+
+            default:
+            {
+                cout << "Invalid choice."<< endl;
+                displayCreateMenu(); // Redisplay menu
+                break;
+            }
+            }
+        displayCreateMenu();
+    } // Keep showing menu until user exits
+    
 }
 
 //************************************************************
