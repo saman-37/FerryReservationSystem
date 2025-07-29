@@ -23,8 +23,8 @@ Vessel::Vessel()
 {
     strncpy(vesselName, "", NAME_LENGTH); // Initialize vesselName to empty string
     vesselName[NAME_LENGTH] = '\0';       // Null-terminate
-    HCLL = 3600.0;                         // Default High Capacity Lane Length
-    LCLL = 3600.0;                         // Default Low Capacity Lane Length
+    HCLL = 3600.0;                        // Default High Capacity Lane Length
+    LCLL = 3600.0;                        // Default Low Capacity Lane Length
 }
 
 //************************************************************
@@ -32,12 +32,12 @@ Vessel::Vessel()
 // Initializes the vessel with provided values
 // in: vesselName, HCLL, LCLL
 //************************************************************
-Vessel::Vessel(const string &vesselName, double HCLL, double LCLL)
+Vessel::Vessel(const string &vesselName, int HCLL, int LCLL)
 {
     strncpy(this->vesselName, vesselName.c_str(), NAME_LENGTH); // Copy vesselName string
-    this->vesselName[NAME_LENGTH] = '\0';                        // Null-terminate
-    this->HCLL = HCLL;                                           // Set High Capacity Lane Length
-    this->LCLL = LCLL;                                           // Set Low Capacity Lane Length
+    this->vesselName[NAME_LENGTH] = '\0';                       // Null-terminate
+    this->HCLL = HCLL;                                          // Set High Capacity Lane Length
+    this->LCLL = LCLL;                                          // Set Low Capacity Lane Length
 }
 
 //************************************************************
@@ -47,9 +47,9 @@ void Vessel::writeToFile(fstream &file) const
 {
     if (Util::vesselFile.is_open())
     {
-        Util::vesselFile.write(vesselName, NAME_LENGTH + 1);                         // Write vesselName
-        Util::vesselFile.write(reinterpret_cast<const char *>(&HCLL), sizeof(HCLL)); // Write HCLL
-        Util::vesselFile.write(reinterpret_cast<const char *>(&LCLL), sizeof(LCLL)); // Write LCLL
+        Util::vesselFile.write(vesselName, NAME_LENGTH + 1);                        // Write vesselName
+        Util::vesselFile.write(reinterpret_cast<const char *>(&HCLL), sizeof(int)); // Write HCLL
+        Util::vesselFile.write(reinterpret_cast<const char *>(&LCLL), sizeof(int)); // Write LCLL
     }
     else
     {
@@ -65,8 +65,8 @@ void Vessel::readFromFile(fstream &file)
     if (Util::vesselFile.is_open())
     {
         Util::vesselFile.read(vesselName, NAME_LENGTH + 1);                   // Read vesselName
-        Util::vesselFile.read(reinterpret_cast<char *>(&HCLL), sizeof(HCLL)); // Read HCLL
-        Util::vesselFile.read(reinterpret_cast<char *>(&LCLL), sizeof(LCLL)); // Read LCLL
+        Util::vesselFile.read(reinterpret_cast<char *>(&HCLL), sizeof(int)); // Read HCLL
+        Util::vesselFile.read(reinterpret_cast<char *>(&LCLL), sizeof(int)); // Read LCLL
     }
 }
 

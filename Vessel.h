@@ -16,26 +16,26 @@ using namespace std;
 class Vessel
 {
 public:
-    static const int NAME_LENGTH = 25;                                           // Length of the vessel name
-    static const int RECORD_SIZE = NAME_LENGTH + sizeof(double) * 2; // Size of the record in bytes
+    static const int NAME_LENGTH = 25;                            // Length of the vessel name
+    static const int RECORD_SIZE = NAME_LENGTH + sizeof(int) * 2; // Size of the record in bytes
 
     char vesselName[NAME_LENGTH + 1]; // +1 for null terminator
-    double HCLL;                      // High Capacity Lane Length
-    double LCLL;                      // Low Capacity Lane Length
+    int HCLL;                      // High Capacity Lane Length
+    int LCLL;                      // Low Capacity Lane Length
 
-    Vessel();                                                   // Default Constructor
-    Vessel(const string &vesselName, double HCLL, double LCLL); // in: vesselName, HCLL, LCLL
+    Vessel();                                             // Default Constructor
+    Vessel(const string &vesselName, int HCLL, int LCLL); // in: vesselName, HCLL, LCLL
 
     void writeToFile(fstream &file) const; // in-out: file
     void readFromFile(fstream &file);      // in-out: file
 
-    bool checkExist(const string &vesselName);                                                      // in: vesselName
-    bool writeVessel(const string &VesselName, double HCLL, double LCLL); // in: vesselName, vesselId, HCLL, LCLL
-    string toString() const;                                                                      // out: string
+    bool checkExist(const string &vesselName);                      // in: vesselName
+    bool writeVessel(const string &VesselName, int HCLL, int LCLL); // in: vesselName, vesselId, HCLL, LCLL
+    string toString() const;                                        // out: string
 
-    string getName() const;     // out: vesselName
-    double getHCLL(const std::string& vesselName) const;     // out: HCLL
-    double getLCLL(const std::string& vesselName) const;     // out: LCLL
+    string getName() const;                              // out: vesselName
+    double getHCLL(const std::string &vesselName) const; // out: HCLL
+    double getLCLL(const std::string &vesselName) const; // out: LCLL
 
     int getCapacity() const; // returns the ssum of HCLL and LCLL as capacity of the vessel
 };
