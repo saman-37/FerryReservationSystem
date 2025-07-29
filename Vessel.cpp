@@ -100,7 +100,7 @@ bool Vessel::checkExist(const string &vesselName)
 // in: vesselName, HCLL, LCLL
 // out: true if written successfully, false otherwise
 //************************************************************
-bool Vessel::writeVessel(const string &VesselName, double HCLL, double LCLL)
+bool Vessel::writeVessel(const string &VesselName, int HCLL, int LCLL)
 {
     if (checkExist(vesselName)) // Should be VesselName here; fix this in code logic
     {
@@ -180,5 +180,5 @@ double Vessel::getLCLL(const string &vesselName) const
 //************************************************************
 int Vessel::getCapacity() const
 {
-    return std::round((HCLL + LCLL) * 100.0) / 100.0;
+    return HCLL + LCLL;
 }
