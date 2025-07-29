@@ -326,7 +326,7 @@ void UI::vesselCreation()
 //************************************************************
 void UI::reservationCreation()
 {
-    int phoneNumber = stoi(getInput("Enter Customer Phone Number (format: 10 digits): "));
+    int phoneNumber = stoi(getInput("Enter Customer Phone Number (format: 14 characters): "));
     string LicensePlate = getInput("Enter Vehicle License Number (max: 10 characters): ");
     string sailingId = getInput("Enter Sailing ID (format: xxx-dd-hh): ");
     if (OtherControls::createReservation(phoneNumber, sailingId, LicensePlate))
