@@ -96,13 +96,22 @@ void UI::displayCreateMenu()
         {
         case 1:
         {
-            char cont = 'y';
-            while (cont == 'y' || cont == 'Y')
+            bool go = true;
+            char cont;
+            do
             {
                 vesselCreation(); // Collect info and create vessel
                 cont = getCharInput("Do you want to create another vessel? (y/n): ");
                 cout << cont;
-            }
+                if (cont != 'y' && cont !='Y')
+                {
+                    go = false;
+                    break;
+                }
+                
+            } while (go);
+        
+            
             break;
         }
         case 2:
@@ -259,7 +268,8 @@ string UI::getInput(const string &prompt)
 {
     string input;
     cout << prompt;
-    getline(cin, input);
+    cin >> input;
+
     return input;
 }
 
