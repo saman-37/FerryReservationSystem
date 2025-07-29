@@ -78,8 +78,6 @@ void Vessel::readFromFile(fstream &file)
 //************************************************************
 bool Vessel::checkExist(const string &vesselName)
 {
-    Util::vesselFile.clear();
-    Util::vesselFile.seekg(0, ios::beg);
 
     if (!Util::vesselFile.is_open())
     {
