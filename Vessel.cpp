@@ -67,6 +67,7 @@ void Vessel::readFromFile(fstream &file)
         file.read(vesselName, NAME_LENGTH + 1);                   // Read vesselName
         file.read(reinterpret_cast<char *>(&HCLL), sizeof(int)); // Read HCLL
         file.read(reinterpret_cast<char *>(&LCLL), sizeof(int)); // Read LCLL
+        
     }
 }
 
@@ -101,7 +102,6 @@ bool Vessel::checkExist(const string &vesselName)
 //************************************************************
 bool Vessel::writeVessel(const string &VesselName, int HCLL, int LCLL)
 {
-    cout<< "Entered the writeVessel: ";
     if (checkExist(VesselName)) // Should be VesselName here; fix this in code logic
     {
         cout << "Vessel with Name " << VesselName << " already exists." << endl;
@@ -113,10 +113,6 @@ bool Vessel::writeVessel(const string &VesselName, int HCLL, int LCLL)
     Util::vesselFile.seekg(0, ios::end);  // Move to end
     vessel.writeToFile(Util::vesselFile); // Write vessel
     Util::vesselFile.flush();             // Save to disk
-
-    cout<< "Vessel created: ";
-    vessel.readFromFile(Util::vesselFile);
-
     return true;
 }
 
@@ -156,6 +152,9 @@ double Vessel::getHCLL(const string &vesselName) const
             return v.HCLL;
         }
     }
+
+    //cout <<  "\nHCLL: " << HCLL <<endl;
+
     return -1; // Not found
 }
 
