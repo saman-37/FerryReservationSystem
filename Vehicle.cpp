@@ -205,7 +205,7 @@ double Vehicle::getHeight(string license)
 // in: license
 // out: length (rounded to 2 decimal places), or -1 if not found
 //************************************************************
-double Vehicle::getLength(string license) const
+double Vehicle::getLength(string license)
 {
     if (!Util::vehicleFile.is_open()) {
         cout << "Vehicle file is not open." << endl;
