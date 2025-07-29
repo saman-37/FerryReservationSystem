@@ -62,11 +62,11 @@ void Vessel::writeToFile(fstream &file) const
 //************************************************************
 void Vessel::readFromFile(fstream &file)
 {
-    if (Util::vesselFile.is_open())
+    if (file.is_open())
     {
-        Util::vesselFile.read(vesselName, NAME_LENGTH + 1);                   // Read vesselName
-        Util::vesselFile.read(reinterpret_cast<char *>(&HCLL), sizeof(int)); // Read HCLL
-        Util::vesselFile.read(reinterpret_cast<char *>(&LCLL), sizeof(int)); // Read LCLL
+        file.read(vesselName, NAME_LENGTH + 1);                   // Read vesselName
+        file.read(reinterpret_cast<char *>(&HCLL), sizeof(int)); // Read HCLL
+        file.read(reinterpret_cast<char *>(&LCLL), sizeof(int)); // Read LCLL
     }
 }
 
@@ -77,7 +77,6 @@ void Vessel::readFromFile(fstream &file)
 //************************************************************
 bool Vessel::checkExist(const string &vesselName)
 {
-    Util::vesselFile.open("vessel.dat", ios::in | ios::binary); // Open vessel file for reading
     if (!Util::vesselFile.is_open())
     {
         cout << "Error opening vessel file." << endl;
@@ -102,9 +101,10 @@ bool Vessel::checkExist(const string &vesselName)
 //************************************************************
 bool Vessel::writeVessel(const string &VesselName, int HCLL, int LCLL)
 {
-    if (checkExist(vesselName)) // Should be VesselName here; fix this in code logic
+    cout<< "Entered the writeVessel: ";
+    if (checkExist(VesselName)) // Should be VesselName here; fix this in code logic
     {
-        cout << "Vessel with Name " << vesselName << " already exists." << endl;
+        cout << "Vessel with Name " << VesselName << " already exists." << endl;
         return false;
     }
 
@@ -113,6 +113,9 @@ bool Vessel::writeVessel(const string &VesselName, int HCLL, int LCLL)
     Util::vesselFile.seekg(0, ios::end);  // Move to end
     vessel.writeToFile(Util::vesselFile); // Write vessel
     Util::vesselFile.flush();             // Save to disk
+
+    cout<< "Vessel created: ";
+    vessel.readFromFile(Util::vesselFile);
 
     return true;
 }

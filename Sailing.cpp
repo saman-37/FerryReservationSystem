@@ -81,10 +81,6 @@ void Sailing::readFromFile(fstream &file)
     Util::sailingFile.read(reinterpret_cast<char *>(this), RECORD_SIZE);
 }
 
-#include "Sailing.h"
-#include <fstream>
-#include <cstring> // for strcmp if needed
-
 //************************************************************
 // searchForSailing()
 // Searches for a sailing record by ID
