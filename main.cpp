@@ -77,7 +77,7 @@ int main()
         Util::startup(); // Initialize the system
 
         UI::userInterface(); // Start the user interface loop
-        Util::shutdown();    // shutdown the system after user quits the program
+       
 
         return 0; // Exit the application
 }

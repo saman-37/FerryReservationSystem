@@ -36,29 +36,42 @@ void UI::userInterface()
         switch (choice)
         {
         case 1:
-            displayCreateMenu(); // Navigate to create menu
+            displayCreateMenu();          // Navigate to create menu
+            displayMainMenu();            // Show main menu options
+            choice = getUserChoice(0, 5); // Get validated choice between 0 and 5
             break;
         case 2:
-            displayDeleteMenu(); // Navigate to delete menu
+            displayDeleteMenu();          // Navigate to delete menu
+            displayMainMenu();            // Show main menu options
+            choice = getUserChoice(0, 5); // Get validated choice between 0 and 5
             break;
         case 3:
-            CheckInVehicle(); // Call check-in process
+            CheckInVehicle();             // Call check-in process
+            displayMainMenu();            // Show main menu options
+            choice = getUserChoice(0, 5); // Get validated choice between 0 and 5
             break;
         case 4:
-            displayQuery(); // Query sailing info
+            displayQuery();               // Query sailing info
+            displayMainMenu();            // Show main menu options
+            choice = getUserChoice(0, 5); // Get validated choice between 0 and 5
             break;
         case 5:
-            displaySailingReport(); // Show sailing report
+            displaySailingReport();       // Show sailing report
+            displayMainMenu();            // Show main menu options
+            choice = getUserChoice(0, 5); // Get validated choice between 0 and 5
             break;
         case 0:
             cout << "Exiting the application.Thank You for using Automobile FerryReserver!" << endl;
             break;
         default:
-            cout << "Invalid choice. Please try again.\n"
-                 << endl;
+            cout << "Invalid choice. Please try again." << endl;
+            displayMainMenu();            // Show main menu options
+            choice = getUserChoice(0, 5); // Get validated choice between 0 and 5
             break;
         }
-    } while (choice != 0); // Repeat until user exits
+    } while (choice > 0); // Repeat until user exits
+
+    Util::shutdown(); // shutdown the system after user quits the program
 }
 
 //************************************************************
@@ -91,57 +104,61 @@ void UI::displayCreateMenu()
     int choice;
     choice = getUserChoice(0, 3);
     char cont;
-    while (choice >= 0)
+
+    switch (choice)
     {
-        switch (choice)
+    case 0:
+        cout << "Returning to Main Menu..." << endl;
+        break;
+    case 1:
+    {
+        string vesselName;
+        int LCLL, HCLL;
+        cont = 'y';
+        while (cont == 'y' || cont == 'Y')
         {
-            case 0:
-            {
-                cout << "Returning to Main Menu..." << endl;
-                userInterface();
-            }
-            case 1:
-            {
-                cont = 'y';
-                while (cont == 'y' || cont == 'Y')
-                {
-                    vesselCreation(); // Collect info and create vessel
-                    cont = getCharInput("Do you want to create another vessel? (y/n): ");
-                }
+            // Collect info and create vessel
+            vesselName = getInput("Enter Vessel Name (max: 25 characters): ");
+            LCLL = stoi(getInput("Enter LCLL (Positive integer, max: 3600): "));
+            HCLL = stoi(getInput("Enter HCLL (Positive integer, max: 3600): "));
+            if (OtherControls::createVessel(vesselName, HCLL, LCLL))
+                cout << "Vessel successfully created." << endl;
+            else
+                cout << "Failed to create vessel." << endl;
+            cont = getCharInput("Do you want to create another vessel? (y/n): ");
+        }
 
-                break;
-            }
-            case 2:
-            {
-                cont = 'y';
-                while (cont == 'y' || cont == 'Y')
-                {
-                    sailingCreation(); // Collect info and create sailing
-                    cont = getCharInput("Do you wish to create another sailing? (y/n): ");
-                }
-                break;
-            }
-            case 3:
-            {
-                cont = 'y';
-                while (cont == 'y' || cont == 'Y')
-                {
-                    reservationCreation(); // Collect info and create reservation
-                    cont = getCharInput("Do you wish to create another reservation? (y/n): ");
-                }
-                break;
-            }
+        break;
+    }
+    case 2:
+    {
+        cont = 'y';
+        while (cont == 'y' || cont == 'Y')
+        {
+            sailingCreation(); // Collect info and create sailing
+            cont = getCharInput("Do you wish to create another sailing? (y/n): ");
+        }
+        break;
+    }
+    case 3:
+    {
+        cont = 'y';
+        while (cont == 'y' || cont == 'Y')
+        {
+            reservationCreation(); // Collect info and create reservation
+            cont = getCharInput("Do you wish to create another reservation? (y/n): ");
+        }
+        break;
+    }
 
-            default:
-            {
-                cout << "Invalid choice."<< endl;
-                displayCreateMenu(); // Redisplay menu
-                break;
-            }
-            }
-        displayCreateMenu();
-    } // Keep showing menu until user exits
-    
+    default:
+    {
+        cout << "Invalid choice." << endl;
+        displayCreateMenu(); // Redisplay menu
+        break;
+    }
+    }
+    // Keep showing menu until user exits
 }
 
 //************************************************************
