@@ -9,7 +9,9 @@
 #include "OtherControls.h"
 #include "Sailing.h"
 #include "Vehicle.h"
+#include "Vessel.h"
 #include "Reservation.h"
+#include "Util.h"
 #include <string>
 #include <iostream>
 using namespace std;
@@ -216,16 +218,15 @@ bool OtherControls::createVessel(string &vesselName, int HCLL, int LCLL)
   {
     // Step 3: Create a new vessel record
     Vessel newVessel(vesselName, HCLL, LCLL);                 // Create Vessel object
-    fstream vesselFile("vessel.dat", ios::app | ios::binary); // Open vessel file
-    if (!vesselFile.is_open())
+    if (!Util::vesselFile.is_open())
     {
       cout << "Error opening vessel file for writing." << endl;
       return false; // Error opening file
     }
     else
     {
-      newVessel.writeToFile(vesselFile); // Save record
-      return true; // Vessel created
+      return Vessel::writeVessel(vesselName, HCLL, LCLL);// Save record{
+      
     }
   }
 };
