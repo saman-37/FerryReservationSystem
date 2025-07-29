@@ -68,6 +68,13 @@ public:
     static std::string getInput(const std::string &prompt);
 
     //************************************************************
+    // Prompts the user for character input
+    // in: prompt - message to display
+    // out: user input character
+    //************************************************************
+    static char getCharInput(const std::string &prompt);
+
+    //************************************************************
     // Helper method to facilitate sailing creation
     //************************************************************
     static void sailingCreation();

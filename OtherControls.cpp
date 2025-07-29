@@ -225,7 +225,6 @@ bool OtherControls::createVessel(string &vesselName, int HCLL, int LCLL)
     else
     {
       newVessel.writeToFile(vesselFile); // Save record
-      cout << "Vessel created successfully." << endl;
       return true; // Vessel created
     }
   }
