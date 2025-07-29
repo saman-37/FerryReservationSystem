@@ -33,8 +33,8 @@ public:
     void readFromFile(fstream &file);      // in-out: file
 
     string getLicense(const string license) const; // out: license
-    double getHeight(const string license) const;  // out: height
-    double getLength(const string license) const; // out: length
+    static double getHeight(const string license) ;  // out: height
+    static double getLength(const string license); // out: length
 
     void setLicense(string license); // in: license
     void setHeight(double height);   // in: height
