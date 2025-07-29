@@ -78,6 +78,7 @@ void Vessel::readFromFile(fstream &file)
 //************************************************************
 bool Vessel::checkExist(const string &vesselName)
 {
+
     if (!Util::vesselFile.is_open())
     {
         cout << "Error opening vessel file." << endl;
@@ -149,7 +150,9 @@ double Vessel::getHCLL(const string &vesselName) const
     {
         if (strcmp(v.vesselName, vesselName.c_str()) == 0)
         {
+            cout <<"\n HCLL printed: " << v.HCLL << endl;
             return v.HCLL;
+
         }
     }
 
@@ -171,6 +174,7 @@ double Vessel::getLCLL(const string &vesselName) const
     {
         if (strcmp(v.vesselName, vesselName.c_str()) == 0)
         {
+            cout <<"\n LCLL printed: " << v.LCLL << endl;
             return v.LCLL;
         }
     }

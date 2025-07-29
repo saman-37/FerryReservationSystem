@@ -51,38 +51,31 @@ public:
     // Query Total Reservations for a Given Sailing
     //************************************************************
     static int getTotalReservationsOnSailing(const string &sailingId);              // in: sailingId
-    static int getTotalReservationsOnSailing(const string &sailingId, fstream &file); // in: sailingId, file
 
     //************************************************************
     // Remove Specific Reservation
     //************************************************************
     static bool removeReservation(const string &sailingId, const string &license);                // in: sailingId, license
-    static bool removeReservation(const string &sailingId, const string &license, fstream &file); // in: sailingId, license, file
 
     //************************************************************
     // Remove All Reservations for a Given Sailing
     //************************************************************
     static bool removeReservationsOnSailing(const string &sailingId);               // in: sailingId
-    static bool removeReservationsOnSailing(const string &sailingId, fstream &file); // in: sailingId, file
 
     //************************************************************
     // Check if Reservation Exists
     //************************************************************
     static bool checkExist(const string &sailingId, const string &license);               // in: sailingId, license
-    static bool checkExist(const string &sailingId, const string &license, fstream &file); // in: sailingId, license, file
 
     //************************************************************
     // Create a New Reservation
     //************************************************************
-    static bool writeReservation(const string &sailingId, const string &license, fstream &file); // in: sailingId, license, file
     static bool writeReservation(const string &sailingId, const string &license);                // in: sailingId, license
 
     //************************************************************
     // Mark Reservation as Checked In
     //************************************************************
     static void setCheckedIn(const string &sailingId, const string &license);               // in: sailingId, license
-    static void setCheckedIn(const string &sailingId, const string &license, fstream &file); // in: sailingId, license, file
-
     //************************************************************
     // Format Reservation Record as Readable String
     //************************************************************

@@ -62,7 +62,7 @@ bool SailingControl::createSailing(const string& sailingId, const string& vessel
 bool SailingControl::deleteSailing(const string& sailingId) {
     if (Sailing::checkExist(sailingId)) {
         Reservation reservation;
-        reservation.removeReservationsOnSailing(sailingId, Util::reservationFile);
+        reservation.removeReservationsOnSailing(sailingId);
         return Sailing::removeSailing(sailingId);
     } else {
         return false;
@@ -87,7 +87,7 @@ void SailingControl::querySailing(const string& sailingId) {
     cout << "The sailing with given id is found and listed.\n\n";
     cout << "Inquiry about sailing " << sailingId << ":\n\n";
 
-    int totalVehicles = Reservation::getTotalReservationsOnSailing(sailingId, Util::reservationFile);
+    int totalVehicles = Reservation::getTotalReservationsOnSailing(sailingId);
     double totalCapacity = sailing.HRL + sailing.LRL;
     double usedCapacity = totalCapacity - (sailing.HRL + sailing.LRL); // Placeholder calculation
     double percentage = (usedCapacity / totalCapacity) * 100.0;
@@ -147,7 +147,7 @@ void SailingControl::printSailingReport() {
             Sailing s = Sailing::getSailingInfo(sailingIds[i]);
 
             string date = sailingIds[i].substr(sailingIds[i].find('-') + 1); // e.g., extract date from ID
-            int totalVehicles = Reservation::getTotalReservationsOnSailing(s.sailingId, Util::reservationFile);
+            int totalVehicles = Reservation::getTotalReservationsOnSailing(s.sailingId);
             double total = s.HRL + s.LRL;
             double used = total - (s.HRL + s.LRL); // Placeholder logic (should be real usage)
             double percent = (used / total) * 100.0;

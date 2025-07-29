@@ -75,7 +75,6 @@ int main()
 {
 
         Util::startup(); // Initialize the system
-
         UI::userInterface(); // Start the user interface loop
        
 
