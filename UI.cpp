@@ -98,7 +98,7 @@ void UI::displayCreateMenu()
         {
             bool go = true;
             char cont;
-            do
+            while (go)
             {
                 vesselCreation(); // Collect info and create vessel
                 cont = getCharInput("Do you want to create another vessel? (y/n): ");
@@ -106,10 +106,9 @@ void UI::displayCreateMenu()
                 if (cont != 'y' && cont !='Y')
                 {
                     go = false;
-                    break;
                 }
                 
-            } while (go);
+            } 
         
             
             break;
