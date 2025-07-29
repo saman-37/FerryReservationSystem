@@ -29,8 +29,8 @@ public:
     void writeToFile(fstream &file) const; // in-out: file
     void readFromFile(fstream &file);      // in-out: file
 
-    bool checkExist(const string &vesselName);                      // in: vesselName
-    bool writeVessel(const string &VesselName, int HCLL, int LCLL); // in: vesselName, vesselId, HCLL, LCLL
+    static bool checkExist(const string &vesselName);                      // in: vesselName
+    static bool writeVessel(const string &VesselName, int HCLL, int LCLL); // in: vesselName, vesselId, HCLL, LCLL
     string toString() const;                                        // out: string
 
     string getName() const;                              // out: vesselName
