@@ -117,18 +117,24 @@ bool OtherControls::createReservation(string &phoneNumber, string &sailingId, st
 
     // Write special vehicle record to file
     Vehicle::writeVehicle(licensePlate, phoneNumber, height, length);
+    cout << "i am outide write vehicle in OtherControls.cpp" << endl;
   }
 
-  // Step 6: check if sailing has space available for this new reservation
-  if (Sailing::isSpaceAvailable(sailingId, isSpecial, length, height) == false)
-  {
-    cout << "No space available on sailing." << endl;
-    return false; // No space available
-  }
+  // // Step 6: check if sailing has space available for this new reservation
+  // if (Sailing::isSpaceAvailable(sailingId, isSpecial, length, height) == false)
+  // {
+  //   cout << "No space available on sailing." << endl;
+  //   return false; // No space available
+  // }
 
   // Step 7: Reduce the space available, if reservation is successful
   // Adjusts space based on vehicle type (high ceiling or low ceiling)
   Sailing::reduceSpace(sailingId, length, isSpecial);
+
+  // Step 8: Create the reservation record
+  Reservation::writeReservation(licensePlate, sailingId); // onBoard = false
+  cout << "i am outide write Reservation in OtherControls.cpp" << endl;
+
   return true;
 }
 
