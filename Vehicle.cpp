@@ -93,11 +93,16 @@ bool Vehicle::checkExist(const string &license)
         Util::vehicleFile.seekg(0, ios::beg);
 
         Vehicle vehicle;
-        while (!Util::vehicleFile.eof())
+        while (Util::vehicleFile.eof() == true)
         {
+            cout << "flow went from checkExist to ReadFromFile" << endl;
             vehicle.readFromFile(Util::vehicleFile);
+            cout << "Flow came back to checkExist" << endl;
             if (strcmp(vehicle.license, license.c_str()) == 0)
             {
+                cout << "Lets compare" << endl;
+                cout << "this is my vehicle object license, which i read now" << vehicle.license << endl;
+                cout << "this is the license i am looking for: " << license << endl;
                 cout << "This vehicle EXISTS" << endl;
                 return true; // Vessel found end here
             }

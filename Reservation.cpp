@@ -82,7 +82,7 @@ void Reservation::writeToFile(fstream &file) const
 // writeReservation()
 // Appends a new reservation to the binary file.
 //************************************************************
-bool Reservation::writeReservation( const string &license, const string &sailingId)
+bool Reservation::writeReservation(const string &license, const string &sailingId)
 {
     cout << "Entered the writeReservation:" << endl;
 
@@ -108,7 +108,7 @@ void Reservation::readFromFile(fstream &file)
         file.read(license, sizeof(license));                            // Read license field
         file.read(sailingId, sizeof(sailingId));                        // Read sailing ID
         file.read(reinterpret_cast<char *>(&onBoard), sizeof(onBoard)); // Read onBoard flag
-        cout << "ENDED UP READING ONCE!"    << endl;
+        cout << "ENDED UP READING ONCE!" << endl;
     }
     else
     {
@@ -123,7 +123,7 @@ void Reservation::readFromFile(fstream &file)
 // Returns true if a reservation exists for the given sailingId + license.
 //************************************************************
 
-bool Reservation::checkExist( const string &license, const string &sailingId)
+bool Reservation::checkExist(const string &license, const string &sailingId)
 {
     if (Util::reservationFile.is_open())
     {
@@ -134,10 +134,13 @@ bool Reservation::checkExist( const string &license, const string &sailingId)
 
         while (!Util::reservationFile.eof())
         {
+            cout << "RESERVATION:flow went from checkExist to ReadFromFile" << endl;
             reservation.readFromFile(Util::reservationFile);
-            
-            if (strcmp(reservation.sailingId, sailingId.c_str()) == 0 &&
+            cout << "RESERVATION:Flow came back to checkExist" << endl;
+
+            if (
                 strcmp(reservation.license, license.c_str()) == 0)
+            // strcmp(reservation.sailingId, sailingId.c_str()) == 0 &&
             {
                 return true;
             }
@@ -287,12 +290,11 @@ bool Reservation::removeReservationsOnSailing(const std::string &sailingId)
     }
 }
 
-
 //************************************************************
 // setCheckedIn()
 // Marks a reservation as checked in and rewrites the record.
 //************************************************************
-void Reservation::setCheckedIn( const string &license, const string &sailingId)
+void Reservation::setCheckedIn(const string &license, const string &sailingId)
 {
     if (Util::reservationFile.is_open())
     {
