@@ -166,8 +166,8 @@ bool Sailing::checkExist(string sailingId)
         }
         cout<<"sailing not found"<<endl;
         return false; // Not found, safe to create new vessel
-
-    } else {
+    } 
+    else {
         cout << "Error opening vessel file." << endl;
         return false;
     }
