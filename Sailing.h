@@ -19,7 +19,7 @@ class Sailing
 public:
     static const int SAILING_ID_LENGTH = 9;   // Length of sailing ID (8 chars + null terminator)
     static const int VESSEL_NAME_LENGTH = 25; // Length of vessel name (24 chars + null terminator)
-    static const int RECORD_SIZE = SAILING_ID_LENGTH + VESSEL_NAME_LENGTH + sizeof(double) * 3;
+    static const int RECORD_SIZE = SAILING_ID_LENGTH + VESSEL_NAME_LENGTH + sizeof(double) * 2;
     // Total size of binary record: ID, vesselName, HRL, LRL (plus padding if any)
 
     char sailingId[SAILING_ID_LENGTH + 1];   // +1 for null terminator

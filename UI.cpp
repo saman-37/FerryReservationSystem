@@ -305,9 +305,9 @@ void UI::sailingCreation()
     string vesselName = getInput("Enter Vessel name (max: 25 characters): ");
     string sailingId = getInput("Enter the sailing Id (format: xxx-dd-hh): ");
     if (SailingControl::createSailing(sailingId, vesselName))
-        cout << "Sailing with vessel name " << vesselName << " successfully created." << endl;
+        cout << "Sailing with sailing ID " << sailingId << " successfully created." << endl;
     else
-        cout << "Failed to create sailing with vessel name " << vesselName << "." << endl;
+        cout << "Failed to create sailing with sailing ID " << sailingId << "." << endl;
 }
 
 //************************************************************

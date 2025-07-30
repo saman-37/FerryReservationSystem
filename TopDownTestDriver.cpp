@@ -37,7 +37,7 @@ int main() {
     string licensePlate = "ABC1234";
     string dummyPhone = "7781234567"; // Placeholder for unused phone number param
     cout << "\nCreating reservation..." << endl;
-    OtherControls::createReservation(dummyPhone, sailingId, licensePlate);
+    //OtherControls::createReservation(dummyPhone, sailingId, licensePlate);
 
     // Step 4: Query that Sailing
     cout << "\nQuerying sailing..." << endl;
