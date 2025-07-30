@@ -3,7 +3,7 @@
 //************************************************************
 // Purpose: Implements all functionality for the Reservation entity,
 // including reading/writing fixed-length binary records, adding,
-// deleting, checking, and modifying reservation status. Uses 
+// deleting, checking, and modifying reservation status. Uses
 // unsorted records and random access for simplicity and speed.
 //************************************************************
 // Version History:
@@ -60,19 +60,43 @@ Reservation::Reservation(const string &license, const string &sailingId, const b
 //************************************************************
 void Reservation::writeToFile(fstream &file) const
 {
+    cout << "You entered the write reservation method " << endl;
     if (file.is_open())
     {
+        cout << "Here I am About To Write !!"   << endl;
         file.write(license, sizeof(license));                                  // Write license string
         file.write(sailingId, sizeof(sailingId));                              // Write sailing ID string
         file.write(reinterpret_cast<const char *>(&onBoard), sizeof(onBoard)); // Write onBoard flag
-        file.flush(); // Ensure it’s flushed to disk
+        file.flush();
+        cout << "Reservation created has license: " << license << "\nsailing id: " << sailingId << "\nand on board: " << onBoard << endl;
+        // Ensure it’s flushed to disk
     }
     else
     {
         cout << "Error opening file for writing." << endl;
     }
+    cout << "this is the write method's read reservation: " << endl;
+    cout << "Reservation created has license: " << license << "\nsailing id: " << sailingId << "\nand on board: " << onBoard << endl;
 }
 
+//************************************************************
+// writeReservation()
+// Appends a new reservation to the binary file.
+//************************************************************
+bool Reservation::writeReservation(const string &sailingId, const string &license)
+{
+    cout << "Entered the writeReservation:" << endl;
+
+    Reservation reservation(license, sailingId, false); // onBoard = false
+    Util::reservationFile.clear();                      // Clear file flags
+    Util::reservationFile.seekg(0, ios::end);           // Move to end
+    reservation.writeToFile(Util::reservationFile);     // Write vessel
+    Util::reservationFile.flush();                      // Save to disk
+
+    reservation.readFromFile(Util::reservationFile);
+
+    return true;
+}
 //************************************************************
 // readFromFile()
 // Reads this reservation record from a binary file.
@@ -85,12 +109,14 @@ void Reservation::readFromFile(fstream &file)
         file.read(license, sizeof(license));                            // Read license field
         file.read(sailingId, sizeof(sailingId));                        // Read sailing ID
         file.read(reinterpret_cast<char *>(&onBoard), sizeof(onBoard)); // Read onBoard flag
-        cout << "Reservation created has license: " << license << "\nsailing id: " << sailingId << "\nand on board: " << onBoard<<endl;
+        cout << "Reservation created has license: " << license << "\nsailing id: " << sailingId << "\nand on board: " << onBoard << endl;
     }
     else
     {
         cout << "Error opening file for reading." << endl;
     }
+    cout << "this is the read method's read reservation: " << endl;
+    cout << "Reservation created has license: " << license << "\nsailing id: " << sailingId << "\nand on board: " << onBoard << endl;
 }
 
 //************************************************************
@@ -233,26 +259,6 @@ bool Reservation::checkExist(const string &sailingId, const string &license)
 }
 
 //************************************************************
-// writeReservation()
-// Appends a new reservation to the binary file.
-//************************************************************
-bool Reservation::writeReservation(const string &sailingId, const string &license)
-{
-    cout << "Entered the writeReservation:" << endl;
-
-    Reservation reservation(license, sailingId, false); // onBoard = false
-    Util::reservationFile.clear();             // Clear file flags
-    Util::reservationFile.seekg(0, ios::end);  // Move to end
-    reservation.writeToFile(Util::reservationFile); // Write vessel
-    Util::reservationFile.flush();             // Save to disk
-    
-    reservation.readFromFile(Util::reservationFile);
-
-    return true;
-
-}
-
-//************************************************************
 // setCheckedIn()
 // Marks a reservation as checked in and rewrites the record.
 //************************************************************
@@ -278,7 +284,6 @@ void Reservation::setCheckedIn(const string &sailingId, const string &license)
                 break;
             }
         }
-
     }
     else
     {

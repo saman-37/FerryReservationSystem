@@ -40,16 +40,16 @@ OtherControls::OtherControls() // Default Constructor
 // - reservation creation
 // Also adjusts space based on vehicle size.
 //************************************************************
-bool OtherControls::createReservation(int phoneNumber, string &sailingId, string &licensePlate) // Makes a new reservation, in: sailingId, licensePlate
+bool OtherControls::createReservation(string &phoneNumber, string &sailingId, string &licensePlate) // Makes a new reservation, in: sailingId, licensePlate
 {
   // Step 2: check if sailing exists
   // Created a sailing instance; pass it by reference so it can be filled with file data if found
-  if (Sailing::checkExist(sailingId) == false)
-  {
-    // Sailing does not exist
-    cout << "The sailing with id " << sailingId << " does not exist." << endl;
-    return false;
-  }
+  // if (Sailing::checkExist(sailingId) == false)
+  // {
+  //   // Sailing does not exist
+  //   cout << "The sailing with id " << sailingId << " does not exist." << endl;
+  //   return false;
+  // }
 
   // Step 3: check if reservation already exists
   // We don’t need full reservation data — just check existence
@@ -63,8 +63,8 @@ bool OtherControls::createReservation(int phoneNumber, string &sailingId, string
   // Step 4: check if vehicle exists
   // Check if vehicle is known from license plate
   double height, length;
-  string phone;
-  bool isSpecial =false;
+
+  bool isSpecial = false;
 
   if (Vehicle::checkExist(licensePlate))
   {
@@ -101,12 +101,8 @@ bool OtherControls::createReservation(int phoneNumber, string &sailingId, string
         return false; // Invalid height or length
       }
 
-      // Prompt for phone number
-      cout << "Enter Customer Phone Number (format: 14 characters):" << endl;
-      cin >> phone;
-
       // Validate phone number format
-      if (phone.length() > 13)
+      if (phoneNumber.length() > 13)
       {
         cout << "Invalid phone number format. Must be max 14 digits." << endl;
         return false;
@@ -120,19 +116,26 @@ bool OtherControls::createReservation(int phoneNumber, string &sailingId, string
     }
 
     // Write special vehicle record to file
-    Vehicle::writeVehicle(licensePlate, phone, height, length);
+    Vehicle::writeVehicle(licensePlate, phoneNumber, height, length);
+    cout << "i am outide write vehicle in OtherControls.cpp" << endl;
   }
 
-  // Step 6: check if sailing has space available for this new reservation
-  if (Sailing::isSpaceAvailable(sailingId, isSpecial, length, height) == false)
-  {
-    cout << "No space available on sailing." << endl;
-    return false;  // No space available
-  }
+  // // Step 6: check if sailing has space available for this new reservation
+  // if (Sailing::isSpaceAvailable(sailingId, isSpecial, length, height) == false)
+  // {
+  //   cout << "No space available on sailing." << endl;
+  //   return false; // No space available
+  // }
 
   // Step 7: Reduce the space available, if reservation is successful
   // Adjusts space based on vehicle type (high ceiling or low ceiling)
   Sailing::reduceSpace(sailingId, length, isSpecial);
+
+  // Step 8: Create the reservation record
+  Reservation::writeReservation(licensePlate, sailingId); // onBoard = false
+  cout << "i am outide write Reservation in OtherControls.cpp" << endl;
+
+  return true;
 }
 
 //************************************************************

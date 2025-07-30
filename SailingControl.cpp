@@ -60,12 +60,17 @@ bool SailingControl::createSailing(const string& sailingId, const string& vessel
 //************************************************************
 bool SailingControl::deleteSailing(const string& sailingId) {
     if (Sailing::checkExist(sailingId)) {
+        cout << "Entered deleteSailing" << endl;
         Reservation reservation;
         // reservation.removeReservationsOnSailing(sailingId);
         return Sailing::removeSailing(sailingId);
-    } else {
+        cout << "Exiting deleteSailing" << endl;
+    }
+    else {
+        cout << "deleteSailing return false" << endl;
         return false;
     }
+    cout << "Exited Successfully deleteSailing" << endl;
 }
 
 //************************************************************
@@ -80,6 +85,7 @@ void SailingControl::querySailing(const string& sailingId) {
         cout << "No sailing with such ID exist" << endl;
         return;
     }
+    cout << "Out of check exist" << endl;
 
     Sailing sailing = Sailing::getSailingInfo(sailingId);
 
