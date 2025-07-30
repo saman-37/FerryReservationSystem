@@ -34,7 +34,8 @@ Sailing::Sailing()
 // Initializes sailing with given ID, vessel name, and lane lengths
 // in: sailingId, vesselName, HRL, LRL
 //************************************************************
-Sailing::Sailing(const char* sailingId, const char* vesselName, double HRL, double LRL) {
+Sailing::Sailing(const char *sailingId, const char *vesselName, double HRL, double LRL)
+{
     strncpy(this->sailingId, sailingId, SAILING_ID_LENGTH - 1);
     this->sailingId[SAILING_ID_LENGTH - 1] = '\0';
 
@@ -50,7 +51,8 @@ Sailing::Sailing(const char* sailingId, const char* vesselName, double HRL, doub
 // Sets the sailing fields from parameters, used to update object
 // in: id, vName, hrl, lrl
 //************************************************************
-void Sailing::open(const string& id, const string& vName, double hrl, double lrl) {
+void Sailing::open(const string &id, const string &vName, double hrl, double lrl)
+{
     strncpy(sailingId, id.c_str(), SAILING_ID_LENGTH);
     sailingId[SAILING_ID_LENGTH] = '\0';
 
@@ -112,7 +114,8 @@ bool Sailing::searchForSailing(const string &sailingId, Sailing &foundSailing)
 // getSailingInfo()
 // Returns a Sailing object for the given sailingId
 //************************************************************
-Sailing Sailing::getSailingInfo(const string& sailingId) {
+Sailing Sailing::getSailingInfo(const string &sailingId)
+{
     Sailing sailing;
     while (Util::sailingFile.read(reinterpret_cast<char *>(&sailing), RECORD_SIZE))
     {
@@ -131,7 +134,8 @@ Sailing Sailing::getSailingInfo(const string& sailingId) {
 // in: sailingId
 // out: true if found
 //************************************************************
-bool Sailing::checkExist(string sailingId) {
+bool Sailing::checkExist(string sailingId)
+{
     Sailing sailing;
     while (Util::sailingFile.read(reinterpret_cast<char *>(&sailing), RECORD_SIZE))
     {
@@ -150,7 +154,8 @@ bool Sailing::checkExist(string sailingId) {
 //************************************************************
 bool Sailing::writeSailing(std::string &sailingId, std::string &vesselName, double HRL, double LRL)
 {
-    if (!Util::sailingFile.is_open()) {
+    if (!Util::sailingFile.is_open())
+    {
         return false;
     }
     Sailing s(sailingId.c_str(), vesselName.c_str(), HRL, LRL);
@@ -164,8 +169,9 @@ bool Sailing::writeSailing(std::string &sailingId, std::string &vesselName, doub
 // Removes a sailing record by copying all non-matching records
 // to a temp file and replacing the original
 //************************************************************
-bool Sailing::removeSailing(string sailingId) {
-    
+bool Sailing::removeSailing(string sailingId)
+{
+
     Util::sailingFile.clear();
     Util::sailingFile.seekg(0, ios::beg);
 
@@ -173,23 +179,27 @@ bool Sailing::removeSailing(string sailingId) {
     Sailing temp;
     bool removed = false;
 
-// Step 1: Read all records into memory except the one to remove
-while (Util::sailingFile.read(reinterpret_cast<char*>(&temp), RECORD_SIZE)) {
-    if (strcmp(temp.sailingId, sailingId.c_str()) != 0) {
-        sailings.push_back(temp);
+    // Step 1: Read all records into memory except the one to remove
+    while (Util::sailingFile.read(reinterpret_cast<char *>(&temp), RECORD_SIZE))
+    {
+        if (strcmp(temp.sailingId, sailingId.c_str()) != 0)
+        {
+            sailings.push_back(temp);
+        }
+        else
+        {
+            removed = true;
+        }
     }
-    else {
-        removed = true;
-    }
-}
 
     // Step 2: Truncate the file
     Util::sailingFile.close();
     Util::sailingFile.open("sailing.dat", ios::in | ios::out | ios::binary | ios::trunc);
 
     // Step 3: Write back the kept records
-    for (const auto& s : sailings) {
-        Util::sailingFile.write(reinterpret_cast<const char*>(&s), RECORD_SIZE);
+    for (const auto &s : sailings)
+    {
+        Util::sailingFile.write(reinterpret_cast<const char *>(&s), RECORD_SIZE);
     }
 
     Util::sailingFile.flush();
@@ -207,11 +217,16 @@ bool Sailing::isSpaceAvailable(const string &sailingId, bool isSpecial, double v
     Util::sailingFile.seekg(0, ios::beg);
 
     Sailing sailing;
-    while (Util::sailingFile.read(reinterpret_cast<char*>(&sailing), RECORD_SIZE)) {
-        if (strcmp(sailing.sailingId, sailingId.c_str()) == 0) {
-            if (isSpecial) {
+    while (Util::sailingFile.read(reinterpret_cast<char *>(&sailing), RECORD_SIZE))
+    {
+        if (strcmp(sailing.sailingId, sailingId.c_str()) == 0)
+        {
+            if (isSpecial)
+            {
                 return sailing.HRL >= vehicleLength;
-            } else {
+            }
+            else
+            {
                 return sailing.LRL >= vehicleLength;
             }
         }
@@ -232,21 +247,26 @@ void Sailing::reduceSpace(const string &sailingId, double vehicleLength, bool is
     Sailing sailing;
     streampos pos;
 
-    while (Util::sailingFile.read(reinterpret_cast<char*>(&sailing), RECORD_SIZE)) {
-        if (strcmp(sailing.sailingId, sailingId.c_str()) == 0) {
+    while (Util::sailingFile.read(reinterpret_cast<char *>(&sailing), RECORD_SIZE))
+    {
+        if (strcmp(sailing.sailingId, sailingId.c_str()) == 0)
+        {
             // Calculate current position and go back to overwrite
             pos = Util::sailingFile.tellg();
             pos -= RECORD_SIZE;
 
-            if (isSpecial) {
+            if (isSpecial)
+            {
                 sailing.HRL -= vehicleLength;
-            } else {
+            }
+            else
+            {
                 sailing.LRL -= vehicleLength;
             }
 
             Util::sailingFile.clear();
             Util::sailingFile.seekp(pos);
-            Util::sailingFile.write(reinterpret_cast<const char*>(&sailing), RECORD_SIZE);
+            Util::sailingFile.write(reinterpret_cast<const char *>(&sailing), RECORD_SIZE);
             Util::sailingFile.flush();
             break;
         }
