@@ -70,7 +70,17 @@ void Sailing::open(const string &id, const string &vName, double hrl, double lrl
 //************************************************************
 void Sailing::writeToFile(fstream &file) const
 {
-    Util::sailingFile.write(reinterpret_cast<const char *>(this), RECORD_SIZE);
+    if (file.is_open())
+    {
+        file.write(sailingId, SAILING_ID_LENGTH + 1);                   // Write SailingId
+        file.write(vesselName, VESSEL_NAME_LENGTH + 1);                // Write vesselName
+        file.write(reinterpret_cast<const char *>(&HRL), sizeof(int)); // Write HRL
+        file.write(reinterpret_cast<const char *>(&LRL), sizeof(int)); // Write LRL
+    }
+    else
+    {
+        cout << "Error opening file for writing." << endl;
+    }
 }
 
 //************************************************************
@@ -154,13 +164,11 @@ bool Sailing::checkExist(string sailingId)
 //************************************************************
 bool Sailing::writeSailing(std::string &sailingId, std::string &vesselName, double HRL, double LRL)
 {
-    if (!Util::sailingFile.is_open())
-    {
-        return false;
-    }
-    Sailing s(sailingId.c_str(), vesselName.c_str(), HRL, LRL);
-    Util::sailingFile.seekp(0, std::ios::end);
-    s.writeToFile(Util::sailingFile);
+    Sailing sailing;
+    Util::sailingFile.clear();
+    Util::sailingFile.seekg(0, ios::end);
+    sailing.writeToFile(Util::sailingFile);
+    Util::vesselFile.flush();             // Save to disk
     return true;
 }
 
