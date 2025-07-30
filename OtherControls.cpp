@@ -3,7 +3,7 @@
 //************************************************************
 // Purpose: Implements control-level logic for reservations, vessels,
 // and check-in functionality for FerryReserver system.
-// July 12, 2025 Version 1 - Darpandeep Kaur and Samanpreet 
+// July 12, 2025 Version 1 - Darpandeep Kaur and Samanpreet
 //************************************************************
 
 #include "OtherControls.h"
@@ -16,16 +16,16 @@
 #include <iostream>
 using namespace std;
 
-Vessel vessel; // Global instance of Vessel 
-Sailing sailing;  //Global instance of Sailing 
-Reservation reservation; //Global instance of Reservation
+Vessel vessel;           // Global instance of Vessel
+Sailing sailing;         // Global instance of Sailing
+Reservation reservation; // Global instance of Reservation
 
 //************************************************************
 // Default constructor for OtherControls class
 //************************************************************
 OtherControls::OtherControls() // Default Constructor
 {
-    // No internal state to initialize for this control class
+  // No internal state to initialize for this control class
 }
 
 //************************************************************
@@ -44,12 +44,7 @@ bool OtherControls::createReservation(int phoneNumber, string &sailingId, string
 {
   // Step 2: check if sailing exists
   // Created a sailing instance; pass it by reference so it can be filled with file data if found
-
-  if (Sailing::searchForSailing(sailingId, sailing))
-  {
-    // Sailing found, and foundSailing contains it
-  }
-  else
+  if (Sailing::checkExist(sailingId) == false)
   {
     // Sailing does not exist
     cout << "The sailing with id " << sailingId << " does not exist." << endl;
@@ -67,73 +62,77 @@ bool OtherControls::createReservation(int phoneNumber, string &sailingId, string
 
   // Step 4: check if vehicle exists
   // Check if vehicle is known from license plate
-  Vehicle vehicle;
+  double height, length;
+  string phone;
+  bool isSpecial =false;
+
   if (Vehicle::checkExist(licensePlate))
   {
-    // vehicle exists and foundVehicle contains it
+    // Vehicle exists, fetch its details
+    height = Vehicle::getHeight(licensePlate); // Get height from file
+    length = Vehicle::getLength(licensePlate); // Get length from file
   }
 
-  // Step 5: write the new vehicle record if it does not already exist
-  // Ask user if this is a special vehicle, and prompt for input if yes
-  char isSpecial;
-  cout << "Is this a special vehicle? (y/n): y" << endl;
-  cin >> isSpecial;
-  double height, length;
-  if (isSpecial == 'y' || isSpecial == 'Y')
+  else
   {
-    // Prompt user for vehicle dimensions
-    cout << "Enter height (in meters): ";
-    cin >> height;
-    cout << "Enter length (in meters): ";
-    cin >> length;
+    // Step 5: write the new vehicle record if it does not already exist
+    // Ask user if this is a special vehicle, and prompt for input if yes
+    char isSpecialInput;
 
-    // Validate dimensions
-    /*
-    Height: Special vehicle height max 9.9 meters. Range 2.1 to 9.9m. Precision 0.1
-    Length: Special vehicle length max 99.9 meters. Range 7.1 to 99.9m. Precision 0.1
-    */
-    if (height < 2.1 || height > 9.9 || length < 7.1 || length > 99.9)
+    cout << "Is this a special vehicle? (y/n): y" << endl;
+    cin >> isSpecialInput;
+
+    if (isSpecialInput == 'y' || isSpecialInput == 'Y')
     {
-      cout << "Invalid height or length for special vehicle." << endl;
-      return false; // Invalid height or length
+      isSpecial = true;
+      // Prompt user for vehicle dimensions
+      cout << "Enter height (in meters): ";
+      cin >> height;
+      cout << "Enter length (in meters): ";
+      cin >> length;
+      // Validate dimensions
+      /*
+      Height: Special vehicle height max 9.9 meters. Range 2.1 to 9.9m. Precision 0.1
+      Length: Special vehicle length max 99.9 meters. Range 7.1 to 99.9m. Precision 0.1
+      */
+      if (height < 2.1 || height > 9.9 || length < 7.1 || length > 999.9)
+      {
+        cout << "Invalid height or length for special vehicle." << endl;
+        return false; // Invalid height or length
+      }
+
+      // Prompt for phone number
+      cout << "Enter Customer Phone Number (format: 14 characters):" << endl;
+      cin >> phone;
+
+      // Validate phone number format
+      if (phone.length() > 13)
+      {
+        cout << "Invalid phone number format. Must be max 14 digits." << endl;
+        return false;
+      }
     }
 
-    // Prompt for phone number
-    string phone;
-    cout << "Enter Customer Phone Number (format: 14 characters):7781234567" << endl;
-    cin >> phone;
-
-    // Validate phone number format
-    if (phone.length() != 14)
+    else
     {
-      cout << "Invalid phone number format. Must be 14 digits." << endl;
-      return false;
+      height = 2.0; // Default height for regular vehicles
+      length = 7.0; // Default length for regular vehicles
     }
 
     // Write special vehicle record to file
     Vehicle::writeVehicle(licensePlate, phone, height, length);
   }
-  else
-  {
-    // Write regular vehicle with default height and length
-    Vehicle::writeVehicle(licensePlate, "", 2.0, 7.0); // Default values
-  }
 
   // Step 6: check if sailing has space available for this new reservation
-  /*
-  Compound conditional determines whether to use LCLL or HCLL space:
-  - If regular vehicle → LCLL
-  - If special or LCLL is full → HCLL
-  */
-  if (!Sailing::isSpaceAvailable(sailingId, isSpecial == 'y' || isSpecial == 'Y', length, height))
+  if (Sailing::isSpaceAvailable(sailingId, isSpecial, length, height) == false)
   {
     cout << "No space available on sailing." << endl;
-    return false; // No space available
+    return false;  // No space available
   }
 
   // Step 7: Reduce the space available, if reservation is successful
   // Adjusts space based on vehicle type (high ceiling or low ceiling)
-  Sailing::reduceSpace(sailingId, length, isSpecial == 'y' || isSpecial == 'Y');
+  Sailing::reduceSpace(sailingId, length, isSpecial);
 }
 
 //************************************************************
@@ -218,7 +217,7 @@ bool OtherControls::createVessel(string &vesselName, int HCLL, int LCLL)
   else
   {
     // Step 3: Create a new vessel record
-    Vessel newVessel(vesselName, HCLL, LCLL);                 // Create Vessel object
+    Vessel newVessel(vesselName, HCLL, LCLL); // Create Vessel object
     if (!Util::vesselFile.is_open())
     {
       cout << "Error opening vessel file for writing." << endl;
@@ -226,8 +225,7 @@ bool OtherControls::createVessel(string &vesselName, int HCLL, int LCLL)
     }
     else
     {
-      return Vessel::writeVessel(vesselName, HCLL, LCLL);// Save record{
-      
+      return Vessel::writeVessel(vesselName, HCLL, LCLL); // Save record{
     }
   }
 };
