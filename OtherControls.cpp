@@ -62,7 +62,7 @@ bool OtherControls::createReservation(string &phoneNumber, string &sailingId, st
 
   // Step 4: check if vehicle exists
   // Check if vehicle is known from license plate
-  double height, length;
+  float height, length;
 
   bool isSpecial = false;
 
@@ -71,6 +71,7 @@ bool OtherControls::createReservation(string &phoneNumber, string &sailingId, st
     // Vehicle exists, fetch its details
     height = Vehicle::getHeight(licensePlate); // Get height from file
     length = Vehicle::getLength(licensePlate); // Get length from file
+    cout << "This vehicle exists, no need to ask user for further data" << endl;
   }
 
   else
@@ -147,26 +148,21 @@ bool OtherControls::createReservation(string &phoneNumber, string &sailingId, st
 bool OtherControls::deleteReservation(string &license, string &sailingId) // Deletes all reservations for a sailing, in: sailingId
 {
   // Step 2: check if reservation exists
-  if (!Reservation::checkExist(sailingId, license))
+  if (Reservation::checkExist(sailingId, license) == false)
   {
     cout << "Reservation not found in the system." << endl;
     return false;
   }
+  
 
   // Step 3: get length from the vehicle
   Vehicle vehicle;
-  int length = vehicle.getLength(license); // Fetch vehicle length from file using license key
+  float length = vehicle.getLength(license); // Fetch vehicle length from file using license key
 
   // Step 4: remove the reservation record from the reservation file
-  if (!Reservation::removeReservation(sailingId, license))
+  if (Reservation::removeReservation(sailingId, license) == false)
   {
-    // Failed to remove reservation
-    return false;
-  }
-  else
-  {
-    // Reservation deletion successful
-    return true;
+    return false; // Failed to remove reservation
   }
 
   // Step 5: add the space back to the sailing
@@ -174,7 +170,9 @@ bool OtherControls::deleteReservation(string &license, string &sailingId) // Del
   NOTE: This line is unreachable due to return statements above.
   If space restoration is needed, consider moving this before return.
   */
-  Sailing::addSpace(sailingId, length);
+  cout << "Now adding space back to sailing: " << sailingId << endl;
+  // Sailing::addSpace(sailingId, length);
+  return true;
 };
 
 //************************************************************

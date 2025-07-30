@@ -194,7 +194,7 @@ void UI::displayDeleteMenu()
         {
             string sailingId = getInput("Enter Sailing ID (format: xxx-dd-hh): ");
             string license = getInput("Enter License (max: 10): ");
-            string cont = getInput("This will delete all reservations on this sailing. Continue? [y/n]: ");
+            string cont = getInput("Are you sure you want to delete this reservation? [y/n]: ");
             if (cont[0] == 'y' || cont[0] == 'Y')
             {
                 if (OtherControls::deleteReservation(license, sailingId))

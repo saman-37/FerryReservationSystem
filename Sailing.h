@@ -17,15 +17,15 @@ using namespace std;
 class Sailing
 {
 public:
-    static const int SAILING_ID_LENGTH = 9; // Length of sailing ID (8 chars + null terminator)
+    static const int SAILING_ID_LENGTH = 9;   // Length of sailing ID (8 chars + null terminator)
     static const int VESSEL_NAME_LENGTH = 25; // Length of vessel name (24 chars + null terminator)
     static const int RECORD_SIZE = SAILING_ID_LENGTH + VESSEL_NAME_LENGTH + sizeof(double) * 3;
     // Total size of binary record: ID, vesselName, HRL, LRL (plus padding if any)
 
-    char sailingId[SAILING_ID_LENGTH + 1]; // +1 for null terminator
+    char sailingId[SAILING_ID_LENGTH + 1];   // +1 for null terminator
     char vesselName[VESSEL_NAME_LENGTH + 1]; // +1 for null terminator
-    double HRL; // High-ceiling remaining lane length
-    double LRL; // Low-ceiling remaining lane length
+    double HRL;                              // High-ceiling remaining lane length
+    double LRL;                              // Low-ceiling remaining lane length
 
     Sailing(); // Default constructor
 
@@ -35,7 +35,7 @@ public:
     // in: sailingId, vesselName, HRL, LRL
     // Initializes a sailing record with given parameters.
     //************************************************************
-    Sailing(const char* sailingId, const char* vesselName, double HRL, double LRL);
+    Sailing(const char *sailingId, const char *vesselName, double HRL, double LRL);
 
     //************************************************************
     // writeToFile
@@ -131,7 +131,7 @@ public:
     // in: sailingId, vehicleLength, isSpecial
     // out: true if there’s enough HRL or LRL for the vehicle
     //************************************************************
-    static bool isSpaceAvailable(const string &sailingId, double vehicleLength, bool isSpecial);
+    static bool isSpaceAvailable(const string &sailingId, bool isSpecial, float vehicleLength, float vehicleHeight);
 
     //************************************************************
     // reduceSpace
@@ -139,7 +139,7 @@ public:
     // Deducts reserved vehicle length from LRL or HRL
     // in-out: modifies sailing.dat
     //************************************************************
-    static void reduceSpace(const string &sailingId, double vehicleLength, bool isSpecial);
+    static void reduceSpace(const string &sailingId, float vehicleLength, bool isSpecial);
 
     //************************************************************
     // addSpace
@@ -147,7 +147,7 @@ public:
     // Adds back vehicle length (used when canceling reservation)
     // in-out: modifies sailing.dat
     //************************************************************
-    static void addSpace(const string &sailingId, double vehicleLength);
+    static void addSpace(const string &sailingId, float vehicleLength);
 
     //************************************************************
     // getHRL

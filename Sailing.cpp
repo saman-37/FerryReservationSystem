@@ -17,6 +17,13 @@
 
 using namespace std;
 
+//PLEASE ADD "addSpace" !!
+void addSpace(const string &sailingId, float vehicleLength){
+    //here added space back
+    cout << "Adding space back to sailing: " << sailingId << endl;
+}
+
+
 //************************************************************
 // Default Constructor
 // Initializes all fields to zero or empty string
@@ -234,7 +241,7 @@ bool Sailing::removeSailing(string sailingId)
 // Checks whether a vehicle can be reserved on this sailing
 // depending on height/length and lane space.
 //************************************************************
-bool Sailing::isSpaceAvailable(const string &sailingId, bool isSpecial, double vehicleLength, double vehicleHeight)
+bool Sailing::isSpaceAvailable(const string &sailingId, bool isSpecial, float vehicleLength, float vehicleHeight)
 {
     Util::sailingFile.clear();
     Util::sailingFile.seekg(0, ios::beg);
@@ -262,7 +269,7 @@ bool Sailing::isSpaceAvailable(const string &sailingId, bool isSpecial, double v
 // reduceSpace()
 // Deducts reserved vehicle length from LCLL or HRL
 //************************************************************
-void Sailing::reduceSpace(const string &sailingId, double vehicleLength, bool isSpecial)
+void Sailing::reduceSpace(const string &sailingId, float vehicleLength, bool isSpecial)
 {
     Util::sailingFile.clear();
     Util::sailingFile.seekg(0, ios::beg);
