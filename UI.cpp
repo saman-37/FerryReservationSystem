@@ -29,10 +29,12 @@ UI::UI()
 void UI::userInterface()
 {
     int choice;
+
+    displayMainMenu();            // Show main menu options
+    choice = getUserChoice(0, 5); // Get validated choice between 0 and 5
     do
     {
-        displayMainMenu();            // Show main menu options
-        choice = getUserChoice(0, 5); // Get validated choice between 0 and 5
+
         switch (choice)
         {
         case 1:
