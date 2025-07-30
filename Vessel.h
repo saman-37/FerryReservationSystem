@@ -17,7 +17,6 @@ class Vessel
 {
 public:
     static const int NAME_LENGTH = 25;                            // Length of the vessel name
-    static const int RECORD_SIZE = NAME_LENGTH + sizeof(int) * 2; // Size of the record in bytes
 
     char vesselName[NAME_LENGTH + 1]; // +1 for null terminator
     int HCLL;                      // High Capacity Lane Length

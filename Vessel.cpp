@@ -15,6 +15,8 @@
 #include <sstream>
 using namespace std;
 
+const int RECORD_SIZE = sizeof(Vessel); 
+
 //************************************************************
 // Default Constructor
 // Initializes the vessel with default values
@@ -83,20 +85,20 @@ bool Vessel::checkExist(const string &vesselName)
         cout << "Error opening vessel file." << endl;
         return false;
     }
-    cout << "Lets check for the existing vessel!!" <<endl;
+
     Util::vesselFile.clear();
     Util::vesselFile.seekg(0, ios::beg);
 
     Vessel vessel;
-    while (Util::vesselFile.read(reinterpret_cast<char *>(&vessel), sizeof(vessel)))
+    while (Util::vesselFile.read(reinterpret_cast<char *>(&vessel), RECORD_SIZE))
     {
         if (strcmp(vessel.vesselName, vesselName.c_str()) == 0)
         {
             cout << "Vessel existing: " << vessel.vesselName << endl;
-            return true; // Vessel found
+            return false; // Vessel found end here
         }
     }
-    return false; // Not found
+    return true; // Not found, safe to create new vessel
 }
 
 //************************************************************
