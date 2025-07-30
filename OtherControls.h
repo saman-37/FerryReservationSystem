@@ -34,7 +34,7 @@ public:
     // out: returns true if reservation successfully made
     // Note: phoneNumber parameter is currently unused in implementation
     //************************************************************
-    static bool createReservation(int phoneNumber, string &sailingId, string &licensePlate);
+    static bool createReservation(string &phoneNumber, string &sailingId, string &licensePlate);
 
     //************************************************************
     // createVessel
