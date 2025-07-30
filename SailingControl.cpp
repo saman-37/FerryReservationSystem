@@ -37,15 +37,14 @@ bool SailingControl::createSailing(const string& sailingId, const string& vessel
         cout << "Sailing already exists." << endl;
         return false;
     }
-
-    Vessel vessel;
-    if (!vessel.checkExist(vesselName)) {
+    cout<<"out of check exist";
+    if (!Vessel::checkExist(vesselName)) {
         cout << "Vessel does not exist." << endl;
         return false;
     }
 
-    int hcll = vessel.getHCLL(vesselName);
-    int lcll = vessel.getLCLL(vesselName);
+    int hcll = Vessel::getHCLL(vesselName);
+    int lcll = Vessel::getLCLL(vesselName);
 
     return Sailing::writeSailing(const_cast<string&>(sailingId),
                                  const_cast<string&>(vesselName),
@@ -62,7 +61,7 @@ bool SailingControl::createSailing(const string& sailingId, const string& vessel
 bool SailingControl::deleteSailing(const string& sailingId) {
     if (Sailing::checkExist(sailingId)) {
         Reservation reservation;
-        reservation.removeReservationsOnSailing(sailingId);
+        // reservation.removeReservationsOnSailing(sailingId);
         return Sailing::removeSailing(sailingId);
     } else {
         return false;
