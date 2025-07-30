@@ -29,10 +29,12 @@ UI::UI()
 void UI::userInterface()
 {
     int choice;
+
+    displayMainMenu();            // Show main menu options
+    choice = getUserChoice(0, 5); // Get validated choice between 0 and 5
     do
     {
-        displayMainMenu();            // Show main menu options
-        choice = getUserChoice(0, 5); // Get validated choice between 0 and 5
+
         switch (choice)
         {
         case 1:
@@ -46,17 +48,18 @@ void UI::userInterface()
             choice = getUserChoice(0, 5); // Get validated choice between 0 and 5
             break;
         case 3:
-            CheckInVehicle();             // Call check-in process
-            displayMainMenu();            // Show main menu options
-            choice = getUserChoice(0, 5); // Get validated choice between 0 and 5
-            break;
-        case 4:
             displayQuery();               // Query sailing info
             displayMainMenu();            // Show main menu options
             choice = getUserChoice(0, 5); // Get validated choice between 0 and 5
             break;
-        case 5:
+            
+        case 4:
             displaySailingReport();       // Show sailing report
+            displayMainMenu();            // Show main menu options
+            choice = getUserChoice(0, 5); // Get validated choice between 0 and 5
+            break;
+        case 5:
+            CheckInVehicle();             // Call check-in process
             displayMainMenu();            // Show main menu options
             choice = getUserChoice(0, 5); // Get validated choice between 0 and 5
             break;
