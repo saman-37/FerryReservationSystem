@@ -48,12 +48,13 @@ void UI::userInterface()
             choice = getUserChoice(0, 5); // Get validated choice between 0 and 5
             break;
         case 3:
-            displaySailingReport();       // Show sailing report
+            displayQuery();               // Query sailing info
             displayMainMenu();            // Show main menu options
             choice = getUserChoice(0, 5); // Get validated choice between 0 and 5
             break;
+            
         case 4:
-            displayQuery();               // Query sailing info
+            displaySailingReport();       // Show sailing report
             displayMainMenu();            // Show main menu options
             choice = getUserChoice(0, 5); // Get validated choice between 0 and 5
             break;
