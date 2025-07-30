@@ -48,7 +48,7 @@ void UI::userInterface()
             choice = getUserChoice(0, 5); // Get validated choice between 0 and 5
             break;
         case 3:
-            CheckInVehicle();             // Call check-in process
+            displaySailingReport();       // Show sailing report
             displayMainMenu();            // Show main menu options
             choice = getUserChoice(0, 5); // Get validated choice between 0 and 5
             break;
@@ -58,7 +58,7 @@ void UI::userInterface()
             choice = getUserChoice(0, 5); // Get validated choice between 0 and 5
             break;
         case 5:
-            displaySailingReport();       // Show sailing report
+            CheckInVehicle();             // Call check-in process
             displayMainMenu();            // Show main menu options
             choice = getUserChoice(0, 5); // Get validated choice between 0 and 5
             break;
