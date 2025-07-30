@@ -33,7 +33,7 @@ SailingControl::SailingControl() {
 // out: true if creation succeeded, false otherwise
 //************************************************************
 bool SailingControl::createSailing(const string& sailingId, const string& vesselName) {
-    if (Sailing::checkExist(const_cast<string&>(sailingId))) {
+    if (Sailing::checkExist(sailingId)) {
         cout << "Sailing already exists." << endl;
         return false;
     }

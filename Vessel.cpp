@@ -89,7 +89,6 @@ bool Vessel::checkExist(const string &vesselName)
             vessel.readFromFile(Util::vesselFile);
             if (strcmp(vessel.vesselName, vesselName.c_str()) == 0)
             {
-                cout << "Vessel existing: " << vessel.vesselName << endl;
                 return true; // Vessel found end here
             }
         }
@@ -124,8 +123,8 @@ string Vessel::toString() const
 {
     stringstream ss;
     ss << "Vessel Name: " << vesselName
-       << ", High Capacity Lane Length (HCLL): " << HCLL << "m"
-       << ", Low Capacity Lane Length (LCLL): " << LCLL << "m";
+       << "\n High Capacity Lane Length (HCLL): " << HCLL << "m"
+       << "\n Low Capacity Lane Length (LCLL): " << LCLL << "m";
     return ss.str();
 }
 
@@ -142,21 +141,28 @@ string Vessel::getName() const
 //************************************************************
 int Vessel::getHCLL(const string &vesselName) const
 {
+    if (!Util::vesselFile.is_open()) {
+        cout << "Error: vessel file not open.\n";
+        return -1;
+    }
+
     Util::vesselFile.clear();
     Util::vesselFile.seekg(0, ios::beg);
 
     Vessel v;
-    while (Util::vesselFile.eof())
+    while (true)
     {
         v.readFromFile(Util::vesselFile);
+        if (Util::vesselFile.eof() || Util::vesselFile.gcount() == 0) break;
+        
         if (strcmp(v.vesselName, vesselName.c_str()) == 0)
         {
-            cout <<"\n HCLL printed: " << v.HCLL << endl;
+            cout << "\nFound vessel: " << v.vesselName;
+            cout << "\nHCLL: " << v.HCLL << endl;
             return v.HCLL;
 
         }
     }
-
     return -1; // Not found
 }
 
@@ -169,11 +175,16 @@ int Vessel::getLCLL(const string &vesselName) const
     Util::vesselFile.seekg(0, ios::beg);
 
     Vessel v;
-    while (Util::vesselFile.read(reinterpret_cast<char *>(&v), RECORD_SIZE))
+    while (true)
     {
+        v.readFromFile(Util::vesselFile);
+
+        if (Util::vesselFile.eof() || Util::vesselFile.gcount() == 0) break;
+
         if (strcmp(v.vesselName, vesselName.c_str()) == 0)
         {
-            cout <<"\n LCLL printed: " << v.LCLL << endl;
+            cout << "\nFound vessel: " << v.vesselName;
+            cout << "\nLCLL: " << v.LCLL << endl;
             return v.LCLL;
         }
     }
