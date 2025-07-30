@@ -15,8 +15,6 @@
 #include <sstream>
 using namespace std;
 
-const int RECORD_SIZE = sizeof(Vessel); 
-
 //************************************************************
 // Default Constructor
 // Initializes the vessel with default values
@@ -25,8 +23,8 @@ Vessel::Vessel()
 {
     strncpy(vesselName, "", NAME_LENGTH); // Initialize vesselName to empty string
     vesselName[NAME_LENGTH] = '\0';       // Null-terminate
-    HCLL = 3600.0;                        // Default High Capacity Lane Length
-    LCLL = 3600.0;                        // Default Low Capacity Lane Length
+    HCLL = 3600;                        // Default High Capacity Lane Length
+    LCLL = 3600;                        // Default Low Capacity Lane Length
 }
 
 //************************************************************
@@ -80,25 +78,28 @@ void Vessel::readFromFile(fstream &file)
 //************************************************************
 bool Vessel::checkExist(const string &vesselName)
 {
-    if (!Util::vesselFile.is_open())
+    if (Util::vesselFile.is_open())
     {
+        Util::vesselFile.clear();
+        Util::vesselFile.seekg(0, ios::beg);
+
+        Vessel vessel;
+        while (!Util::vesselFile.eof())
+        {
+            vessel.readFromFile(Util::vesselFile);
+            if (strcmp(vessel.vesselName, vesselName.c_str()) == 0)
+            {
+                cout << "Vessel existing: " << vessel.vesselName << endl;
+                return true; // Vessel found end here
+            }
+        }
+        return false; // Not found, safe to create new vessel
+
+    } else {
         cout << "Error opening vessel file." << endl;
         return false;
     }
 
-    Util::vesselFile.clear();
-    Util::vesselFile.seekg(0, ios::beg);
-
-    Vessel vessel;
-    while (Util::vesselFile.read(reinterpret_cast<char *>(&vessel), RECORD_SIZE))
-    {
-        if (strcmp(vessel.vesselName, vesselName.c_str()) == 0)
-        {
-            cout << "Vessel existing: " << vessel.vesselName << endl;
-            return false; // Vessel found end here
-        }
-    }
-    return true; // Not found, safe to create new vessel
 }
 
 //************************************************************
@@ -139,14 +140,15 @@ string Vessel::getName() const
 //************************************************************
 // Getter for HCLL based on vessel name
 //************************************************************
-double Vessel::getHCLL(const string &vesselName) const
+int Vessel::getHCLL(const string &vesselName) const
 {
     Util::vesselFile.clear();
     Util::vesselFile.seekg(0, ios::beg);
 
     Vessel v;
-    while (Util::vesselFile.read(reinterpret_cast<char *>(&v), RECORD_SIZE))
+    while (Util::vesselFile.eof())
     {
+        v.readFromFile(Util::vesselFile);
         if (strcmp(v.vesselName, vesselName.c_str()) == 0)
         {
             cout <<"\n HCLL printed: " << v.HCLL << endl;
@@ -155,15 +157,13 @@ double Vessel::getHCLL(const string &vesselName) const
         }
     }
 
-    //cout <<  "\nHCLL: " << HCLL <<endl;
-
     return -1; // Not found
 }
 
 //************************************************************
 // Getter for LCLL based on vessel name
 //************************************************************
-double Vessel::getLCLL(const string &vesselName) const
+int Vessel::getLCLL(const string &vesselName) const
 {
     Util::vesselFile.clear();
     Util::vesselFile.seekg(0, ios::beg);

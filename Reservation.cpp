@@ -228,6 +228,7 @@ bool Reservation::checkExist(const string &sailingId, const string &license)
     else
     {
         cout << "Error opening file for reading." << endl;
+        return false;
     }
 }
 
