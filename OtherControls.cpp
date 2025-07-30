@@ -16,7 +16,9 @@
 #include <iostream>
 using namespace std;
 
-Vessel vessel; // Global instance of Vessel to be used in createVessel function
+Vessel vessel; // Global instance of Vessel 
+Sailing sailing;  //Global instance of Sailing 
+Reservation reservation; //Global instance of Reservation
 
 //************************************************************
 // Default constructor for OtherControls class
@@ -42,9 +44,8 @@ bool OtherControls::createReservation(int phoneNumber, string &sailingId, string
 {
   // Step 2: check if sailing exists
   // Created a sailing instance; pass it by reference so it can be filled with file data if found
-  Sailing foundSailing;
-  Reservation reservation; // Reservation instance to be used later
-  if (Sailing::searchForSailing(sailingId, foundSailing))
+
+  if (Sailing::searchForSailing(sailingId, sailing))
   {
     // Sailing found, and foundSailing contains it
   }
