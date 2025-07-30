@@ -34,8 +34,8 @@ public:
     string toString() const;                                        // out: string
 
     string getName() const;                              // out: vesselName
-    int getHCLL(const std::string &vesselName) const; // out: HCLL
-    int getLCLL(const std::string &vesselName) const; // out: LCLL
+    static int getHCLL(const std::string &vesselName) ; // out: HCLL
+    static int getLCLL(const std::string &vesselName) ; // out: LCLL
 
-    int getCapacity(const std::string &vesselName) const; // returns the ssum of HCLL and LCLL as capacity of the vessel
+    static int getCapacity(const std::string &vesselName); // returns the ssum of HCLL and LCLL as capacity of the vessel
 };

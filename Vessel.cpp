@@ -141,7 +141,7 @@ string Vessel::getName() const
 //************************************************************
 // Getter for HCLL based on vessel name
 //************************************************************
-int Vessel::getHCLL(const string &vesselName) const
+int Vessel::getHCLL(const string &vesselName) 
 {
     if (!Util::vesselFile.is_open()) {
         cout << "Error: vessel file not open.\n";
@@ -171,7 +171,7 @@ int Vessel::getHCLL(const string &vesselName) const
 //************************************************************
 // Getter for LCLL based on vessel name
 //************************************************************
-int Vessel::getLCLL(const string &vesselName) const
+int Vessel::getLCLL(const string &vesselName) 
 {
     Util::vesselFile.clear();
     Util::vesselFile.seekg(0, ios::beg);
@@ -196,7 +196,8 @@ int Vessel::getLCLL(const string &vesselName) const
 //************************************************************
 // Calculates and returns total capacity (HCLL + LCLL)
 //************************************************************
-int Vessel::getCapacity(const string &vesselName) const
+int Vessel::getCapacity(const string &vesselName) 
 {
-    return HCLL + LCLL;
+    
+    return getHCLL(vesselName) + getLCLL(vesselName);
 }

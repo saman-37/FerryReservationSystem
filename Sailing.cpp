@@ -146,20 +146,25 @@ Sailing Sailing::getSailingInfo(const string &sailingId)
 //************************************************************
 bool Sailing::checkExist(string sailingId)
 {
+    cout<<"Entered check exist"<<endl;
     if (Util::sailingFile.is_open())
     {
+        cout<<"sailingfile open"<<endl;
         Util::sailingFile.clear();
         Util::sailingFile.seekg(0, ios::beg);
 
         Sailing sailing;
         while (!Util::sailingFile.eof())
         {
+            cout<<"reading through sailing file"<<endl;
             sailing.readFromFile(Util::sailingFile);
             if (strcmp(sailing.sailingId, sailingId.c_str()) == 0)
             {
+                cout<<"Sailing Found"<<endl;
                 return true; // Vessel found end here
             }
         }
+        cout<<"sailing not found"<<endl;
         return false; // Not found, safe to create new vessel
 
     } else {
