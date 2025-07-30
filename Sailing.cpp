@@ -178,7 +178,7 @@ bool Sailing::writeSailing(std::string &sailingId, std::string &vesselName, doub
     Util::sailingFile.clear();
     Util::sailingFile.seekg(0, ios::end);
     sailing.writeToFile(Util::sailingFile);
-    Util::vesselFile.flush();             // Save to disk
+    Util::sailingFile.flush();             // Save to disk
     return true;
 }
 
