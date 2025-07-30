@@ -37,5 +37,5 @@ public:
     int getHCLL(const std::string &vesselName) const; // out: HCLL
     int getLCLL(const std::string &vesselName) const; // out: LCLL
 
-    int getCapacity() const; // returns the ssum of HCLL and LCLL as capacity of the vessel
+    int getCapacity(const std::string &vesselName) const; // returns the ssum of HCLL and LCLL as capacity of the vessel
 };

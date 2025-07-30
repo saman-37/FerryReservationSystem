@@ -112,6 +112,7 @@ bool Vessel::writeVessel(const string &VesselName, int HCLL, int LCLL)
     Util::vesselFile.clear();             // Clear file flags
     Util::vesselFile.seekg(0, ios::end);  // Move to end
     vessel.writeToFile(Util::vesselFile); // Write vessel
+    cout << vessel.toString() << endl;
     Util::vesselFile.flush();             // Save to disk
     return true;
 }
@@ -124,7 +125,8 @@ string Vessel::toString() const
     stringstream ss;
     ss << "Vessel Name: " << vesselName
        << "\n High Capacity Lane Length (HCLL): " << HCLL << "m"
-       << "\n Low Capacity Lane Length (LCLL): " << LCLL << "m";
+       << "\n Low Capacity Lane Length (LCLL): " << LCLL << "m"
+       << "\n Total Capacity: " << HCLL + LCLL << "m";
     return ss.str();
 }
 
@@ -194,7 +196,7 @@ int Vessel::getLCLL(const string &vesselName) const
 //************************************************************
 // Calculates and returns total capacity (HCLL + LCLL)
 //************************************************************
-int Vessel::getCapacity() const
+int Vessel::getCapacity(const string &vesselName) const
 {
     return HCLL + LCLL;
 }
