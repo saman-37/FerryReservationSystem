@@ -75,8 +75,9 @@ public:
     //************************************************************
     // Mark Reservation as Checked In
     //************************************************************
-    static void setCheckedIn(const string &license, const string &sailingId); 
-                  // in: sailingId, license
+    static void setCheckedIn(const string &license); // in: sailingId, license
+
+    static float calculateFare(const string &license); // Calculates fare based on vehicle type and sailing
     //************************************************************
     // Format Reservation Record as Readable String
     //************************************************************

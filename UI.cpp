@@ -235,6 +235,7 @@ void UI::CheckInVehicle()
         cout << "Vehicle with license plate " << licensePlate << " has been successfully checked in." << endl;
     else
         cout << "Failed to check in vehicle with license plate " << licensePlate << "." << endl;
+    
 }
 
 //************************************************************

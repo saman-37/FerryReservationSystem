@@ -19,6 +19,7 @@ public:
     static void startup();  // Initializes the system (e.g., opens data files)
     static void shutdown(); // Gracefully closes resources/files
     static void reset();    // Resets system data (e.g., clears files)
+    static bool truncate(const std::string &filename, std::streamoff newSize);
 
     // Shared static file handles
     static std::fstream vesselFile;

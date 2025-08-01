@@ -90,14 +90,16 @@ bool Vehicle::checkExist(const string &license)
     if (Util::vehicleFile.is_open())
     {
         Util::vehicleFile.clear();
+        // not in good position, so we need to seek to the beginning
         Util::vehicleFile.seekg(0, ios::beg);
 
         Vehicle vehicle;
-        while (Util::vehicleFile.eof() == true)
+        while (Util::vehicleFile.eof() == false)
         {
             cout << "flow went from checkExist to ReadFromFile" << endl;
             vehicle.readFromFile(Util::vehicleFile);
             cout << "Flow came back to checkExist" << endl;
+
             if (strcmp(vehicle.license, license.c_str()) == 0)
             {
                 cout << "Lets compare" << endl;

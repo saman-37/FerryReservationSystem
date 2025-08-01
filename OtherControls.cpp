@@ -148,12 +148,14 @@ bool OtherControls::createReservation(string &phoneNumber, string &sailingId, st
 bool OtherControls::deleteReservation(string &license, string &sailingId) // Deletes all reservations for a sailing, in: sailingId
 {
   // Step 2: check if reservation exists
-  if (Reservation::checkExist(sailingId, license) == false)
-  {
-    cout << "Reservation not found in the system." << endl;
-    return false;
-  }
-  
+
+  // NOT RIGHTLY WORKING, SO COMMENTED FOR NOW
+
+  // if (Reservation::checkExist(sailingId, license) == false)
+  // {
+  //   cout << "Reservation not found in the system." << endl;
+  //   return false;
+  // }
 
   // Step 3: get length from the vehicle
   Vehicle vehicle;
@@ -189,7 +191,7 @@ bool OtherControls::checkIn(string &licensePlate, string &sailingId) // Checks i
   }
 
   // Step 2: Set the reservation as checked in
-  Reservation::setCheckedIn(sailingId, licensePlate);
+  Reservation::setCheckedIn(sailingId);
 
   return true; // Successfully checked in
 };
