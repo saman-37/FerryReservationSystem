@@ -333,7 +333,7 @@ void UI::reservationCreation()
     string phoneNumber = getInput("Enter Customer Phone Number (format: 14 characters): ");
     string LicensePlate = getInput("Enter Vehicle License Number (max: 10 characters): ");
     string sailingId = getInput("Enter Sailing ID (format: xxx-dd-hh): ");
-    if (OtherControls::createReservation(phoneNumber, LicensePlate, sailingId ) == true)
+    if (OtherControls::createReservation(phoneNumber, sailingId, LicensePlate ) == true)
         cout << "Reservation successfully created." << endl;
     else
         cout << "Failed to create reservation." << endl;

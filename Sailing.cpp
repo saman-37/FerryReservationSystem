@@ -99,11 +99,10 @@ void Sailing::writeToFile(fstream &file) const
 //************************************************************
 void Sailing::readFromFile(fstream &file)
 {
-    cout << "in readFromFile\n";
     if (file.is_open())
     {
-        file.read(sailingId, SAILING_ID_LENGTH + 1);            // Read sailingID
-        file.read(vesselName, VESSEL_NAME_LENGTH + 1);          // read vesselName
+        file.read(sailingId, sizeof(sailingId));            // Read sailingID
+        file.read(vesselName, sizeof(vesselName));          // read vesselName
         file.read(reinterpret_cast<char *>(&HRL), sizeof(int)); // read HRL
         file.read(reinterpret_cast<char *>(&LRL), sizeof(int)); // read LRL
         cout << "sailing id: " << sailingId << " vesselName: " << vesselName << " HRL: " << HRL << " LRL: " << LRL << endl;
@@ -167,23 +166,17 @@ Sailing Sailing::getSailingInfo(const string &sailingId)
 //************************************************************
 bool Sailing::checkExist(string sailingId)
 {
-    //cout << "Entered check exist" << endl;
     if (Util::sailingFile.is_open())
     {
-        //cout << "sailingfile open" << endl;
         Util::sailingFile.clear();
         Util::sailingFile.seekg(0, ios::beg);
 
         Sailing sailing;
         while (!Util::sailingFile.eof())
         {
-            //cout << "reading through sailing file" << endl;
             sailing.readFromFile(Util::sailingFile);
-            cout << "sailingId on file: " << sailing.sailingId 
-            << "\n Our sailingId: " << sailingId.c_str() << endl;
             if (strcmp(sailing.sailingId, sailingId.c_str()) == 0)
             {
-                //cout << "Sailing Found" << endl;
                 return true; // Vessel found end here
             }
         }

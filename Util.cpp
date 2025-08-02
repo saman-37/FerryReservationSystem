@@ -61,7 +61,7 @@ void Util::startup()
         reservationFile.open("reservation.dat", ios::in | ios::out | ios::binary); // Reopen for reading and writing
     }
 
-    vehicleFile.open("vehicel.dat", ios::in | ios::out | ios::binary); // Open vehicle file
+    vehicleFile.open("vehicle.dat", ios::in | ios::out | ios::binary); // Open vehicle file
     if (!vehicleFile.is_open())
     {                                                                      // Check if the file is open
         vehicleFile.clear();                                               // Clear any error flags

@@ -85,7 +85,7 @@ void Reservation::writeToFile(fstream &file) const
 bool Reservation::writeReservation(const string &license, const string &sailingId)
 {
     cout << "Entered the writeReservation" << endl;
-
+// const string &license, const string &phone, float height, float length
     Reservation reservation(license, sailingId, false); // onBoard = false
     Util::reservationFile.clear();                      // Clear file flags
     Util::reservationFile.seekg(0, ios::end);           // Move to end
@@ -142,6 +142,8 @@ bool Reservation::checkExist(const string &license, const string &sailingId)
     while (!Util::reservationFile.eof())
     {
         reservation.readFromFile(Util::reservationFile);
+        cout << "LICENSE: " << reservation.license << "license: " << license.c_str() 
+        << "\nSAILINGID: " << reservation.sailingId << "sailingID" << sailingId.c_str() << endl;
         if (strncmp(reservation.license, license.c_str(), LICENSE_LENGTH) == 0 &&
             strncmp(reservation.sailingId, sailingId.c_str(), SAILING_ID_LENGTH) == 0)
         {
@@ -209,67 +211,71 @@ bool Reservation::removeReservation(const string &license, const string &sailing
     cout << "Entered the removeReservation." << endl;
     // For Debugging
     // cout << "The CONTENTS before deleting reservation are: " << endl;
+    
+    if (!Util::reservationFile.is_open()) {
+        cout << "Reservation File is not open." << endl;
+        return false;
+    }
+    
     Reservation reservation;
-    while (!Util::reservationFile.eof())
+    Util::reservationFile.clear();
+    Util::reservationFile.seekg(0, ios::beg); // move read pointer to beginning
+
+    streampos currentPos;
+    streampos matchPos = -1;
+    
+    //Step1. Find Matching record
+    while (Util::reservationFile.read(reinterpret_cast<char *>(&reservation), RECORD_SIZE))
     {
-        reservation.readFromFile(Util::reservationFile);
-    }
+        currentPos = Util::reservationFile.tellg() - static_cast<streamoff>(RECORD_SIZE);
 
-    if (Util::reservationFile.is_open())
-    {
-        Util::reservationFile.clear();
-        Util::reservationFile.seekg(0, ios::beg); // move read pointer to beginning
-
-        streampos matchPos = -1;
-        streampos currentPos;
-
-        while (Util::reservationFile.read(reinterpret_cast<char *>(&reservation), RECORD_SIZE))
+        if (strcmp(reservation.license, license.c_str()) == 0 &&
+        strcmp(reservation.sailingId, sailingId.c_str()) == 0)
         {
-            if (strcmp(reservation.license, license.c_str()) == 0 &&
-                strcmp(reservation.sailingId, sailingId.c_str()) == 0)
-            {
-                matchPos = Util::reservationFile.tellg() - static_cast<streamoff>(RECORD_SIZE);
-                break;
-            }
-        }
-
-        if (matchPos != -1)
-        {
-            // Step 1: Get last record
-            Util::reservationFile.clear();
-            Util::reservationFile.seekg(0, ios::end);
-            streamoff fileSize = Util::reservationFile.tellg();
-            streamoff lastRecordPos = fileSize - RECORD_SIZE;
-
-            if (lastRecordPos == matchPos)
-            {
-                // Deleting last record - no need to overwrite, just truncate
-                Util::reservationFile.close();
-                std::ofstream out("reservations.dat", ios::in | ios::out | ios::binary | ios::trunc);
-                out.close();
-                Util::truncate("reservations.dat", fileSize - RECORD_SIZE);
-                return true;
-            }
-
-            // Step 2: Read last record
-            Util::reservationFile.seekg(lastRecordPos, ios::beg);
-            Reservation lastRecord;
-            Util::reservationFile.read(reinterpret_cast<char *>(&lastRecord), RECORD_SIZE);
-
-            // Step 3: Overwrite matched record with last record
-            Util::reservationFile.seekp(matchPos, ios::beg);
-            Util::reservationFile.write(reinterpret_cast<const char *>(&lastRecord), RECORD_SIZE);
-
-            // Step 4: Truncate file
-            Util::reservationFile.close();
-            Util::truncate("reservations.dat", fileSize - RECORD_SIZE);
-
-            return true;
+            matchPos = currentPos;
+            break;
         }
     }
+    if (matchPos == -1) 
+    {
+        cout<< "matchpos == -1" << endl;
+        return false;
+    }
+
+    //Step2. Determine last record position
+    Util::reservationFile.clear();
+    Util::reservationFile.seekg(0, ios::end);
+    streamoff fileSize = Util::reservationFile.tellg();
+    streamoff lastRecordPos = fileSize - RECORD_SIZE;
+
+    if (matchPos == lastRecordPos)
+    {
+        Util::reservationFile.close();
+        Util::truncate("reservation.dat", lastRecordPos);
+        Util::reservationFile.open("reservation.dat", ios::in | ios::out | ios::binary);
+        return true;
+    }
+
+    //3. Read last record
+    Reservation lastRecord;
+    Util::reservationFile.seekg(lastRecordPos, ios::beg);
+    Util::reservationFile.read(reinterpret_cast<char *>(&lastRecord), RECORD_SIZE);
+
+
+    //4. Overwrite matched record with last record
+    Util::reservationFile.seekp(matchPos, ios::beg);
+    Util::reservationFile.write(reinterpret_cast<const char *>(&lastRecord), RECORD_SIZE);
+
+
+    //5. Truncate the file
+    Util::reservationFile.close();
+    Util::truncate("reservation.dat", fileSize - RECORD_SIZE);
+    Util::reservationFile.open("reservation.dat", ios::in | ios::out | ios::binary);
+
+    return true;
 
     // cout << "The CONTENTS after deleting reservation are: " << endl;
-
+    
     while (!Util::reservationFile.eof())
     {
         reservation.readFromFile(Util::reservationFile);

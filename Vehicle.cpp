@@ -58,6 +58,7 @@ void Vehicle::writeToFile(fstream &file) const
         file.write(phone, PHONE_LENGTH + 1);
         file.write(reinterpret_cast<const char *>(&height), sizeof(float));
         file.write(reinterpret_cast<const char *>(&length), sizeof(float));
+        cout<< "WRITE TO FILE!" << endl;
     }
     else
     {
@@ -94,22 +95,16 @@ bool Vehicle::checkExist(const string &license)
         Util::vehicleFile.seekg(0, ios::beg);
 
         Vehicle vehicle;
-        while (Util::vehicleFile.eof() == false)
+        while (!Util::vehicleFile.eof())
         {
-            cout << "flow went from checkExist to ReadFromFile" << endl;
             vehicle.readFromFile(Util::vehicleFile);
-            cout << "Flow came back to checkExist" << endl;
 
+            cout << "File license: " << vehicle.license << "\n our license: " << license.c_str() << endl;
             if (strcmp(vehicle.license, license.c_str()) == 0)
             {
-                cout << "Lets compare" << endl;
-                cout << "this is my vehicle object license, which i read now" << vehicle.license << endl;
-                cout << "this is the license i am looking for: " << license << endl;
-                cout << "This vehicle EXISTS" << endl;
                 return true; // Vessel found end here
             }
         }
-        cout << "This vehicle doesnt match with where i am right now!!" << endl;
         return false; // Not found, safe to create new vessel
     }
     else
@@ -126,12 +121,7 @@ bool Vehicle::checkExist(const string &license)
 //************************************************************
 bool Vehicle::writeVehicle(const string &license, const string &phone, float height, float length)
 {
-    if (checkExist(license))
-    {
-        cout << "Vehicle with License " << license << " already exists." << endl;
-        return false;
-    }
-
+   
     Vehicle vehicle(license, phone, height, length);
     Util::vehicleFile.clear();
     Util::vehicleFile.seekp(0, ios::end);
@@ -197,19 +187,14 @@ float Vehicle::getHeight(string license)
     Util::vehicleFile.clear();
     Util::vehicleFile.seekg(0, ios::beg);
 
-    char licenseBuffer[LICENSE_PLATE_LENGTH + 1];
-    float heightBuffer;
+    Vehicle vehicle;
 
-    while (true)
+    while (!Util::vehicleFile.eof())
     {
-        Util::vehicleFile.read(licenseBuffer, LICENSE_PLATE_LENGTH + 1);
-        if (Util::vehicleFile.eof())
-            break;
-
-        // NOTE: The comparison logic below is likely incorrect.
-        if (strncpy(licenseBuffer, license.c_str(), LICENSE_PLATE_LENGTH) == 0)
+        vehicle.readFromFile(Util::vehicleFile);
+        if (strcmp(vehicle.license, license.c_str()) == 0)
         {
-            return std::round(heightBuffer * 100.0) / 100.0;
+            return vehicle.height; // Vessel found end here
         }
     }
 
@@ -233,19 +218,14 @@ float Vehicle::getLength(string license)
     Util::vehicleFile.clear();
     Util::vehicleFile.seekg(0, ios::beg);
 
-    char licenseBuffer[LICENSE_PLATE_LENGTH + 1];
-    float lengthBuffer;
+    Vehicle vehicle;
 
-    while (true)
+    while (!Util::vehicleFile.eof())
     {
-        Util::vehicleFile.read(licenseBuffer, LICENSE_PLATE_LENGTH + 1);
-        if (Util::vehicleFile.eof())
-            break;
-
-        // NOTE: The comparison logic below is likely incorrect.
-        if (strncpy(licenseBuffer, license.c_str(), LICENSE_PLATE_LENGTH) == 0)
+        vehicle.readFromFile(Util::vehicleFile);
+        if (strcmp(vehicle.license, license.c_str()) == 0)
         {
-            return std::round(lengthBuffer * 100.0) / 100.0;
+            return vehicle.length; // Vessel found end here
         }
     }
 
