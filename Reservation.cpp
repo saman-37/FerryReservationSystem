@@ -47,8 +47,8 @@ Reservation::Reservation()
 //************************************************************
 Reservation::Reservation(const string &license, const string &sailingId, const bool &onBoard)
 {
-    strcpy(this->sailingId, sailingId.c_str());
     strcpy(this->license, license.c_str());
+    strcpy(this->sailingId, sailingId.c_str());
     // this->sailingId[SAILING_ID_LENGTH] = '\0'; // Null-terminate sailing ID
     // this->license[LICENSE_LENGTH] = '\0';      // Null-terminate license
     this->onBoard = onBoard;
@@ -61,7 +61,7 @@ Reservation::Reservation(const string &license, const string &sailingId, const b
 //************************************************************
 void Reservation::writeToFile(fstream &file) const
 {
-    cout << "Entered the writeToFile" << endl;
+    //cout << "Entered the writeToFile" << endl;
     if (file.is_open())
     {
         cout << "Here I am About To Write !!" << endl;
@@ -75,7 +75,7 @@ void Reservation::writeToFile(fstream &file) const
     {
         cout << "Error opening file for writing." << endl;
     }
-    cout << "Reservation JUST wrote has license " << license << ", sailing ID " << sailingId << ", onBoard status: " << (onBoard ? "Yes" : "No") << endl;
+    //cout << "Reservation JUST wrote has license " << license << ", sailing ID " << sailingId << ", onBoard status: " << (onBoard ? "Yes" : "No") << endl;
 }
 
 //************************************************************
@@ -139,10 +139,9 @@ bool Reservation::checkExist(const string &license, const string &sailingId)
     Reservation reservation;
 
     // Loop while there is data to read
-    while (Util::reservationFile.peek() != EOF)
+    while (!Util::reservationFile.eof())
     {
         reservation.readFromFile(Util::reservationFile);
-
         if (strncmp(reservation.license, license.c_str(), LICENSE_LENGTH) == 0 &&
             strncmp(reservation.sailingId, sailingId.c_str(), SAILING_ID_LENGTH) == 0)
         {

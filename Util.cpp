@@ -10,7 +10,7 @@
 
 #include <iostream>
 #include <cstdio> // for FILE*, fopen, fclose
-#include <io.h>   // for _chsize_s, _fileno
+//#include <io.h>   // for _chsize_s, _fileno
 using namespace std;
 
 fstream Util::vesselFile;
