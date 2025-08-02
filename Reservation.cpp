@@ -101,7 +101,7 @@ bool Reservation::writeReservation(const string &license, const string &sailingI
 // Reads this reservation record from a binary file.
 // Requires file stream to be open in binary input mode.
 //************************************************************
-void Reservation::readFromFile(fstream &file)
+bool Reservation::readFromFile(fstream &file)
 {
     // cout << "\nEntered the readFromFile in reservation" << endl;
 
@@ -112,10 +112,12 @@ void Reservation::readFromFile(fstream &file)
         file.read(sailingId, sizeof(sailingId)); // Read sailing ID
         // sailingId[sizeof(sailingId) - 1] = '\0';
         file.read(reinterpret_cast<char *>(&onBoard), sizeof(onBoard)); // Read onBoard flag
+        return true;
     }
     else
     {
         cout << "Error opening file for reading." << endl;
+        return false;
     }
 
     // cout << "Reservation JUST read has license: " << license << ", sailing ID: " << sailingId << ", onBoard status: " << (onBoard ? "Yes" : "No") << endl;
@@ -225,9 +227,10 @@ bool Reservation::removeReservation(const string &license, const string &sailing
     streampos matchPos = -1;
     
     //Step1. Find Matching record
-    while (Util::reservationFile.read(reinterpret_cast<char *>(&reservation), RECORD_SIZE))
+    while (reservation.readFromFile(Util::reservationFile))
     {
-        currentPos = Util::reservationFile.tellg() - static_cast<streamoff>(RECORD_SIZE);
+        streampos currentPos = Util::reservationFile.tellg() - static_cast<streamoff>(RECORD_SIZE);
+        cout << "Checking reservation: " << reservation.license << ", " << reservation.sailingId << endl;
 
         if (strcmp(reservation.license, license.c_str()) == 0 &&
         strcmp(reservation.sailingId, sailingId.c_str()) == 0)

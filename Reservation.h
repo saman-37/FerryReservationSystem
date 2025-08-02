@@ -45,7 +45,7 @@ public:
     // Binary File I/O Functions
     //************************************************************
     void writeToFile(fstream &file) const; // in-out: writes this reservation to binary stream
-    void readFromFile(fstream &file);      // in-out: loads this reservation from binary stream
+    bool readFromFile(fstream &file);      // in-out: loads this reservation from binary stream
 
     //************************************************************
     // Query Total Reservations for a Given Sailing

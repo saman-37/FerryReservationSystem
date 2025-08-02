@@ -146,7 +146,7 @@ bool OtherControls::deleteReservation(string &license, string &sailingId) // Del
 {
   // Step 1: check if reservation exists
 
-  if (Reservation::checkExist(sailingId, license) == false)
+  if (Reservation::checkExist(license, sailingId) == false)
   {
     cout << "Reservation not found in the system." << endl;
     return false;
@@ -157,7 +157,7 @@ bool OtherControls::deleteReservation(string &license, string &sailingId) // Del
   float length = vehicle.getLength(license); // Fetch vehicle length from file using license key
 
   // Step 3: remove the reservation record from the reservation file
-  if (!Reservation::removeReservation(sailingId, license))
+  if (!Reservation::removeReservation(license, sailingId))
   {
     return false; // Failed to remove reservation
   }
