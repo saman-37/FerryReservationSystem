@@ -11,14 +11,13 @@
 
 #pragma once
 
-using namespace std;
-
 #include "Vehicle.h"
 #include "Vessel.h"
 #include "Reservation.h"
 #include "Sailing.h"
-
 #include <string>
+
+using namespace std;
 
 class OtherControls
 {

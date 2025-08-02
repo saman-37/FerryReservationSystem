@@ -10,10 +10,10 @@
 
 #pragma once
 
-using namespace std;
-
 #include "Sailing.h"
 #include <string>
+
+using namespace std;
 
 class SailingControl
 {

@@ -8,10 +8,10 @@
 
 #pragma once
 
-using namespace std;
-
 #include <fstream>
 #include <string>
+
+using namespace std;
 
 class Vessel
 {

@@ -8,10 +8,10 @@
 
 #pragma once
 
-using namespace std;
-
 #include <string>
 #include <fstream>
+
+using namespace std;
 
 class Vehicle
 {

@@ -27,6 +27,7 @@ structure and logic using fixed-length records.
 #include <iomanip>
 #include <cstring>
 #include <sstream>
+
 using namespace std;
 
 //************************************************************
