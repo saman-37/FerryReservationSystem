@@ -177,13 +177,13 @@ bool OtherControls::deleteReservation(string &license, string &sailingId) // Del
 bool OtherControls::checkIn(string &licensePlate, string &sailingId) // Checks in a vehicle to a sailing, in: sailingId, licensePlate
 {
   // Step 1: Check if reservation exists
-  if (!Reservation::checkExist(sailingId, licensePlate))
+  if (!Reservation::checkExist(licensePlate, sailingId))
   {
     return false; // Reservation does not exist
   }
 
   // Step 2: Set the reservation as checked in
-  Reservation::setCheckedIn(sailingId);
+  Reservation::setCheckedIn(licensePlate);
 
   return true; // Successfully checked in
 };
