@@ -103,7 +103,7 @@ bool Reservation::writeReservation(const string &license, const string &sailingI
 //************************************************************
 void Reservation::readFromFile(fstream &file)
 {
-    cout << "\nEntered the readFromFile in reservation" << endl;
+    // cout << "\nEntered the readFromFile in reservation" << endl;
 
     if (file.is_open())
     {
@@ -118,7 +118,7 @@ void Reservation::readFromFile(fstream &file)
         cout << "Error opening file for reading." << endl;
     }
 
-    cout << "Reservation JUST read has license: " << license << ", sailing ID: " << sailingId << ", onBoard status: " << (onBoard ? "Yes" : "No") << endl;
+    // cout << "Reservation JUST read has license: " << license << ", sailing ID: " << sailingId << ", onBoard status: " << (onBoard ? "Yes" : "No") << endl;
 }
 
 //************************************************************
@@ -208,7 +208,7 @@ bool Reservation::removeReservation(const string &license, const string &sailing
 {
     cout << "Entered the removeReservation." << endl;
     // For Debugging
-    cout << "The CONTENTS before deleting reservation are: " << endl;
+    // cout << "The CONTENTS before deleting reservation are: " << endl;
     Reservation reservation;
     while (!Util::reservationFile.eof())
     {
@@ -268,7 +268,7 @@ bool Reservation::removeReservation(const string &license, const string &sailing
         }
     }
 
-    cout << "The CONTENTS after deleting reservation are: " << endl;
+    // cout << "The CONTENTS after deleting reservation are: " << endl;
 
     while (!Util::reservationFile.eof())
     {
