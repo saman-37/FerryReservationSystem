@@ -54,14 +54,6 @@ public:
     void readFromFile(fstream &file);
 
     //************************************************************
-    // toString
-    //************************************************************
-    // Converts this sailing record into a string format.
-    // out: formatted string for display
-    //************************************************************
-    string toString() const;
-
-    //************************************************************
     // searchForSailing
     //************************************************************
     // Searches the file for a sailing matching the given ID.
@@ -69,16 +61,6 @@ public:
     // out: foundSailing (by reference), true if found
     //************************************************************
     static bool searchForSailing(const string &sailingId, Sailing &foundSailing);
-
-    //************************************************************
-    // isSpaceAvailable
-    //************************************************************
-    // Checks whether a vehicle can be reserved on this sailing
-    // depending on height/length and lane space.
-    // in: sailingId, vehicleLength, isSpecial
-    // out: true if space is available
-    //************************************************************
-    static bool isSpaceAvailable(const string &sailingId, bool isSpecial, double vehicleLength, double vehicleHeight);
 
     //************************************************************
     // open
@@ -125,7 +107,7 @@ public:
     static bool removeSailing(string sailingId);
 
     //************************************************************
-    // isSpaceAvailable (overload)
+    // isSpaceAvailable
     //************************************************************
     // Alternate version to check if a sailing has space
     // in: sailingId, vehicleLength, isSpecial
