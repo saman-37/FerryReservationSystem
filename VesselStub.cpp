@@ -22,17 +22,17 @@ Vessel::Vessel()
     cout << "[STUB] Default Vessel constructor called" << endl;
 }
 
-Vessel::Vessel(const string &vesselName, double HCLL, double LCLL) 
-{
-    cout << "[STUB] Vessel created with name: " << vesselName << endl;
-}
+// Vessel::Vessel(const string &vesselName, double HCLL, double LCLL) 
+// {
+//     cout << "[STUB] Vessel created with name: " << vesselName << endl;
+// }
 
-bool Vessel::writeVessel(const string &vesselName, double HCLL, double LCLL) 
-{
-    cout << "[STUB] Writing vessel with name: " << vesselName
-         << ", HCLL: " << HCLL << ", LCLL: " << LCLL << endl;
-    return true;
-}
+// bool Vessel::writeVessel(const string &vesselName, double HCLL, double LCLL) 
+// {
+//     cout << "[STUB] Writing vessel with name: " << vesselName
+//          << ", HCLL: " << HCLL << ", LCLL: " << LCLL << endl;
+//     return true;
+// }
 
 bool Vessel::checkExist(const string &vesselName) 
 {

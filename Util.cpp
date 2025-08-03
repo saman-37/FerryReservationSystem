@@ -9,6 +9,8 @@
 #include "Util.h"
 
 #include <iostream>
+#include <cstdio> // for FILE*, fopen, fclose
+//#include <io.h>   // for _chsize_s, _fileno
 using namespace std;
 
 fstream Util::vesselFile;
@@ -59,7 +61,7 @@ void Util::startup()
         reservationFile.open("reservation.dat", ios::in | ios::out | ios::binary); // Reopen for reading and writing
     }
 
-    vehicleFile.open("vehicel.dat", ios::in | ios::out | ios::binary); // Open vehicle file
+    vehicleFile.open("vehicle.dat", ios::in | ios::out | ios::binary); // Open vehicle file
     if (!vehicleFile.is_open())
     {                                                                      // Check if the file is open
         vehicleFile.clear();                                               // Clear any error flags
@@ -123,3 +125,32 @@ void Util::reset()
 
     cout << "System data reset compelete." << endl;
 }
+
+bool Util::truncate(const std::string& filename, std::streamoff newSize)
+{
+    std::fstream file(filename, std::ios::in | std::ios::out | std::ios::binary);
+    if (!file)
+    {
+        std::cerr << "Failed to open file: " << filename << std::endl;
+        return false;
+    }
+
+    // Read only up to newSize bytes
+    std::string buffer(newSize, '\0');
+    file.read(&buffer[0], newSize);
+    file.close();
+
+    // Overwrite file with only the portion we want to keep
+    std::ofstream out(filename, std::ios::binary | std::ios::trunc);
+    if (!out)
+    {
+        std::cerr << "Failed to truncate file: " << filename << std::endl;
+        return false;
+    }
+
+    out.write(buffer.c_str(), newSize);
+    out.close();
+
+    return true;
+}
+

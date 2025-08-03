@@ -14,6 +14,7 @@
 #include "Util.h"
 #include <string>
 #include <iostream>
+
 using namespace std;
 
 Vessel vessel;           // Global instance of Vessel
@@ -42,18 +43,17 @@ OtherControls::OtherControls() // Default Constructor
 //************************************************************
 bool OtherControls::createReservation(string &phoneNumber, string &sailingId, string &licensePlate) // Makes a new reservation, in: sailingId, licensePlate
 {
-  // Step 2: check if sailing exists
-  // Created a sailing instance; pass it by reference so it can be filled with file data if found
-  // if (Sailing::checkExist(sailingId) == false)
-  // {
-  //   // Sailing does not exist
-  //   cout << "The sailing with id " << sailingId << " does not exist." << endl;
-  //   return false;
-  // }
+  //Step 1: check if sailing exists
+  //Created a sailing instance; pass it by reference so it can be filled with file data if found
+  if (!Sailing::checkExist(sailingId))
+  {
+    // Sailing does not exist
+    cout << "The sailing with id " << sailingId << " does not exist." << endl;
+    return false;
+  }
 
-  // Step 3: check if reservation already exists
-  // We don’t need full reservation data — just check existence
-  if (Reservation::checkExist(sailingId, licensePlate))
+  // Step 2: check if reservation already exists
+  if (Reservation::checkExist(licensePlate, sailingId))
   {
     // Reservation already exists
     cout << "This reservation already exists." << endl;
@@ -62,7 +62,7 @@ bool OtherControls::createReservation(string &phoneNumber, string &sailingId, st
 
   // Step 4: check if vehicle exists
   // Check if vehicle is known from license plate
-  double height, length;
+  float height, length;
 
   bool isSpecial = false;
 
@@ -71,15 +71,15 @@ bool OtherControls::createReservation(string &phoneNumber, string &sailingId, st
     // Vehicle exists, fetch its details
     height = Vehicle::getHeight(licensePlate); // Get height from file
     length = Vehicle::getLength(licensePlate); // Get length from file
+    cout << "Height: " << height << ", lenght: "  << length << endl;
   }
-
   else
   {
     // Step 5: write the new vehicle record if it does not already exist
     // Ask user if this is a special vehicle, and prompt for input if yes
     char isSpecialInput;
 
-    cout << "Is this a special vehicle? (y/n): y" << endl;
+    cout << "Is this a special vehicle? (y/n): " << endl;
     cin >> isSpecialInput;
 
     if (isSpecialInput == 'y' || isSpecialInput == 'Y')
@@ -117,7 +117,6 @@ bool OtherControls::createReservation(string &phoneNumber, string &sailingId, st
 
     // Write special vehicle record to file
     Vehicle::writeVehicle(licensePlate, phoneNumber, height, length);
-    cout << "i am outide write vehicle in OtherControls.cpp" << endl;
   }
 
   // // Step 6: check if sailing has space available for this new reservation
@@ -146,35 +145,29 @@ bool OtherControls::createReservation(string &phoneNumber, string &sailingId, st
 //************************************************************
 bool OtherControls::deleteReservation(string &license, string &sailingId) // Deletes all reservations for a sailing, in: sailingId
 {
-  // Step 2: check if reservation exists
-  if (!Reservation::checkExist(sailingId, license))
+  // Step 1: check if reservation exists
+
+  if (Reservation::checkExist(license, sailingId) == false)
   {
     cout << "Reservation not found in the system." << endl;
     return false;
   }
 
-  // Step 3: get length from the vehicle
+  // Step 2: get length from the vehicle
   Vehicle vehicle;
-  int length = vehicle.getLength(license); // Fetch vehicle length from file using license key
+  float length = vehicle.getLength(license); // Fetch vehicle length from file using license key
 
-  // Step 4: remove the reservation record from the reservation file
-  if (!Reservation::removeReservation(sailingId, license))
+  // Step 3: remove the reservation record from the reservation file
+  if (!Reservation::removeReservation(license, sailingId))
   {
-    // Failed to remove reservation
-    return false;
-  }
-  else
-  {
-    // Reservation deletion successful
-    return true;
+    return false; // Failed to remove reservation
   }
 
-  // Step 5: add the space back to the sailing
-  /*
-  NOTE: This line is unreachable due to return statements above.
-  If space restoration is needed, consider moving this before return.
-  */
-  Sailing::addSpace(sailingId, length);
+  // Step 4: add the space back to the sailing
+
+  cout << "Now adding space back to sailing: " << sailingId << endl;
+  // Sailing::addSpace(sailingId, length);
+  return true;
 };
 
 //************************************************************
@@ -185,13 +178,13 @@ bool OtherControls::deleteReservation(string &license, string &sailingId) // Del
 bool OtherControls::checkIn(string &licensePlate, string &sailingId) // Checks in a vehicle to a sailing, in: sailingId, licensePlate
 {
   // Step 1: Check if reservation exists
-  if (!Reservation::checkExist(sailingId, licensePlate))
+  if (!Reservation::checkExist(licensePlate, sailingId))
   {
     return false; // Reservation does not exist
   }
 
   // Step 2: Set the reservation as checked in
-  Reservation::setCheckedIn(sailingId, licensePlate);
+  Reservation::setCheckedIn(licensePlate);
 
   return true; // Successfully checked in
 };

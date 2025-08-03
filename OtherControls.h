@@ -11,14 +11,13 @@
 
 #pragma once
 
-using namespace std;
-
 #include "Vehicle.h"
 #include "Vessel.h"
 #include "Reservation.h"
 #include "Sailing.h"
-
 #include <string>
+
+using namespace std;
 
 class OtherControls
 {
@@ -34,7 +33,7 @@ public:
     // out: returns true if reservation successfully made
     // Note: phoneNumber parameter is currently unused in implementation
     //************************************************************
-    static bool createReservation(string &phoneNumber, string &sailingId, string &licensePlate);
+    static bool createReservation(string &phoneNumber, string &licensePlate, string &sailingId);
 
     //************************************************************
     // createVessel

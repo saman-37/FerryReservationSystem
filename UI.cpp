@@ -194,7 +194,7 @@ void UI::displayDeleteMenu()
         {
             string sailingId = getInput("Enter Sailing ID (format: xxx-dd-hh): ");
             string license = getInput("Enter License (max: 10): ");
-            string cont = getInput("This will delete all reservations on this sailing. Continue? [y/n]: ");
+            string cont = getInput("Are you sure you want to delete this reservation? [y/n]: ");
             if (cont[0] == 'y' || cont[0] == 'Y')
             {
                 if (OtherControls::deleteReservation(license, sailingId))
@@ -235,6 +235,7 @@ void UI::CheckInVehicle()
         cout << "Vehicle with license plate " << licensePlate << " has been successfully checked in." << endl;
     else
         cout << "Failed to check in vehicle with license plate " << licensePlate << "." << endl;
+    
 }
 
 //************************************************************
@@ -332,7 +333,7 @@ void UI::reservationCreation()
     string phoneNumber = getInput("Enter Customer Phone Number (format: 14 characters): ");
     string LicensePlate = getInput("Enter Vehicle License Number (max: 10 characters): ");
     string sailingId = getInput("Enter Sailing ID (format: xxx-dd-hh): ");
-    if (OtherControls::createReservation(phoneNumber, sailingId, LicensePlate) == true)
+    if (OtherControls::createReservation(phoneNumber, sailingId, LicensePlate ) == true)
         cout << "Reservation successfully created." << endl;
     else
         cout << "Failed to create reservation." << endl;

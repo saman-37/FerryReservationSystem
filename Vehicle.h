@@ -8,10 +8,10 @@
 
 #pragma once
 
-using namespace std;
-
 #include <string>
 #include <fstream>
+
+using namespace std;
 
 class Vehicle
 {
@@ -33,14 +33,14 @@ public:
     void readFromFile(fstream &file);      // in-out: file
 
     string getLicense(const string license) const; // out: license
-    static double getHeight(const string license) ;  // out: height
-    static double getLength(const string license); // out: length
+    static float getHeight(const string license) ;  // out: height
+    static float getLength(const string license); // out: length
 
     void setLicense(string license); // in: license
-    void setHeight(double height);   // in: height
-    void setLength(double length);   // in: length
+    void setHeight(float height);   // in: height
+    void setLength(float length);   // in: length
 
     static bool checkExist(const string &license);                                                      // in: license
-    static bool writeVehicle(const string &license, const string &phone, double height, double length); // in: license, phone, height, length
+    static bool writeVehicle(const string &license, const string &phone, float height, float length); // in: license, phone, height, length
     string toString() const;                                                                            // out: formatted string
 };

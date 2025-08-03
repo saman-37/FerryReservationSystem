@@ -17,6 +17,13 @@
 
 using namespace std;
 
+//PLEASE ADD "addSpace" !!
+void addSpace(const string &sailingId, float vehicleLength){
+    //here added space back
+    cout << "Adding space back to sailing: " << sailingId << endl;
+}
+
+
 //************************************************************
 // Default Constructor
 // Initializes all fields to zero or empty string
@@ -36,11 +43,11 @@ Sailing::Sailing()
 //************************************************************
 Sailing::Sailing(const char *sailingId, const char *vesselName, double HRL, double LRL)
 {
-    strncpy(this->sailingId, sailingId, SAILING_ID_LENGTH - 1);
-    this->sailingId[SAILING_ID_LENGTH - 1] = '\0';
+    strncpy(this->sailingId, sailingId, SAILING_ID_LENGTH);
+    this->sailingId[SAILING_ID_LENGTH] = '\0';
 
-    strncpy(this->vesselName, vesselName, VESSEL_NAME_LENGTH - 1);
-    this->vesselName[VESSEL_NAME_LENGTH - 1] = '\0';
+    strncpy(this->vesselName, vesselName, VESSEL_NAME_LENGTH);
+    this->vesselName[VESSEL_NAME_LENGTH] = '\0';
 
     this->HRL = HRL;
     this->LRL = LRL;
@@ -75,8 +82,8 @@ void Sailing::writeToFile(fstream &file) const
     {
         file.write(sailingId, SAILING_ID_LENGTH + 1);                  // Write SailingId
         file.write(vesselName, VESSEL_NAME_LENGTH + 1);                // Write vesselName
-        file.write(reinterpret_cast<const char *>(&HRL), sizeof(int)); // Write HRL
-        file.write(reinterpret_cast<const char *>(&LRL), sizeof(int)); // Write LRL
+        file.write(reinterpret_cast<const char *>(&HRL), sizeof(double)); // Write HRL
+        file.write(reinterpret_cast<const char *>(&LRL), sizeof(double)); // Write LRL
         cout << "sailing id: " << sailingId << " vesselName: " << vesselName << " HRL: " << HRL << " LRL: " << LRL << endl;
     }
     else
@@ -92,13 +99,12 @@ void Sailing::writeToFile(fstream &file) const
 //************************************************************
 void Sailing::readFromFile(fstream &file)
 {
-    cout << "in readFromFile\n";
     if (file.is_open())
     {
-        file.read(sailingId, SAILING_ID_LENGTH + 1);            // Read sailingID
-        file.read(vesselName, VESSEL_NAME_LENGTH + 1);          // read vesselName
-        file.read(reinterpret_cast<char *>(&HRL), sizeof(int)); // read HRL
-        file.read(reinterpret_cast<char *>(&LRL), sizeof(int)); // read LRL
+        file.read(sailingId, sizeof(sailingId));            // Read sailingID
+        file.read(vesselName, sizeof(vesselName));          // read vesselName
+        file.read(reinterpret_cast<char *>(&HRL), sizeof(double)); // read HRL
+        file.read(reinterpret_cast<char *>(&LRL), sizeof(double)); // read LRL
         cout << "sailing id: " << sailingId << " vesselName: " << vesselName << " HRL: " << HRL << " LRL: " << LRL << endl;
     }
     else
@@ -115,23 +121,26 @@ void Sailing::readFromFile(fstream &file)
 //************************************************************
 bool Sailing::searchForSailing(const string &sailingId, Sailing &foundSailing)
 {
-    if (!Util::sailingFile)
-    {
-        cout << "Could not open sailing.dat for reading." << endl;
-        return false;
-    }
+    Util::sailingFile.clear();
+    Util::sailingFile.seekg(0, ios::beg);
 
-    Sailing temp;
-    while (Util::sailingFile.read(reinterpret_cast<char *>(&temp), sizeof(Sailing)))
+    Sailing sailing;
+
+    while (true)
     {
-        if (strcmp(temp.sailingId, sailingId.c_str()) == 0)
+        if (!Util::sailingFile.read(sailing.sailingId, SAILING_ID_LENGTH + 1)) break;
+        if (!Util::sailingFile.read(sailing.vesselName, VESSEL_NAME_LENGTH + 1)) break;
+        if (!Util::sailingFile.read(reinterpret_cast<char *>(&sailing.HRL), sizeof(double))) break;
+        if (!Util::sailingFile.read(reinterpret_cast<char *>(&sailing.LRL), sizeof(double))) break;
+
+        if (strcmp(sailing.sailingId, sailingId.c_str()) == 0)
         {
-            foundSailing = temp; // Copy matched record
+            foundSailing = sailing;
             return true;
         }
     }
 
-    return false; // Not found
+    return false;
 }
 
 //************************************************************
@@ -140,51 +149,73 @@ bool Sailing::searchForSailing(const string &sailingId, Sailing &foundSailing)
 //************************************************************
 Sailing Sailing::getSailingInfo(const string &sailingId)
 {
-    Sailing sailing;
-    while (Util::sailingFile.read(reinterpret_cast<char *>(&sailing), RECORD_SIZE))
+    if (!Util::sailingFile.is_open())
     {
+        Util::sailingFile.open("sailing.dat", ios::in | ios::binary);
+        if (!Util::sailingFile.is_open()) {
+            cout << "Could not open sailing.dat\n";
+            return Sailing();
+        }
+    }
+
+    Util::sailingFile.clear();
+    Util::sailingFile.seekg(0, ios::beg);
+
+    Sailing sailing;
+
+    while (true)
+    {
+        if (!Util::sailingFile.read(sailing.sailingId, SAILING_ID_LENGTH + 1)) break;
+        if (!Util::sailingFile.read(sailing.vesselName, VESSEL_NAME_LENGTH + 1)) break;
+        if (!Util::sailingFile.read(reinterpret_cast<char*>(&sailing.HRL), sizeof(double))) break;
+        if (!Util::sailingFile.read(reinterpret_cast<char*>(&sailing.LRL), sizeof(double))) break;
+
         if (strcmp(sailing.sailingId, sailingId.c_str()) == 0)
         {
-            Util::sailingFile.close();
             return sailing;
         }
     }
-    return Sailing(); // Return empty/default sailing if not found
+
+    return Sailing(); // Not found
 }
 
-//************************************************************
-// checkExist()
-// Checks if a sailing record exists by ID
-// in: sailingId
-// out: true if found
-//************************************************************
 bool Sailing::checkExist(string sailingId)
 {
-    cout << "Entered check exist" << endl;
     if (Util::sailingFile.is_open())
     {
-        cout << "sailingfile open" << endl;
         Util::sailingFile.clear();
         Util::sailingFile.seekg(0, ios::beg);
 
         Sailing sailing;
-        while (!Util::sailingFile.eof())
+
+        while (true)
         {
-            cout << "reading through sailing file" << endl;
-            sailing.readFromFile(Util::sailingFile);
+            // Read each field safely
+            if (!Util::sailingFile.read(sailing.sailingId, SAILING_ID_LENGTH + 1)) break;
+            if (!Util::sailingFile.read(sailing.vesselName, VESSEL_NAME_LENGTH + 1)) break;
+            if (!Util::sailingFile.read(reinterpret_cast<char*>(&sailing.HRL), sizeof(double))) break;
+            if (!Util::sailingFile.read(reinterpret_cast<char*>(&sailing.LRL), sizeof(double))) break;
 
             if (strcmp(sailing.sailingId, sailingId.c_str()) == 0)
             {
-                cout << "Sailing Found" << endl;
-                return true; // Vessel found end here
+                return true;
             }
         }
+<<<<<<< HEAD
         cout << "sailing not found" << endl;
         return false; // Not found, safe to create new vessel
     }
     else
     {
         cout << "Error opening vessel file." << endl;
+=======
+
+        return false;
+    }
+    else
+    {
+        cout << "Error opening sailing file." << endl;
+>>>>>>> 43793b9397dc8bbfba1652b707cf9af22f5355e8
         return false;
     }
 }
@@ -252,7 +283,7 @@ bool Sailing::removeSailing(string sailingId)
 // Checks whether a vehicle can be reserved on this sailing
 // depending on height/length and lane space.
 //************************************************************
-bool Sailing::isSpaceAvailable(const string &sailingId, bool isSpecial, double vehicleLength, double vehicleHeight)
+bool Sailing::isSpaceAvailable(const string &sailingId, bool isSpecial, float vehicleLength, float vehicleHeight)
 {
     Util::sailingFile.clear();
     Util::sailingFile.seekg(0, ios::beg);
@@ -280,7 +311,7 @@ bool Sailing::isSpaceAvailable(const string &sailingId, bool isSpecial, double v
 // reduceSpace()
 // Deducts reserved vehicle length from LCLL or HRL
 //************************************************************
-void Sailing::reduceSpace(const string &sailingId, double vehicleLength, bool isSpecial)
+void Sailing::reduceSpace(const string &sailingId, float vehicleLength, bool isSpecial)
 {
     Util::sailingFile.clear();
     Util::sailingFile.seekg(0, ios::beg);
@@ -312,4 +343,114 @@ void Sailing::reduceSpace(const string &sailingId, double vehicleLength, bool is
             break;
         }
     }
+}
+
+//************************************************************
+// addSpace
+//************************************************************
+// Adds back vehicle length (used when canceling reservation)
+// in-out: modifies sailing.dat
+//************************************************************
+void Sailing::addSpace(const string &sailingId, float vehicleLength)
+{
+    if (!Util::sailingFile.is_open())
+    {
+        cout << "Error: sailing.dat is not open." << endl;
+        return;
+    }
+
+    Util::sailingFile.clear();
+    Util::sailingFile.seekg(0, ios::beg);
+
+    Sailing sailing;
+    streampos pos;
+
+    while (true)
+    {
+        pos = Util::sailingFile.tellg();
+
+        if (!Util::sailingFile.read(sailing.sailingId, SAILING_ID_LENGTH + 1)) break;
+        if (!Util::sailingFile.read(sailing.vesselName, VESSEL_NAME_LENGTH + 1)) break;
+        if (!Util::sailingFile.read(reinterpret_cast<char *>(&sailing.HRL), sizeof(double))) break;
+        if (!Util::sailingFile.read(reinterpret_cast<char *>(&sailing.LRL), sizeof(double))) break;
+
+        if (strcmp(sailing.sailingId, sailingId.c_str()) == 0)
+        {
+            // Decide whether to restore to HRL or LRL (example rule: if height > 2.0 → HRL)
+            // For now, assume adding to both evenly (or your logic)
+            sailing.LRL += vehicleLength / 2;
+            sailing.HRL += vehicleLength / 2;
+
+            // Seek back to start of this record
+            Util::sailingFile.seekp(pos);
+
+            Util::sailingFile.write(sailing.sailingId, SAILING_ID_LENGTH + 1);
+            Util::sailingFile.write(sailing.vesselName, VESSEL_NAME_LENGTH + 1);
+            Util::sailingFile.write(reinterpret_cast<const char *>(&sailing.HRL), sizeof(double));
+            Util::sailingFile.write(reinterpret_cast<const char *>(&sailing.LRL), sizeof(double));
+
+            Util::sailingFile.flush();
+            return;
+        }
+    }
+
+    cout << "Sailing ID " << sailingId << " not found to add space." << endl;
+}
+
+double Sailing::getHRL(const string &sailingId) const
+{
+    if (!Util::sailingFile.is_open())
+    {
+        cout << "Error: sailing.dat is not open." << endl;
+        return -1;
+    }
+
+    Util::sailingFile.clear();
+    Util::sailingFile.seekg(0, ios::beg);
+
+    Sailing sailing;
+
+    while (true)
+    {
+        if (!Util::sailingFile.read(sailing.sailingId, SAILING_ID_LENGTH + 1)) break;
+        if (!Util::sailingFile.read(sailing.vesselName, VESSEL_NAME_LENGTH + 1)) break;
+        if (!Util::sailingFile.read(reinterpret_cast<char *>(&sailing.HRL), sizeof(double))) break;
+        if (!Util::sailingFile.read(reinterpret_cast<char *>(&sailing.LRL), sizeof(double))) break;
+
+        if (strcmp(sailing.sailingId, sailingId.c_str()) == 0)
+        {
+            return sailing.HRL;
+        }
+    }
+
+    return -1;
+}
+
+double Sailing::getLRL(const string &sailingId) const
+{
+    if (!Util::sailingFile.is_open())
+    {
+        cout << "Error: sailing.dat is not open." << endl;
+        return -1;
+    }
+
+    Util::sailingFile.clear();
+    Util::sailingFile.seekg(0, ios::beg);
+
+    Sailing sailing;
+
+    while (true)
+    {
+        if (!Util::sailingFile.read(sailing.sailingId, SAILING_ID_LENGTH + 1)) break;
+        if (!Util::sailingFile.read(sailing.vesselName, VESSEL_NAME_LENGTH + 1)) break;
+        if (!Util::sailingFile.read(reinterpret_cast<char *>(&sailing.HRL), sizeof(double))) break;
+        if (!Util::sailingFile.read(reinterpret_cast<char *>(&sailing.LRL), sizeof(double))) break;
+
+        if (strcmp(sailing.sailingId, sailingId.c_str()) == 0)
+        {
+            return sailing.LRL;
+        }
+    }
+
+    return -1;
 }
