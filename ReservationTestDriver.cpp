@@ -5,82 +5,67 @@
 // Purpose: Tests binary file I/O operations (write/read) for Reservation records
 // July 24, 2025 - Version 1 - Samanpreet Kaur
 //************************************************************
-
 #include <iostream>
 #include <fstream>
-#include <cstring>
 #include "Reservation.h"
+#include "Util.h"
 
 using namespace std;
 
+void printAllReservations()
+{
+    Util::reservationFile.clear();
+    Util::reservationFile.seekg(0, ios::beg);
+
+    Reservation r;
+    cout << "\n--- All Reservations ---\n";
+    while (r.readFromFile(Util::reservationFile))
+    {
+        cout << r.toString();
+    }
+    cout << "------------------------\n";
+}
+
 int main()
 {
-    cout << "UNIT TEST: Reservation Binary File I/O Write and Read \n";
+      cout << "Total reservations on bur-07-07 are " << Reservation::getTotalReservationsOnSailing("bur-07-07");
 
-    //************************************************************
-    // Step 1: Create test reservation and write to file
-    //************************************************************
-    Reservation r1("7786651002", "van-07-06", true); // Create test reservation
-
-    fstream outFile("test_reservation.dat", ios::out | ios::binary);
-    if (!outFile)
+    // Open reservation file
+    Util::reservationFile.open("reservation.dat", ios::out | ios::binary | ios::trunc);
+    Util::reservationFile.close(); // close so next open is clean
+    Util::reservationFile.open("reservation.dat", ios::in | ios::out | ios::binary);
+    if (!Util::reservationFile.is_open())
     {
-        cout << "Error opening file for writing.\n";
+        cerr << "Failed to open reservation.dat\n";
         return 1;
     }
 
-    r1.writeToFile(outFile); // Write record to file (function closes the file internally)
+    // Step 1: Add 10 reservations
+    Reservation::writeReservation("NAVIX3", "van-07-07");
+    Reservation::writeReservation("NAVIX3", "van-07-07");
+    Reservation::writeReservation("NAVIX3", "van-07-07");
+    Reservation::writeReservation("NAVIX3", "van-07-07");
+    Reservation::writeReservation("YADHUX3", "sur-07-07");
+    Reservation::writeReservation("YADHX3", "sur-07-07");
+    Reservation::writeReservation("SAMNX3", "bur-07-07");
+    Reservation::writeReservation("NOBLX3", "bur-07-07");
+    Reservation::writeReservation("NAVIX3", "bur-07-07");
+    Reservation::writeReservation("DARPX3", "bur-07-07");
 
-    //************************************************************
-    // Step 2: Read back the reservation from file into a new object
-    //************************************************************
-    Reservation r2; // Empty object for comparison
+    //Step 2: Print all reservations
+    printAllReservations();
 
-    fstream inFile("test_reservation.dat", ios::in | ios::binary);
-    if (!inFile)
-    {
-        cout << "Error opening file for reading.\n";
-        return 1;
-    }
+    // Step 3: Delete specific reservation (DARPX3, bur-07-07)
+    cout << "\nDeleting reservation with license: DARPX3, sailing: bur-07-07\n";
+    Reservation::removeReservation("DARPX3", "bur-07-07");
 
-    r2.readFromFile(inFile); // Load data from binary file
-    inFile.close();          // Close file after read
+    // Step 4: Delete all reservations with sailing ID "bur-07-07"
+    cout << "\nDeleting all reservations for sailing: bur-07-07\n";
+    Reservation::removeReservationsOnSailing("bur-07-07");
 
-    //************************************************************
-    // Step 3: Compare all fields between written and read record
-    //************************************************************
-    bool pass = true; // Flag for pass/fail result
+    // Step 5: Print all reservations after deletions
+    printAllReservations();
 
-    if (strcmp(r1.sailingId, r2.sailingId) != 0)
-    {
-        cout << "sailingId mismatch\n";
-        pass = false;
-    }
-
-    if (strcmp(r1.license, r2.license) != 0)
-    {
-        cout << "license mismatch\n";
-        pass = false;
-    }
-
-    if (r1.onBoard != r2.onBoard)
-    {
-        cout << "onBoard mismatch\n";
-        pass = false;
-    }
-
-    //************************************************************
-    // Step 4: Output unit test result to console
-    //************************************************************
-    if (pass)
-    {
-        cout << "Reservation file write and read back test: Passed!\n";
-        cout << r2.toString(); // Display read-back data
-    }
-    else
-    {
-        cout << "Reservation file write and read back test: Failed!\n";
-    }
-
+    Util::reservationFile.close();
     return 0;
 }

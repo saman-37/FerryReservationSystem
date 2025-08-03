@@ -43,14 +43,14 @@ OtherControls::OtherControls() // Default Constructor
 //************************************************************
 bool OtherControls::createReservation(string &phoneNumber, string &sailingId, string &licensePlate) // Makes a new reservation, in: sailingId, licensePlate
 {
-  //Step 1: check if sailing exists
-  //Created a sailing instance; pass it by reference so it can be filled with file data if found
-  if (!Sailing::checkExist(sailingId))
-  {
-    // Sailing does not exist
-    cout << "The sailing with id " << sailingId << " does not exist." << endl;
-    return false;
-  }
+  // Step 1: check if sailing exists
+  // Created a sailing instance; pass it by reference so it can be filled with file data if found
+  //  if (!Sailing::checkExist(sailingId))
+  //  {
+  //    // Sailing does not exist
+  //    cout << "The sailing with id " << sailingId << " does not exist." << endl;
+  //    return false;
+  //  }
 
   // Step 2: check if reservation already exists
   if (Reservation::checkExist(licensePlate, sailingId))
@@ -71,7 +71,7 @@ bool OtherControls::createReservation(string &phoneNumber, string &sailingId, st
     // Vehicle exists, fetch its details
     height = Vehicle::getHeight(licensePlate); // Get height from file
     length = Vehicle::getLength(licensePlate); // Get length from file
-    cout << "Height: " << height << ", lenght: "  << length << endl;
+    cout << "Height: " << height << ", lenght: " << length << endl;
   }
   else
   {
