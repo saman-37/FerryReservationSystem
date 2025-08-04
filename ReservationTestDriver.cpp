@@ -34,8 +34,6 @@ int main()
 
     // Open reservation file
     Util::reservationFile.open("reservation.dat", ios::out | ios::binary | ios::trunc);
-    Util::reservationFile.close(); // close so next open is clean
-    Util::reservationFile.open("reservation.dat", ios::in | ios::out | ios::binary);
     if (!Util::reservationFile.is_open())
     {
         cerr << "Failed to open reservation.dat\n";
