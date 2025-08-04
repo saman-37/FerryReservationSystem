@@ -45,12 +45,12 @@ bool OtherControls::createReservation(string &phoneNumber, string &sailingId, st
 {
   // Step 1: check if sailing exists
   // Created a sailing instance; pass it by reference so it can be filled with file data if found
-  //  if (!Sailing::checkExist(sailingId))
-  //  {
-  //    // Sailing does not exist
-  //    cout << "The sailing with id " << sailingId << " does not exist." << endl;
-  //    return false;
-  //  }
+   if (!Sailing::checkExist(sailingId))
+   {
+     // Sailing does not exist
+     cout << "The sailing with id " << sailingId << " does not exist." << endl;
+     return false;
+   }
 
   // Step 2: check if reservation already exists
   if (Reservation::checkExist(licensePlate, sailingId))
@@ -120,11 +120,11 @@ bool OtherControls::createReservation(string &phoneNumber, string &sailingId, st
   }
 
   // // Step 6: check if sailing has space available for this new reservation
-  // if (Sailing::isSpaceAvailable(sailingId, isSpecial, length, height) == false)
-  // {
-  //   cout << "No space available on sailing." << endl;
-  //   return false; // No space available
-  // }
+  if (Sailing::isSpaceAvailable(sailingId, isSpecial, length, height) == false)
+  {
+    cout << "No space available on sailing." << endl;
+    return false; // No space available
+  }
 
   // Step 7: Reduce the space available, if reservation is successful
   // Adjusts space based on vehicle type (high ceiling or low ceiling)
@@ -164,12 +164,11 @@ bool OtherControls::deleteReservation(string &license, string &sailingId) // Del
   }
 
   // Step 4: add the space back to the sailing
-
   //----------------------------------------------------------------------------
   Util::reservationFile.clear();
   Util::reservationFile.seekg(0, ios::beg); // move read pointer to beginning
   cout << "The CONTENTS after deleting reservation are: " << endl;
-  while (!Util::reservationFile.eof())
+  while (Util::reservationFile.peek() != EOF)
   {
     reservation.readFromFile(Util::reservationFile);
     cout << reservation.toString();

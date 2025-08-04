@@ -219,7 +219,7 @@ bool Reservation::removeReservation(const string &license, const string &sailing
     Util::reservationFile.clear();
     Util::reservationFile.seekg(0, ios::beg); // move read pointer to beginning
 
-    while (!Util::reservationFile.eof())
+    while (Util::reservationFile.peek() != EOF)
     {
         reservation.readFromFile(Util::reservationFile);
         cout << reservation.toString(); // WEIRDLY THIS WASNT WORKING , IT SHOULD BE AN EASY WAY TO DEBUG AND PRINT
