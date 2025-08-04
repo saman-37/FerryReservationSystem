@@ -19,8 +19,10 @@ void printAllReservations()
 
     Reservation r;
     cout << "\n--- All Reservations ---\n";
-    while (r.readFromFile(Util::reservationFile))
+
+    while (Util::reservationFile.peek() != EOF)
     {
+        r.readFromFile(Util::reservationFile);
         cout << r.toString();
     }
     cout << "------------------------\n";
@@ -28,7 +30,7 @@ void printAllReservations()
 
 int main()
 {
-      cout << "Total reservations on bur-07-07 are " << Reservation::getTotalReservationsOnSailing("bur-07-07");
+    cout << "Total reservations on bur-07-07 are " << Reservation::getTotalReservationsOnSailing("bur-07-07");
 
     // Open reservation file
     Util::reservationFile.open("reservation.dat", ios::out | ios::binary | ios::trunc);
@@ -52,7 +54,7 @@ int main()
     Reservation::writeReservation("NAVIX3", "bur-07-07");
     Reservation::writeReservation("DARPX3", "bur-07-07");
 
-    //Step 2: Print all reservations
+    // Step 2: Print all reservations
     printAllReservations();
 
     // Step 3: Delete specific reservation (DARPX3, bur-07-07)
