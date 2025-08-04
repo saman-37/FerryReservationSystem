@@ -5,7 +5,7 @@
 // Purpose: Implementation for Sailing class representing a ferry sailing.
 // Provides support for reading, writing, searching, adding, and removing
 // fixed-length binary records representing sailings.
-// July 21, 2025 Version 1 - Team 18
+// July 21, 2025 Version 2 - Team 18
 //************************************************************
 
 #include "Sailing.h"

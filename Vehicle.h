@@ -3,7 +3,7 @@
 //************************************************************
 // Purpose: Represents a binary-stored vehicle record with license,
 // phone, height, and length data. Used in reservations.
-// July 20, 2025 Version 2 - All team members
+// July 20, 2025 Version 3 - All team members
 //************************************************************
 
 #pragma once

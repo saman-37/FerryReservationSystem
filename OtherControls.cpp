@@ -3,7 +3,7 @@
 //************************************************************
 // Purpose: Implements control-level logic for reservations, vessels,
 // and check-in functionality for FerryReserver system.
-// July 12, 2025 Version 1 - Darpandeep Kaur and Samanpreet
+// July 12, 2025 Version 2 - Darpandeep Kaur and Samanpreet
 //************************************************************
 
 #include "OtherControls.h"

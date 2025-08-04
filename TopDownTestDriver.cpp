@@ -4,7 +4,7 @@
 // Purpose: Top-down integration test for Ferry Reservation System.
 // Simulates main operations like startup, creating vessels, sailings,
 // reservations, and shutdown.
-// July 25, 2025 Version 1 - Integration Test by Team
+// July 25, 2025 Version 2 - Integration Test by Team
 //************************************************************
 
 #include "Util.h"

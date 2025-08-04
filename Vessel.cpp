@@ -4,7 +4,7 @@
 // Purpose: Represents a binary-stored vessel record with name,
 // high-capacity lane length (HCLL), and low-capacity lane length (LCLL).
 // Used for defining sailings in the reservation system.
-// July 21, 2025 Version 1 - Darpandeep Kaur
+// July 21, 2025 Version 2 - Darpandeep Kaur
 //************************************************************
 
 #include "Vessel.h"
