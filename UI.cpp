@@ -38,33 +38,37 @@ void UI::userInterface()
         switch (choice)
         {
         case 1:
-            displayCreateMenu();          // Navigate to create menu
+            displayCreateMenu(); // Navigate to create menu
+            cout << "Returning to Main Menu..." << endl;
             displayMainMenu();            // Show main menu options
             choice = getUserChoice(0, 5); // Get validated choice between 0 and 5
             break;
         case 2:
-            displayDeleteMenu();          // Navigate to delete menu
+            displayDeleteMenu(); // Navigate to delete menu
+            cout << "Returning to Main Menu..." << endl;
             displayMainMenu();            // Show main menu options
             choice = getUserChoice(0, 5); // Get validated choice between 0 and 5
             break;
         case 3:
-            displayQuery();               // Query sailing info
+            displayQuery(); // Query sailing info
+            cout << "Returning to Main Menu..." << endl;
             displayMainMenu();            // Show main menu options
             choice = getUserChoice(0, 5); // Get validated choice between 0 and 5
             break;
 
         case 4:
-            displaySailingReport();       // Show sailing report
+            displaySailingReport(); // Show sailing report
+            cout << "Returning to Main Menu..." << endl;
             displayMainMenu();            // Show main menu options
             choice = getUserChoice(0, 5); // Get validated choice between 0 and 5
             break;
         case 5:
-            CheckInVehicle();             // Call check-in process
+            CheckInVehicle(); // Call check-in process
+            cout << "Returning to Main Menu..." << endl;
             displayMainMenu();            // Show main menu options
             choice = getUserChoice(0, 5); // Get validated choice between 0 and 5
             break;
         case 0:
-            cout << "Exiting the application.Thank You for using Automobile FerryReserver!" << endl;
             break;
         default:
             cout << "Invalid choice. Please try again." << endl;
@@ -73,7 +77,7 @@ void UI::userInterface()
             break;
         }
     } while (choice > 0); // Repeat until user exits
-
+    cout << "Exiting the application.Thank You for using Automobile FerryReserver!" << endl;
     Util::shutdown(); // shutdown the system after user quits the program
 }
 
@@ -177,48 +181,46 @@ void UI::displayDeleteMenu()
 
     int choice;
     choice = getUserChoice(0, 2);
-    do
+
+    switch (choice)
     {
-        switch (choice)
+    case 1:
+    {
+        string sailingId = getInput("Enter the sailing ID to delete (format: xxx-dd-hh): ");
+        if (SailingControl::deleteSailing(sailingId))
+            cout << "Sailing successfully deleted." << endl;
+        else
+            cout << "Failed to delete sailing." << endl;
+        break;
+    }
+    case 2:
+    {
+        string sailingId = getInput("Enter Sailing ID (format: xxx-dd-hh): ");
+        string license = getInput("Enter License (max: 10): ");
+        string cont = getInput("Are you sure you want to delete this reservation? [y/n]: ");
+        if (cont[0] == 'y' || cont[0] == 'Y')
         {
-        case 1:
-        {
-            string sailingId = getInput("Enter the sailing ID to delete (format: xxx-dd-hh): ");
-            if (SailingControl::deleteSailing(sailingId))
-                cout << "Sailing successfully deleted." << endl;
+            if (OtherControls::deleteReservation(license, sailingId))
+                cout << "Reservation successfully deleted." << endl;
             else
-                cout << "Failed to delete sailing." << endl;
-            break;
+                cout << "Failed to delete reservation." << endl;
         }
-        case 2:
+        else
         {
-            string sailingId = getInput("Enter Sailing ID (format: xxx-dd-hh): ");
-            string license = getInput("Enter License (max: 10): ");
-            string cont = getInput("Are you sure you want to delete this reservation? [y/n]: ");
-            if (cont[0] == 'y' || cont[0] == 'Y')
-            {
-                if (OtherControls::deleteReservation(license, sailingId))
-                    cout << "Reservation successfully deleted." << endl;
-                else
-                    cout << "Failed to delete reservation." << endl;
-            }
-            else
-            {
-                cout << "Deletion Terminated." << endl;
-            }
-            break;
+            cout << "Deletion Terminated." << endl;
         }
-        case 3:
-            cout << "Returning to Main Menu..." << endl;
-            displayMainMenu(); // Exit to main
-            break;
-        default:
-            cout << "Invalid choice. Please try again.\n"
-                 << endl;
-            displayDeleteMenu(); // Show menu again
-            break;
-        }
-    } while (choice != 0);
+        break;
+    }
+    case 3:
+        cout << "Returning to Main Menu..." << endl;
+        displayMainMenu(); // Exit to main
+        break;
+    default:
+        cout << "Invalid choice. Please try again.\n"
+             << endl;
+        displayDeleteMenu(); // Show menu again
+        break;
+    }
 }
 
 //************************************************************
@@ -235,7 +237,6 @@ void UI::CheckInVehicle()
         cout << "Vehicle with license plate " << licensePlate << " has been successfully checked in." << endl;
     else
         cout << "Failed to check in vehicle with license plate " << licensePlate << "." << endl;
-    
 }
 
 //************************************************************
@@ -333,7 +334,7 @@ void UI::reservationCreation()
     string phoneNumber = getInput("Enter Customer Phone Number (format: 14 characters): ");
     string LicensePlate = getInput("Enter Vehicle License Number (max: 10 characters): ");
     string sailingId = getInput("Enter Sailing ID (format: xxx-dd-hh): ");
-    if (OtherControls::createReservation(phoneNumber, sailingId, LicensePlate ) == true)
+    if (OtherControls::createReservation(phoneNumber, sailingId, LicensePlate) == true)
         cout << "Reservation successfully created." << endl;
     else
         cout << "Failed to create reservation." << endl;
