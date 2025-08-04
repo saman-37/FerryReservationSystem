@@ -215,10 +215,14 @@ bool Reservation::removeReservation(const string &license, const string &sailing
     //----------------------------------------------------------------------------------------------------------
     cout << "Entered the removeReservation." << endl;
     cout << "The CONTENTS before deleting reservation are: " << endl;
+
+    Util::reservationFile.clear();
+    Util::reservationFile.seekg(0, ios::beg); // move read pointer to beginning
+
     while (!Util::reservationFile.eof())
     {
         reservation.readFromFile(Util::reservationFile);
-        reservation.toString(); // WEIRDLY THIS WASNT WORKING , IT SHOULD BE AN EASY WAY TO DEBUG AND PRINT
+        cout << reservation.toString(); // WEIRDLY THIS WASNT WORKING , IT SHOULD BE AN EASY WAY TO DEBUG AND PRINT
     }
     //----------------------------------------------------------------------------------------------------------
 
@@ -237,8 +241,8 @@ bool Reservation::removeReservation(const string &license, const string &sailing
     // Step1. Find Matching record
     while (!Util::reservationFile.eof())
     {
-        reservation.readFromFile(Util::reservationFile); // reading one record at a time
-        streampos currentPos = Util::reservationFile.tellg() - static_cast<streamoff>(RECORD_SIZE);
+        reservation.readFromFile(Util::reservationFile);                                  // reading one record at a time
+        currentPos = Util::reservationFile.tellg() - static_cast<streamoff>(RECORD_SIZE); //  currentPos = Util::reservationFile.tellg() - static_cast<streamoff>(RECORD_SIZE);
 
         if (strcmp(reservation.license, license.c_str()) == 0 &&
             strcmp(reservation.sailingId, sailingId.c_str()) == 0)
@@ -256,7 +260,7 @@ bool Reservation::removeReservation(const string &license, const string &sailing
     // Step2. Determine last record position
     Util::reservationFile.clear();
     Util::reservationFile.seekg(0, ios::end);
-    streamoff fileSize = Util::reservationFile.tellg();
+    streamoff fileSize = Util::reservationFile.tellg(); // since at end, tellg will tell the whole file size; total file size in bytes
     streamoff lastRecordPos = fileSize - RECORD_SIZE;
 
     if (matchPos == lastRecordPos)
@@ -269,10 +273,12 @@ bool Reservation::removeReservation(const string &license, const string &sailing
 
     // 3. Read last record
     Reservation lastRecord;
-    Util::reservationFile.seekg(lastRecordPos, ios::beg);
-    Util::reservationFile.read(reinterpret_cast<char *>(&lastRecord), RECORD_SIZE);
+    Util::reservationFile.clear();
+    Util::reservationFile.seekg(lastRecordPos, ios::beg);                           // move the read pointer to last record's front
+    Util::reservationFile.read(reinterpret_cast<char *>(&lastRecord), RECORD_SIZE); // read data into lastRecord
 
     // 4. Overwrite matched record with last record
+    Util::reservationFile.clear();
     Util::reservationFile.seekp(matchPos, ios::beg);
     Util::reservationFile.write(reinterpret_cast<const char *>(&lastRecord), RECORD_SIZE);
 
@@ -283,14 +289,6 @@ bool Reservation::removeReservation(const string &license, const string &sailing
 
     return true;
 
-    //----------------------------------------------------------------------------------------------------------
-    cout << "The CONTENTS after deleting reservation are: " << endl;
-    while (!Util::reservationFile.eof())
-    {
-        reservation.readFromFile(Util::reservationFile);
-        reservation.toString();
-    }
-    //----------------------------------------------------------------------------------------------------------
 }
 
 //************************************************************

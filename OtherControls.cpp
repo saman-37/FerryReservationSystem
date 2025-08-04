@@ -165,6 +165,17 @@ bool OtherControls::deleteReservation(string &license, string &sailingId) // Del
 
   // Step 4: add the space back to the sailing
 
+  //----------------------------------------------------------------------------
+  Util::reservationFile.clear();
+  Util::reservationFile.seekg(0, ios::beg); // move read pointer to beginning
+  cout << "The CONTENTS after deleting reservation are: " << endl;
+  while (!Util::reservationFile.eof())
+  {
+    reservation.readFromFile(Util::reservationFile);
+    cout << reservation.toString();
+  }
+  //----------------------------------------------------------------------------
+
   cout << "Now adding space back to sailing: " << sailingId << endl;
   // Sailing::addSpace(sailingId, length);
   return true;
