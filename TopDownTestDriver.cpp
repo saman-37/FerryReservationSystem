@@ -1,11 +1,13 @@
 //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+//*********************************************************
 // TopDownTestDriver.cpp
-//************************************************************
-// Purpose: Top-down integration test for Ferry Reservation System.
-// Simulates main operations like startup, creating vessels, sailings,
-// reservations, and shutdown.
+//*********************************************************
+// Purpose: Top-down integration test for Ferry Reservation
+// System.
+// Simulates main operations like startup, creating vessels,
+// sailings, reservations, and shutdown.
 // July 25, 2025 Version 2 - Integration Test by Team
-//************************************************************
+//*********************************************************
 
 #include "Util.h"
 #include "OtherControls.h"
@@ -17,7 +19,8 @@
 using namespace std;
 
 int main() {
-    cout << "=== Top-Down Integration Test Start ===" << endl;
+    cout << "=== Top-Down Integration Test Start ===" 
+            << endl;
 
     Util::startup();
 
@@ -35,9 +38,11 @@ int main() {
 
     // Step 3: Create a Reservation
     string licensePlate = "ABC1234";
-    string dummyPhone = "7781234567"; // Placeholder for unused phone number param
+    // Placeholder for unused phone number param
+    string dummyPhone = "7781234567"; 
     cout << "\nCreating reservation..." << endl;
-    //OtherControls::createReservation(dummyPhone, sailingId, licensePlate);
+    OtherControls::createReservation(dummyPhone, sailingId,
+                                     licensePlate);
 
     // Step 4: Query that Sailing
     cout << "\nQuerying sailing..." << endl;
@@ -52,6 +57,7 @@ int main() {
     OtherControls::checkIn(licensePlate, sailingId);
 
     Util::shutdown();
-    cout << "=== Top-Down Integration Test Complete ===" << endl;
+    cout << "=== Top-Down Integration Test Complete ===" 
+            << endl;
     return 0;
 }

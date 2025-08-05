@@ -1,10 +1,11 @@
-//************************************************************
+//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+//*********************************************************
 // Util.h
-//************************************************************
+//*********************************************************
 // Purpose: Provides system-level helper functions such as
 // startup, shutdown, and reset operations.
 // July 20, 2025 Version 2 - All team members
-//************************************************************
+//*********************************************************
 
 #pragma once
 
@@ -14,12 +15,17 @@
 class Util
 {
 public:
-    Util(); // Default Constructor
+    // Default Constructor
+    Util(); 
 
-    static void startup();  // Initializes the system (e.g., opens data files)
-    static void shutdown(); // Gracefully closes resources/files
-    static void reset();    // Resets system data (e.g., clears files)
-    static bool truncate(const std::string &filename, std::streamoff newSize);
+    // Initializes the system (e.g., opens data files)
+    static void startup();  
+    // Gracefully closes resources/files
+    static void shutdown(); 
+    // Resets system data (e.g., clears files)
+    static void reset();    
+    static bool truncate(const std::string &filename, 
+                            std::streamoff newSize);
 
     // Shared static file handles
     static std::fstream vesselFile;

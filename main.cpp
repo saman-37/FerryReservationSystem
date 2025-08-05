@@ -1,13 +1,13 @@
 //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-#include "Util.h"
-#include "UI.h"
-
 //************************************************************
 // main.cpp
 //************************************************************
 // Purpose: Main entry point for the FerryReserver application.
 // July 20, 2025 Version 2 - Darpandeep Kaur and Noble Sekhon
 //************************************************************
+
+#include "Util.h"
+#include "UI.h"
 
 //************************************************************
 // Coding Convention for FerryReserver Project (CMPT 276 A3)
