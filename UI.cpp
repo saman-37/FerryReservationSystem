@@ -119,8 +119,7 @@ void UI::userInterface()
          << " Thank You for using Automobile "
          << "FerryReserver!" << endl;
 
-    // shutdown the system after user quits the program
-    Util::shutdown();
+    
 }
 
 //*********************************************************
@@ -389,8 +388,8 @@ void UI::sailingCreation()
 void UI::vesselCreation()
 {
     string vesselName = getInput("Enter Vessel Name (max: 25 characters): ");
-    int LCLL = stoi(getInput("Enter LCLL (Positive integer, max: 3600): "));
-    int HCLL = stoi(getInput("Enter HCLL (Positive integer, max: 3600): "));
+    int LCLL = stoi(getInput("Enter LCLL (Positive number, max: 3600): "));
+    int HCLL = stoi(getInput("Enter HCLL (Positive number, max: 3600): "));
     if (OtherControls::createVessel(vesselName, HCLL, LCLL))
         cout << "Vessel successfully created." << endl;
     else

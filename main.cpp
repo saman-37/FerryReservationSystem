@@ -4,7 +4,7 @@
 //************************************************************
 // Purpose: Main entry point for the FerryReserver application.
 // July 20, 2025 Version 2 - Darpandeep Kaur and Noble Sekhon
-//************************************************************
+// ************************************************************
 
 #include "Util.h"
 #include "UI.h"
@@ -18,19 +18,19 @@
 
 General Style:
 --------------
--	All .h files and .cpp files begin with a divider 
+-	All .h files and .cpp files begin with a divider
         comment, file name, purpose and revision history
--	Use consistent 4-space indentation throughout the 
+-	Use consistent 4-space indentation throughout the
         project
--	Opening braces ‘{‘ go on the next line as the function 
-        header and ‘}’ is placed on the next line from where 
-        function ended. The same rule applies to loops and 
+-	Opening braces ‘{‘ go on the next line as the function
+        header and ‘}’ is placed on the next line from where
+        function ended. The same rule applies to loops and
         switches.
         E.g. function (string a)
             {
                 // function body
             }
--	Always include spaces around assignment and arithmetic 
+-	Always include spaces around assignment and arithmetic
         operators ( ‘=’ , ‘+’, ‘-‘ ).
         E.g. x = y + z;
 
@@ -39,21 +39,21 @@ General Style:
 
 Spelling:
 ---------
--	The first letter of a function is lower case, and the 
-        first letter of every embedded word in a function name 
+-	The first letter of a function is lower case, and the
+        first letter of every embedded word in a function name
         is capitalized.
         E.g. void printSailingReport();
 
--	Class names use PascalCase with first letter and every 
+-	Class names use PascalCase with first letter and every
         embedded word capitalized as well.
         E.g. class Sailing, SailingControl
 
--	The first letter of variable is lower case, and the 
+-	The first letter of variable is lower case, and the
         first letter of every embedded word in a variable name
         is capitalized.
         E.g. vesselName
 
--	Constants are completely capitalized and with 
+-	Constants are completely capitalized and with
         underscores.
         E.g. const SAILING_ID_LENGTH
 
@@ -67,7 +67,7 @@ Version Control:
 
 Comments:
 ---------
--	Use single-line comments for brief explanations and 
+-	Use single-line comments for brief explanations and
         multi-line comments for detailed descriptions.
 -	Each file begins with the following pattern:
 //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -82,15 +82,17 @@ Comments:
 
 //************************************************************
 // Main entry point for the FerryReserver application.
-// This file initializes the system and starts the user interface 
+// This file initializes the system and starts the user interface
 // loop.
 //************************************************************
 int main()
 {
 
-        Util::startup(); // Initialize the system
+        Util::startup();     // Initialize the system
         UI::userInterface(); // Start the user interface loop
-       
+
+        // shutdown the system after user quits the program
+        Util::shutdown();
 
         return 0; // Exit the application
 }
