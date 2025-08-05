@@ -123,10 +123,6 @@ void Sailing::readFromFile(fstream &file)
                     sizeof(double));
         file.read(reinterpret_cast<char *>(&LRL), 
                     sizeof(double));
-        cout << "sailing id: " << sailingId 
-            << " vesselName: " << vesselName 
-            << " HRL: " << HRL 
-            << " LRL: " << LRL << endl;
     }
     else
     {
