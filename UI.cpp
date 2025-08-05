@@ -7,8 +7,10 @@
 // This file contains the user interface logic, including
 // main and submenus.
 // July 20, 2025 Version 1 - Noble Sekhon, original
-// July 29, 2025 Version 2 - Noble Sekhon, edited the Display functions for smooth flow as mentioned in User Manual
-// Aug 05, 2025 Version 3 - Noble, changed the switch cases into enums for better readability
+// July 29, 2025 Version 2 - Noble Sekhon, edited the Display
+// functions for smooth flow as mentioned in User Manual
+// Aug 05, 2025 Version 3 - Noble, changed the switch cases
+// into enums for better readability
 //*********************************************************
 
 #include <iostream>
