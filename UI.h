@@ -81,6 +81,13 @@ public:
     static char getCharInput(const std::string &prompt);
 
     //*********************************************************
+    // Prompts the user for integer input
+    // in: prompt - message to display
+    // out: user input integer
+    //*********************************************************
+    static int getIntInput(const std::string &prompt);
+
+    //*********************************************************
     // Helper method to facilitate sailing creation
     //*********************************************************
     static void sailingCreation();
@@ -96,7 +103,8 @@ public:
     static void reservationCreation();
 };
 
-enum class MainMenuOption{
+enum class MainMenuOption
+{
     Quit = 0,
     Create = 1,
     Delete = 2,
@@ -105,14 +113,16 @@ enum class MainMenuOption{
     CheckIn = 5
 };
 
-enum class CreateMenuOption{
+enum class CreateMenuOption
+{
     Back = 0,
     Vessel = 1,
     Sailing = 2,
     Reservation = 3
 };
 
-enum class DeleteMenuOption{
+enum class DeleteMenuOption
+{
     Back = 0,
     Sailing = 1,
     Reservation = 2

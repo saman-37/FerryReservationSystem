@@ -120,8 +120,6 @@ void UI::userInterface()
     cout << "Exiting the application."
          << " Thank You for using Automobile "
          << "FerryReserver!" << endl;
-
-    
 }
 
 //*********************************************************
@@ -174,14 +172,7 @@ void UI::displayCreateMenu()
         while (cont == 'y' || cont == 'Y')
         {
             // Collect info and create vessel
-            vesselName = getInput("Enter Vessel Name (max: 25 characters): ");
-            LCLL = stoi(getInput("Enter LCLL (Positive integer, max: 3600): "));
-            HCLL = stoi(getInput("Enter HCLL (Positive integer, max: 3600): "));
-            if (OtherControls::createVessel(vesselName, HCLL, LCLL))
-                cout << "Vessel successfully created."
-                     << endl;
-            else
-                cout << "Failed to create vessel." << endl;
+            vesselCreation();
             cont = getCharInput("Do you want to create another vessel? (y/n): ");
         }
 
@@ -357,17 +348,52 @@ string UI::getInput(const string &prompt)
 {
     string input;
     cout << prompt;
-    cin >> input;
+    getline(cin, input);
 
     return input;
 }
-
+//*********************************************************
+// Gets input character from user with prompt
+//*********************************************************
 char UI::getCharInput(const string &prompt)
 {
     char input;
     cout << prompt;
     cin >> input;
     return input;
+}
+//************************************************************
+// Gets input from user with prompt and checks it for integer
+//************************************************************
+int UI::getIntInput(const string &prompt)
+{
+    string input;
+
+    // continue asking for a number until an integer is entered
+    while (true)
+    {
+        cout << prompt;
+        getline(cin, input);
+        bool allDigits = true;
+        for (char c : input)
+        {
+            if (!isdigit(c))
+            {
+                allDigits = false;
+                break;
+            }
+        }
+        // if the number is  not an integer prompt again for input
+        if (!allDigits)
+        {
+            cout << "Invalid input! Please enter a valid number." << endl;
+            continue; // to avoid invalid conversion of string to int
+        }
+
+        // the input is integer so return the input
+
+        return stoi(input);
+    }
 }
 //*********************************************************
 // Creates a sailing by prompting user for input
@@ -390,8 +416,8 @@ void UI::sailingCreation()
 void UI::vesselCreation()
 {
     string vesselName = getInput("Enter Vessel Name (max: 25 characters): ");
-    int LCLL = stoi(getInput("Enter LCLL (Positive number, max: 3600): "));
-    int HCLL = stoi(getInput("Enter HCLL (Positive number, max: 3600): "));
+    int LCLL = getIntInput("Enter LCLL (Positive number, max: 3600): ");
+    int HCLL = getIntInput("Enter HCLL (Positive number, max: 3600): ");
     if (OtherControls::createVessel(vesselName, HCLL, LCLL))
         cout << "Vessel successfully created." << endl;
     else
