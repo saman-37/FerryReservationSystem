@@ -99,10 +99,6 @@ void Sailing::writeToFile(fstream &file) const
                     sizeof(double)); 
         file.write(reinterpret_cast<const char *>(&LRL),
                     sizeof(double)); 
-        cout << "sailing id: " << sailingId 
-            << " vesselName: " << vesselName 
-            << " HRL: " << HRL 
-            << " LRL: " << LRL << endl;
     }
     else
     {
@@ -445,13 +441,13 @@ void Sailing::addSpace(const string &sailingId,
 
         if (strcmp(sailing.sailingId, sailingId.c_str()) == 0)
         {
-            // ✅ Add back to appropriate lane
+            // Add back to appropriate lane
             if (isSpecial)
                 sailing.HRL += vehicleLength;
             else
                 sailing.LRL += vehicleLength;
 
-            // 📝 Overwrite the current record
+            // Overwrite the current record
             Util::sailingFile.clear();
             Util::sailingFile.seekp(pos);
             sailing.writeToFile(Util::sailingFile);
