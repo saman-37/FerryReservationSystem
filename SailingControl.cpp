@@ -223,6 +223,7 @@ void SailingControl::printSailingReport() {
         }
 
         count = batchEnd;
+        cout << "------------------------------------------------------------------------------\n";
 
         if (count >= sailingIds.size()) break;
 
@@ -233,5 +234,19 @@ void SailingControl::printSailingReport() {
         cin.ignore(numeric_limits<streamsize>::max(),
              '\n');
         if (tolower(choice) != 'y') break;
+        cout << "=============================== Sailing Report ===============================\n";
+        cout << left
+             << setw(10) << "Date"
+             << setw(15) << "Sailing_ID"
+             << setw(20) << "Vessel name"
+             << setw(6)  << "LRL"
+             << setw(6)  << "HRL"
+             << setw(12)  << "Total"
+             << "% of lane\n"
+             << setw(10) << "&Time"
+             << setw(47) << ""
+             << setw(12) << "Vehicles"
+             << "occupied"
+             << endl;
     }
 }

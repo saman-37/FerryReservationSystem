@@ -282,9 +282,51 @@ bool Sailing::writeSailing(std::string &sailingId,
 // records
 // to a temp file and replacing the original
 //*********************************************************
+// bool Sailing::removeSailing(string sailingId)
+// {
+
+//     Util::sailingFile.clear();
+//     Util::sailingFile.seekg(0, ios::beg);
+
+//     vector<Sailing> sailings;
+//     Sailing temp;
+//     bool removed = false;
+
+//     // Step 1: Read all records into memory except the one
+//     // to remove
+//     while (Util::sailingFile.read(reinterpret_cast
+//                         <char *>(&temp), RECORD_SIZE))
+//     {
+//         if (strcmp(temp.sailingId, sailingId.c_str()) != 0)
+//         {
+//             sailings.push_back(temp);
+//         }
+//         else
+//         {
+//             removed = true;
+//         }
+//     }
+
+//     // Step 2: Truncate the file
+//     Util::sailingFile.close();
+//     Util::sailingFile.open("sailing.dat", ios::in 
+//                                         | ios::out 
+//                                         | ios::binary 
+//                                         | ios::trunc);
+
+//     // Step 3: Write back the kept records
+//     for (const auto &s : sailings)
+//     {
+//         Util::sailingFile.write(reinterpret_cast
+//                         <const char *>(&s), RECORD_SIZE);
+//     }
+
+//     Util::sailingFile.flush();
+//     return removed;
+// }
+
 bool Sailing::removeSailing(string sailingId)
 {
-
     Util::sailingFile.clear();
     Util::sailingFile.seekg(0, ios::beg);
 
@@ -292,11 +334,13 @@ bool Sailing::removeSailing(string sailingId)
     Sailing temp;
     bool removed = false;
 
-    // Step 1: Read all records into memory except the one
-    // to remove
-    while (Util::sailingFile.read(reinterpret_cast
-                        <char *>(&temp), RECORD_SIZE))
+    // Step 1: Read all records using readFromFile
+    while (!Util::sailingFile.eof())
     {
+        temp.readFromFile(Util::sailingFile);
+
+        if (Util::sailingFile.eof()) break;
+
         if (strcmp(temp.sailingId, sailingId.c_str()) != 0)
         {
             sailings.push_back(temp);
@@ -307,21 +351,22 @@ bool Sailing::removeSailing(string sailingId)
         }
     }
 
-    // Step 2: Truncate the file
+    // Step 2: Truncate file
     Util::sailingFile.close();
-    Util::sailingFile.open("sailing.dat", ios::in 
-                                        | ios::out 
-                                        | ios::binary 
-                                        | ios::trunc);
+    Util::sailingFile.open("sailing.dat", ios::out | ios::binary | ios::trunc);
 
-    // Step 3: Write back the kept records
+    // Step 3: Write back valid records using writeToFile
     for (const auto &s : sailings)
     {
-        Util::sailingFile.write(reinterpret_cast
-                        <const char *>(&s), RECORD_SIZE);
+        s.writeToFile(Util::sailingFile);
     }
 
     Util::sailingFile.flush();
+    Util::sailingFile.close();
+
+    // Step 4: Reopen the file in read/write mode
+    Util::sailingFile.open("sailing.dat", ios::in | ios::out | ios::binary);
+
     return removed;
 }
 
@@ -396,9 +441,9 @@ void Sailing::reduceSpace(const string &sailingId, float vehicleLength, bool isS
         if (strcmp(sailing.sailingId, sailingId.c_str()) == 0)
         {
             if (isSpecial)
-                sailing.HRL -= vehicleLength;
+                sailing.HRL -= (vehicleLength + 0.5);
             else
-                sailing.LRL -= vehicleLength;
+                sailing.LRL -= (vehicleLength + 0.5);
 
             Util::sailingFile.clear();
             Util::sailingFile.seekp(pos);
@@ -445,13 +490,11 @@ void Sailing::addSpace(const string &sailingId,
 
         if (strcmp(sailing.sailingId, sailingId.c_str()) == 0)
         {
-            // ✅ Add back to appropriate lane
             if (isSpecial)
-                sailing.HRL += vehicleLength;
+                sailing.HRL += (vehicleLength + 0.5);
             else
-                sailing.LRL += vehicleLength;
+                sailing.LRL += (vehicleLength + 0.5);
 
-            // 📝 Overwrite the current record
             Util::sailingFile.clear();
             Util::sailingFile.seekp(pos);
             sailing.writeToFile(Util::sailingFile);
