@@ -265,8 +265,8 @@ bool OtherControls::createVessel(string &vesselName,
     // Step 1: Check if all the parameters are valid
     // Check if vessel name exceeds maximum length and
     // Validate HCLL and LCLL values
-    if (vesselName.length() > NAME_LENGTH || HCLL <= 0 
-            || LCLL <= 0 || HCLL > 3600.0 || LCLL > 3600.0) 
+    if (vesselName.length() > NAME_LENGTH || HCLL < 0 
+            || LCLL < 0 || HCLL > 3600.0 || LCLL > 3600.0) 
     {
         cout << "Invalid format for vessel name,"
             << " or invalid HCLL or LCLL values." << endl;

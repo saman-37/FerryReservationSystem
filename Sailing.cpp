@@ -404,10 +404,6 @@ void Sailing::reduceSpace(const string &sailingId,
             sailing.writeToFile(Util::sailingFile);
             Util::sailingFile.flush();
 
-            cout << "Updated space for sailing: " 
-                    << sailingId << " HRL: " 
-                    << sailing.HRL << " LRL: " 
-                    << sailing.LRL << endl;
             return;
         }
     }
