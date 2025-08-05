@@ -219,8 +219,8 @@ int Vessel::getHCLL(const string &vesselName)
         if (strcmp(v.vesselName, vesselName.c_str()) == 0) 
         {
             // Output found vessel name and return HCLL
-            cout << "\nFound vessel: " << v.vesselName; 
-            cout << "\nHCLL: " << v.HCLL << endl; 
+            // cout << "\nFound vessel: " << v.vesselName; 
+            // cout << "\nHCLL: " << v.HCLL << endl; 
             return v.HCLL; 
         }
     }
@@ -256,8 +256,8 @@ int Vessel::getLCLL(const string &vesselName)
         if (strcmp(v.vesselName, vesselName.c_str()) == 0) 
         {
             // Output found vessel name and return LCLL
-            cout << "\nFound vessel: " << v.vesselName; 
-            cout << "\nLCLL: " << v.LCLL << endl; 
+            // cout << "\nFound vessel: " << v.vesselName; 
+            // cout << "\nLCLL: " << v.LCLL << endl; 
             return v.LCLL; 
         }
     }

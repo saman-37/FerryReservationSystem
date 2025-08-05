@@ -149,7 +149,17 @@ public:
     // in-out: modifies sailing.dat
     //*********************************************************
     static void addSpace(const string &sailingId, 
-                        float vehicleLength);
+                        float vehicleLength, bool isSpecial);
+
+    //*********************************************************
+    // isValidSailingId()
+    //*********************************************************
+    // Validates that a sailing ID is in format: aaa-dd-hh
+    // where aaa = 3 letters, dd = day 01-31, hh = hour 01-23
+    // in: sailingId
+    // out: true if valid, false otherwise
+    //*********************************************************
+    static bool isValidSailingId(const string &sailingId);
 
     //*********************************************************
     // getHRL

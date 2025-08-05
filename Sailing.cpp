@@ -12,6 +12,7 @@
 
 #include "Sailing.h"
 #include "Util.h"
+#include "Vehicle.h"
 #include <iostream>
 #include <iomanip>
 #include <cstring>
@@ -329,21 +330,27 @@ bool Sailing::removeSailing(string sailingId)
 // Checks whether a vehicle can be reserved on this sailing
 // depending on height/length and lane space.
 //*********************************************************
-bool Sailing::isSpaceAvailable(const string &sailingId, 
-                                bool isSpecial, 
-                                float vehicleLength, 
-                                float vehicleHeight)
+bool Sailing::isSpaceAvailable(const string &sailingId, bool isSpecial, float vehicleLength, float vehicleHeight)
 {
+    if (!Util::sailingFile.is_open())
+    {
+        cout << "sailing.dat not open." << endl;
+        return false;
+    }
+
     Util::sailingFile.clear();
     Util::sailingFile.seekg(0, ios::beg);
 
     Sailing sailing;
-    while (Util::sailingFile.read(reinterpret_cast
-                    <char *>(&sailing), RECORD_SIZE))
+
+    while (!Util::sailingFile.eof())
     {
-        if (strcmp(sailing.sailingId, 
-                    sailingId.c_str()) == 0)
+        sailing.readFromFile(Util::sailingFile);
+
+        if (strcmp(sailing.sailingId, sailingId.c_str()) == 0)
         {
+            cout << "Checking space on: " << sailing.sailingId << " HRL: " << sailing.HRL << " LRL: " << sailing.LRL << endl;
+
             if (isSpecial)
             {
                 return sailing.HRL >= vehicleLength;
@@ -362,43 +369,48 @@ bool Sailing::isSpaceAvailable(const string &sailingId,
 // reduceSpace()
 // Deducts reserved vehicle length from LCLL or HRL
 //*********************************************************
-void Sailing::reduceSpace(const string &sailingId, 
-                            float vehicleLength, 
-                            bool isSpecial)
+void Sailing::reduceSpace(const string &sailingId, float vehicleLength, bool isSpecial)
 {
+    if (!Util::sailingFile.is_open())
+    {
+        cout << "sailing.dat not open for reducing space." << endl;
+        return;
+    }
+
     Util::sailingFile.clear();
     Util::sailingFile.seekg(0, ios::beg);
 
     Sailing sailing;
     streampos pos;
 
-    while (Util::sailingFile.read(reinterpret_cast
-                        <char *>(&sailing), RECORD_SIZE))
+    while (true)
     {
-        if (strcmp(sailing.sailingId, 
-                    sailingId.c_str()) == 0)
-        {
-    // Calculate current position and go back to overwrite
-            pos = Util::sailingFile.tellg();
-            pos -= RECORD_SIZE;
+        pos = Util::sailingFile.tellg();
 
+        // Try reading record using your structured format
+        sailing.readFromFile(Util::sailingFile);
+
+        // If read failed, exit loop
+        if (Util::sailingFile.eof()) break;
+
+        if (strcmp(sailing.sailingId, sailingId.c_str()) == 0)
+        {
             if (isSpecial)
-            {
                 sailing.HRL -= vehicleLength;
-            }
             else
-            {
                 sailing.LRL -= vehicleLength;
-            }
 
             Util::sailingFile.clear();
             Util::sailingFile.seekp(pos);
-            Util::sailingFile.write(reinterpret_cast
-                    <const char *>(&sailing), RECORD_SIZE);
+            sailing.writeToFile(Util::sailingFile);
             Util::sailingFile.flush();
-            break;
+
+            cout << "Updated space for sailing: " << sailingId << " HRL: " << sailing.HRL << " LRL: " << sailing.LRL << endl;
+            return;
         }
     }
+
+    cout << "Sailing ID " << sailingId << " not found in reduceSpace()." << endl;
 }
 
 //*********************************************************
@@ -409,7 +421,7 @@ void Sailing::reduceSpace(const string &sailingId,
 // in-out: modifies sailing.dat
 //*********************************************************
 void Sailing::addSpace(const string &sailingId, 
-                        float vehicleLength)
+                        float vehicleLength, bool isSpecial)
 {
     if (!Util::sailingFile.is_open())
     {
@@ -427,43 +439,64 @@ void Sailing::addSpace(const string &sailingId,
     {
         pos = Util::sailingFile.tellg();
 
-        if (!Util::sailingFile.read(sailing.sailingId, 
-                        SAILING_ID_LENGTH + 1)) break;
-        if (!Util::sailingFile.read(sailing.vesselName, 
-                        VESSEL_NAME_LENGTH + 1)) break;
-        if (!Util::sailingFile.read(reinterpret_cast
-            <char *>(&sailing.HRL), sizeof(double))) break;
-        
-        if (!Util::sailingFile.read(reinterpret_cast
-            <char *>(&sailing.LRL), sizeof(double))) break;
+        sailing.readFromFile(Util::sailingFile);
 
-        if (strcmp(sailing.sailingId, 
-                    sailingId.c_str()) == 0)
+        if (Util::sailingFile.eof()) break;
+
+        if (strcmp(sailing.sailingId, sailingId.c_str()) == 0)
         {
-            
-            sailing.LRL += vehicleLength / 2;
-            sailing.HRL += vehicleLength / 2;
+            // ✅ Add back to appropriate lane
+            if (isSpecial)
+                sailing.HRL += vehicleLength;
+            else
+                sailing.LRL += vehicleLength;
 
-            // Seek back to start of this record
+            // 📝 Overwrite the current record
+            Util::sailingFile.clear();
             Util::sailingFile.seekp(pos);
-
-            Util::sailingFile.write(sailing.sailingId, 
-                                SAILING_ID_LENGTH + 1);
-            Util::sailingFile.write(sailing.vesselName, 
-                                VESSEL_NAME_LENGTH + 1);
-            Util::sailingFile.write(reinterpret_cast
-            <const char *>(&sailing.HRL), sizeof(double));
-
-            Util::sailingFile.write(reinterpret_cast
-            <const char *>(&sailing.LRL), sizeof(double));
-
+            sailing.writeToFile(Util::sailingFile);
             Util::sailingFile.flush();
+
+            cout << "Space restored in " << (isSpecial ? "HRL" : "LRL")
+                 << ". Updated: HRL=" << sailing.HRL << ", LRL=" << sailing.LRL << endl;
             return;
         }
     }
 
-    cout << "Sailing ID " << sailingId 
-        << " not found to add space." << endl;
+    cout << "Sailing ID " << sailingId << " not found in addSpace()." << endl;
+}
+
+//************************************************************
+// isValidSailingId()
+//************************************************************
+// Validates that a sailing ID is in format: aaa-dd-hh
+// where aaa = 3 letters, dd = day 01-31, hh = hour 01-23
+// in: sailingId
+// out: true if valid, false otherwise
+//************************************************************
+bool Sailing::isValidSailingId(const string &sailingId)
+{
+    if (sailingId.length() != 9 || sailingId[3] != '-' || sailingId[6] != '-')
+        return false;
+
+    // Check first 3 characters are letters
+    for (int i = 0; i < 3; ++i)
+    {
+        if (!isalpha(sailingId[i]))
+            return false;
+    }
+
+    // Extract and validate day and hour
+    string dayStr = sailingId.substr(4, 2);
+    string hourStr = sailingId.substr(7, 2);
+
+    int day = stoi(dayStr);
+    int hour = stoi(hourStr);
+
+    if (day < 1 || day > 31 || hour < 0 || hour > 23)
+        return false;
+
+    return true;
 }
 
 double Sailing::getHRL(const string &sailingId) const

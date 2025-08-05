@@ -36,6 +36,12 @@ SailingControl::SailingControl() {
 bool SailingControl::createSailing(const string& sailingId, 
                                 const string& vesselName) 
 {
+    if (!Sailing::isValidSailingId(sailingId)) {
+        cout << "Invalid sailing ID format.";
+        cout << "Must be in format: aaa-dd-hh (e.g., abc-12-08)." << endl;
+        return false;
+    }
+
     if (Sailing::checkExist(sailingId)) {
         cout << "Sailing already exists." << endl;
         return false;
@@ -70,8 +76,8 @@ bool SailingControl::deleteSailing(const string& sailingId)
         cout << "Entered deleteSailing" << endl;
         Reservation reservation;
         reservation.removeReservationsOnSailing(sailingId);
-        return Sailing::removeSailing(sailingId);
         cout << "Exiting deleteSailing" << endl;
+        return Sailing::removeSailing(sailingId);
     }
     else 
     {
@@ -173,15 +179,20 @@ void SailingControl::printSailingReport() {
     }
 
     // Header
-    cout << "=================== Sailing Report ===================\n";
+    cout << "=============================== Sailing Report ===============================\n";
     cout << left
          << setw(10) << "Date"
          << setw(15) << "Sailing_ID"
          << setw(20) << "Vessel name"
          << setw(6)  << "LRL"
          << setw(6)  << "HRL"
-         << setw(8)  << "Total"
-         << "% of lane\n";
+         << setw(12)  << "Total"
+         << "% of lane\n"
+         << setw(10) << "&Time"
+         << setw(47) << ""
+         << setw(12) << "Vehicles"
+         << "occupied"
+         << endl;
 
     size_t count = 0;
 
@@ -196,17 +207,17 @@ void SailingControl::printSailingReport() {
                 substr(sailingIds[i].find('-') + 1); 
             int totalVehicles = Reservation::
                 getTotalReservationsOnSailing(s.sailingId);
-            double total = s.HRL + s.LRL;
-            double used = total - (s.HRL + s.LRL); 
-            double percent = (total > 0.0) ? 
-                            ((used / total) * 100.0) : 0.0;
+            double totalCapacity = Vessel::getCapacity(s.vesselName);
+            double totalUsed = totalCapacity - (s.HRL + s.LRL);
+            double percent = (totalUsed > 0.0) ? 
+                            ((totalUsed / totalCapacity) * 100.0) : 0.0;
             cout << left
                  << setw(10) << date
                  << setw(15) << s.sailingId
                  << setw(20) << s.vesselName
                  << setw(6)  << (int)s.LRL
                  << setw(6)  << (int)s.HRL
-                 << setw(8)  << totalVehicles
+                 << setw(12)  << totalVehicles
                  << fixed << setprecision(1) << percent 
                  << endl;
         }

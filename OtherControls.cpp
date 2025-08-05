@@ -91,12 +91,12 @@ bool OtherControls::createReservation(string &phoneNumber,
     {
         //Step 5: Check if the formats are correct
         // Validate HCLL and LCLL values
-        if (phoneNumber.length() >= PHONE_LENGTH) 
+        if (phoneNumber.length() > PHONE_LENGTH) 
         {
             cout << "Invalid format for phone number." << endl;
             return false; // Invalid phone number
         }
-        else if (licensePlate.length() >= LICENSE_PLATE_LENGTH 
+        else if (licensePlate.length() > LICENSE_PLATE_LENGTH 
                 || licensePlate.length() <= LICENSE_MIN_LENGTH)
         {
             cout << "Invalid format for License Plate." << endl;
@@ -112,6 +112,7 @@ bool OtherControls::createReservation(string &phoneNumber,
 
         cout << "Is this a special vehicle? (y/n): " << endl;
         cin >> isSpecialInput; // Get user input
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
         // Check if the user indicated a special vehicle
         if (isSpecialInput == 'y' || isSpecialInput == 'Y') 
@@ -207,15 +208,21 @@ bool OtherControls::deleteReservation(string &license,
     // Fetch vehicle length from file using license key
     float length = vehicle.getLength(license); 
 
-    // Step 3: remove the reservation record from the reservation
+    // Step 3: get height from the vehicle
+
+    // Fetch vehicle height from file using license key
+    float height = vehicle.getHeight(license); 
+
+    // Step 4: remove the reservation record from the reservation
     // file
     if (!Reservation::removeReservation(license, sailingId)) 
     {
         return false; // Failed to remove reservation
     }
 
-    // Step 4: add the space back to the sailing
-    Sailing::addSpace(sailingId, length);
+    // Step 5: add the space back to the sailing
+    bool isSpecial = height > 2;
+    Sailing::addSpace(sailingId, length, isSpecial);
     return true; // Return true if deletion was successful
 };
 
