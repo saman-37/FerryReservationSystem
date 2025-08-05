@@ -8,6 +8,7 @@
 // managing all menus, taking user input, and routing
 // commands to mid-level control modules.
 // July 24, 2025 Version 2 - All team members
+// Aug 5, 2025   Version 3 - Noble added enum classes
 //*********************************************************
 
 #pragma once
@@ -93,4 +94,26 @@ public:
     // Helper method to facilitate reservation creation
     //*********************************************************
     static void reservationCreation();
+};
+
+enum class MainMenuOption{
+    Quit = 0,
+    Create = 1,
+    Delete = 2,
+    Query = 3,
+    Report = 4,
+    CheckIn = 5
+};
+
+enum class CreateMenuOption{
+    Back = 0,
+    Vessel = 1,
+    Sailing = 2,
+    Reservation = 3
+};
+
+enum class DeleteMenuOption{
+    Back = 0,
+    Sailing = 1,
+    Reservation = 2
 };
