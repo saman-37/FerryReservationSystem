@@ -3,6 +3,7 @@
     "__locale": "cpp",
     "ios": "cpp",
     "iostream": "cpp",
-    "ostream": "cpp"
+    "ostream": "cpp",
+    "fstream": "cpp"
   }
 }

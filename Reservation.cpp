@@ -82,7 +82,6 @@ void Reservation::writeToFile(fstream &file) const
 //************************************************************
 bool Reservation::writeReservation(const string &license, const string &sailingId)
 {
-    cout << "Entered the writeReservation" << endl;
     Reservation reservation(license, sailingId, false); // Create a new reservation with onBoard = false
     Util::reservationFile.clear(); // Clear file flags
     Util::reservationFile.seekg(0, ios::end); // Move to end of the file

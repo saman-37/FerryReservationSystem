@@ -30,10 +30,12 @@ void printAllReservations()
 
 int main()
 {
-    cout << "Total reservations on bur-07-07 are " << Reservation::getTotalReservationsOnSailing("bur-07-07");
-
     // Open reservation file
-    Util::reservationFile.open("reservation.dat", ios::out | ios::binary | ios::trunc);
+    Util::reservationFile.clear();                                                   // Clear any error flags
+    Util::reservationFile.open("reservation.dat", ios::out | ios::binary);           // Open for writing
+    Util::reservationFile.close();                                                   // Close the file after writing
+    Util::reservationFile.open("reservation.dat", ios::in | ios::out | ios::binary);
+
     if (!Util::reservationFile.is_open())
     {
         cerr << "Failed to open reservation.dat\n";
