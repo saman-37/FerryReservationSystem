@@ -73,18 +73,18 @@ bool SailingControl::deleteSailing(const string& sailingId)
 {
     if (Sailing::checkExist(sailingId)) 
     {
-        cout << "Entered deleteSailing" << endl;
+        
         Reservation reservation;
         reservation.removeReservationsOnSailing(sailingId);
-        cout << "Exiting deleteSailing" << endl;
+        cout << "This will delete all the reservations on this sailing. Do you want to continue deleting the sailing [y/n]:"<<endl;
         return Sailing::removeSailing(sailingId);
     }
     else 
     {
-        cout << "deleteSailing return false" << endl;
+        cout << "Sailing does not exist." << endl;
         return false;
     }
-    cout << "Exited Successfully deleteSailing" << endl;
+    
 }
 
 //*********************************************************
