@@ -8,7 +8,8 @@
 // managing all menus, taking user input, and routing
 // commands to mid-level control modules.
 // July 24, 2025 Version 2 - All team members
-// Aug 5, 2025   Version 3 - Noble added enum classes
+// Aug 5, 2025   Version 3 - Noble added enum classes,
+//                           getIntInput function
 //*********************************************************
 
 #pragma once
