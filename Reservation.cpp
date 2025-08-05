@@ -5,8 +5,8 @@
 // Purpose: Implements all functionality for the Reservation 
 // entity, including reading/writing fixed-length binary 
 // records, adding, deleting, checking, and modifying 
-// reservation status. Uses unsorted records and random access
-// for simplicity and speed.
+// reservation status. Uses unsorted records and random
+// access for simplicity and speed.
 //**********************************************************
 // Version History:
 // ver. 2 - July 23, 2025 by Saman and Noble
