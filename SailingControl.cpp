@@ -133,15 +133,15 @@ void SailingControl::querySailing(const string& sailingId)
                     * 100.0) : 0.0;
 
     cout << "High Remaining Capacity (HRL): " 
-        << fixed << setprecision(0) << sailing.HRL 
+        << fixed << setprecision(1) << sailing.HRL 
         << " m" << endl;
     cout << "Low Remaining Capacity (LRL): " 
-        << fixed << setprecision(0) << sailing.LRL 
+        << fixed << setprecision(1) << sailing.LRL 
         << " m" << endl;
     cout << "Total Vehicles on Board: " 
         << totalVehicles << endl;
     cout << "Capacity Used: " << fixed 
-        << setprecision(0) << percent << "%\n";
+        << setprecision(1) << percent << "%\n";
 }
 
 //*********************************************************
@@ -234,8 +234,8 @@ void SailingControl::printSailingReport() {
                  << setw(10) << date
                  << setw(15) << s.sailingId
                  << setw(20) << s.vesselName
-                 << setw(6)  << (double)s.LRL
-                 << setw(6)  << (double)s.HRL
+                 << setw(6)  << s.LRL
+                 << setw(6)  << s.HRL
                  << setw(12)  << totalVehicles
                  << fixed << setprecision(1) << percent 
                  << endl;
