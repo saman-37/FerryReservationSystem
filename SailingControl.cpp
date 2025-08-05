@@ -124,13 +124,13 @@ void SailingControl::querySailing(const string& sailingId)
     int totalVehicles = 
     Reservation::getTotalReservationsOnSailing(sailingId);
 
-    double totalCapacity = sailing.HRL + sailing.LRL;
-    
-    // if not calculated, will always be 0
-    double usedCapacity = totalCapacity - 
-                (sailing.HRL + sailing.LRL); 
-    double percentUsed = (totalCapacity == 0) ? 0 : 
-                (usedCapacity / totalCapacity) * 100.0;
+    double totalCapacity = Vessel::getCapacity(sailing.vesselName);
+
+    double totalUsed = totalCapacity - (sailing.HRL + sailing.LRL);
+
+    double percent = (totalUsed > 0.0) ? 
+                    ((totalUsed / totalCapacity) 
+                    * 100.0) : 0.0;
 
     cout << "High Remaining Capacity (HRL): " 
         << fixed << setprecision(0) << sailing.HRL 
@@ -141,7 +141,7 @@ void SailingControl::querySailing(const string& sailingId)
     cout << "Total Vehicles on Board: " 
         << totalVehicles << endl;
     cout << "Capacity Used: " << fixed 
-        << setprecision(0) << percentUsed << "%\n";
+        << setprecision(0) << percent << "%\n";
 }
 
 //*********************************************************
@@ -234,8 +234,8 @@ void SailingControl::printSailingReport() {
                  << setw(10) << date
                  << setw(15) << s.sailingId
                  << setw(20) << s.vesselName
-                 << setw(6)  << (int)s.LRL
-                 << setw(6)  << (int)s.HRL
+                 << setw(6)  << (double)s.LRL
+                 << setw(6)  << (double)s.HRL
                  << setw(12)  << totalVehicles
                  << fixed << setprecision(1) << percent 
                  << endl;
