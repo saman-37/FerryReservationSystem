@@ -21,7 +21,7 @@ using namespace std;
 
 static float SPECIAL_VEHICLE_MAX_HEIGHT = 9.9;
 static float SPECIAL_VEHICLE_MAX_LENGTH = 999.9;
-static int PHONE_NUMBER_MIN_LENGTH = 4;
+static int PHONE_NUMBER_MIN_LENGTH = 8;
 static int LICENSE_MIN_LENGTH = 1;
 
 

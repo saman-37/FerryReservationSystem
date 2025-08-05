@@ -102,7 +102,14 @@ bool OtherControls::createReservation(string &phoneNumber,
             cout << "Invalid format for License Plate." << endl;
             return false; // Invalid License plate
         }
-
+        for (char c : phoneNumber) {
+            if (!std::isdigit(c) && c != '-') {
+                cout << "Invalid format for phone number." << endl;
+                // Found a non-digit and non-dash character
+                return false; 
+            }
+        }
+        
         // Step 6: write the new vehicle record if it does not 
         // already exist
         // Ask user if this is a special vehicle, and prompt for
