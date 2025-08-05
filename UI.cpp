@@ -166,14 +166,13 @@ void UI::displayCreateMenu()
         break;
     case CreateMenuOption::Vessel:
     {
-        string vesselName;
-        int LCLL, HCLL;
         cont = 'y';
         while (cont == 'y' || cont == 'Y')
         {
             // Collect info and create vessel
             vesselCreation();
             cont = getCharInput("Do you want to create another vessel? (y/n): ");
+            cin.ignore(numeric_limits<streamsize>::max(),'\n');
         }
 
         break;
@@ -186,6 +185,7 @@ void UI::displayCreateMenu()
             // Collect info and create sailing
             sailingCreation();
             cont = getCharInput("Do you wish to create another sailing? (y/n): ");
+            cin.ignore(numeric_limits<streamsize>::max(),'\n');
         }
         break;
     }
@@ -197,6 +197,7 @@ void UI::displayCreateMenu()
             // Collect info and create reservation
             reservationCreation();
             cont = getCharInput("Do you wish to create another reservation? (y/n): ");
+            cin.ignore(numeric_limits<streamsize>::max(),'\n');
         }
         break;
     }
@@ -252,6 +253,7 @@ void UI::displayDeleteMenu()
         string sailingId = getInput("Enter Sailing ID (format: xxx-dd-hh): ");
         string license = getInput("Enter License (max: 10): ");
         string cont = getInput("Are you sure you want to delete this reservation? [y/n]: ");
+        cin.ignore(numeric_limits<streamsize>::max(),'\n');
         // Validating user input to continue performing operation
         if (cont[0] == 'y' || cont[0] == 'Y')
         {
