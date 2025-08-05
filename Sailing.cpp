@@ -99,10 +99,6 @@ void Sailing::writeToFile(fstream &file) const
                     sizeof(double)); 
         file.write(reinterpret_cast<const char *>(&LRL),
                     sizeof(double)); 
-        cout << "sailing id: " << sailingId 
-            << " vesselName: " << vesselName 
-            << " HRL: " << HRL 
-            << " LRL: " << LRL << endl;
     }
     else
     {
@@ -282,49 +278,6 @@ bool Sailing::writeSailing(std::string &sailingId,
 // records
 // to a temp file and replacing the original
 //*********************************************************
-// bool Sailing::removeSailing(string sailingId)
-// {
-
-//     Util::sailingFile.clear();
-//     Util::sailingFile.seekg(0, ios::beg);
-
-//     vector<Sailing> sailings;
-//     Sailing temp;
-//     bool removed = false;
-
-//     // Step 1: Read all records into memory except the one
-//     // to remove
-//     while (Util::sailingFile.read(reinterpret_cast
-//                         <char *>(&temp), RECORD_SIZE))
-//     {
-//         if (strcmp(temp.sailingId, sailingId.c_str()) != 0)
-//         {
-//             sailings.push_back(temp);
-//         }
-//         else
-//         {
-//             removed = true;
-//         }
-//     }
-
-//     // Step 2: Truncate the file
-//     Util::sailingFile.close();
-//     Util::sailingFile.open("sailing.dat", ios::in 
-//                                         | ios::out 
-//                                         | ios::binary 
-//                                         | ios::trunc);
-
-//     // Step 3: Write back the kept records
-//     for (const auto &s : sailings)
-//     {
-//         Util::sailingFile.write(reinterpret_cast
-//                         <const char *>(&s), RECORD_SIZE);
-//     }
-
-//     Util::sailingFile.flush();
-//     return removed;
-// }
-
 bool Sailing::removeSailing(string sailingId)
 {
     Util::sailingFile.clear();
@@ -490,11 +443,13 @@ void Sailing::addSpace(const string &sailingId,
 
         if (strcmp(sailing.sailingId, sailingId.c_str()) == 0)
         {
+            // Add back to appropriate lane
             if (isSpecial)
                 sailing.HRL += (vehicleLength + 0.5);
             else
                 sailing.LRL += (vehicleLength + 0.5);
 
+            // Overwrite the current record
             Util::sailingFile.clear();
             Util::sailingFile.seekp(pos);
             sailing.writeToFile(Util::sailingFile);
