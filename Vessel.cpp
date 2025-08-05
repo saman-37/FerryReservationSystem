@@ -146,9 +146,7 @@ bool Vessel::writeVessel(const string &VesselName,
     // Move to the end of the file
     Util::vesselFile.seekg(0, ios::end);  
     // Write the vessel record to the file
-    vessel.writeToFile(Util::vesselFile); 
-    // Output vessel details
-    cout << vessel.toString() << endl;     
+    vessel.writeToFile(Util::vesselFile);  
     // Save to disk
     Util::vesselFile.flush();    
     // Return true indicating success         
