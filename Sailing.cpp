@@ -20,15 +20,6 @@
 
 using namespace std;
 
-//PLEASE ADD "addSpace" !!
-void addSpace(const string &sailingId, float vehicleLength)
-{
-    //here added space back
-    cout << "Adding space back to sailing: " 
-        << sailingId << endl;
-}
-
-
 //*********************************************************
 // Default Constructor
 // Initializes all fields to zero or empty string
@@ -123,10 +114,6 @@ void Sailing::readFromFile(fstream &file)
                     sizeof(double));
         file.read(reinterpret_cast<char *>(&LRL), 
                     sizeof(double));
-        cout << "sailing id: " << sailingId 
-            << " vesselName: " << vesselName 
-            << " HRL: " << HRL 
-            << " LRL: " << LRL << endl;
     }
     else
     {
@@ -280,7 +267,6 @@ bool Sailing::writeSailing(std::string &sailingId,
 //*********************************************************
 bool Sailing::removeSailing(string sailingId)
 {
-
     Util::sailingFile.clear();
     Util::sailingFile.seekg(0, ios::beg);
 
@@ -288,11 +274,13 @@ bool Sailing::removeSailing(string sailingId)
     Sailing temp;
     bool removed = false;
 
-    // Step 1: Read all records into memory except the one
-    // to remove
-    while (Util::sailingFile.read(reinterpret_cast
-                        <char *>(&temp), RECORD_SIZE))
+    // Step 1: Read all records using readFromFile
+    while (!Util::sailingFile.eof())
     {
+        temp.readFromFile(Util::sailingFile);
+
+        if (Util::sailingFile.eof()) break;
+
         if (strcmp(temp.sailingId, sailingId.c_str()) != 0)
         {
             sailings.push_back(temp);
@@ -303,21 +291,26 @@ bool Sailing::removeSailing(string sailingId)
         }
     }
 
-    // Step 2: Truncate the file
+    // Step 2: Truncate file
     Util::sailingFile.close();
-    Util::sailingFile.open("sailing.dat", ios::in 
-                                        | ios::out 
+    Util::sailingFile.open("sailing.dat", ios::out 
                                         | ios::binary 
                                         | ios::trunc);
 
-    // Step 3: Write back the kept records
+    // Step 3: Write back valid records using writeToFile
     for (const auto &s : sailings)
     {
-        Util::sailingFile.write(reinterpret_cast
-                        <const char *>(&s), RECORD_SIZE);
+        s.writeToFile(Util::sailingFile);
     }
 
     Util::sailingFile.flush();
+    Util::sailingFile.close();
+
+    // Step 4: Reopen the file in read/write mode
+    Util::sailingFile.open("sailing.dat", ios::in 
+                                        | ios::out 
+                                        | ios::binary);
+
     return removed;
 }
 
@@ -326,7 +319,10 @@ bool Sailing::removeSailing(string sailingId)
 // Checks whether a vehicle can be reserved on this sailing
 // depending on height/length and lane space.
 //*********************************************************
-bool Sailing::isSpaceAvailable(const string &sailingId, bool isSpecial, float vehicleLength, float vehicleHeight)
+bool Sailing::isSpaceAvailable(const string &sailingId, 
+                                bool isSpecial, 
+                                float vehicleLength, 
+                                float vehicleHeight)
 {
     if (!Util::sailingFile.is_open())
     {
@@ -345,7 +341,10 @@ bool Sailing::isSpaceAvailable(const string &sailingId, bool isSpecial, float ve
 
         if (strcmp(sailing.sailingId, sailingId.c_str()) == 0)
         {
-            cout << "Checking space on: " << sailing.sailingId << " HRL: " << sailing.HRL << " LRL: " << sailing.LRL << endl;
+            cout << "Checking space on: " 
+                << sailing.sailingId << " HRL: " 
+                << sailing.HRL << " LRL: " 
+                << sailing.LRL << endl;
 
             if (isSpecial)
             {
@@ -365,11 +364,14 @@ bool Sailing::isSpaceAvailable(const string &sailingId, bool isSpecial, float ve
 // reduceSpace()
 // Deducts reserved vehicle length from LCLL or HRL
 //*********************************************************
-void Sailing::reduceSpace(const string &sailingId, float vehicleLength, bool isSpecial)
+void Sailing::reduceSpace(const string &sailingId, 
+                            float vehicleLength, 
+                            bool isSpecial)
 {
     if (!Util::sailingFile.is_open())
     {
-        cout << "sailing.dat not open for reducing space." << endl;
+        cout << "sailing.dat not open for reducing space." 
+                << endl;
         return;
     }
 
@@ -389,24 +391,29 @@ void Sailing::reduceSpace(const string &sailingId, float vehicleLength, bool isS
         // If read failed, exit loop
         if (Util::sailingFile.eof()) break;
 
-        if (strcmp(sailing.sailingId, sailingId.c_str()) == 0)
+        if (strcmp(sailing.sailingId, 
+                            sailingId.c_str()) == 0)
         {
             if (isSpecial)
-                sailing.HRL -= vehicleLength;
+                sailing.HRL -= (vehicleLength + 0.5);
             else
-                sailing.LRL -= vehicleLength;
+                sailing.LRL -= (vehicleLength + 0.5);
 
             Util::sailingFile.clear();
             Util::sailingFile.seekp(pos);
             sailing.writeToFile(Util::sailingFile);
             Util::sailingFile.flush();
 
-            cout << "Updated space for sailing: " << sailingId << " HRL: " << sailing.HRL << " LRL: " << sailing.LRL << endl;
+            cout << "Updated space for sailing: " 
+                    << sailingId << " HRL: " 
+                    << sailing.HRL << " LRL: " 
+                    << sailing.LRL << endl;
             return;
         }
     }
 
-    cout << "Sailing ID " << sailingId << " not found in reduceSpace()." << endl;
+    cout << "Sailing ID " << sailingId 
+            << " not found in reduceSpace()." << endl;
 }
 
 //*********************************************************
@@ -439,13 +446,14 @@ void Sailing::addSpace(const string &sailingId,
 
         if (Util::sailingFile.eof()) break;
 
-        if (strcmp(sailing.sailingId, sailingId.c_str()) == 0)
+        if (strcmp(sailing.sailingId, 
+                                sailingId.c_str()) == 0)
         {
             // Add back to appropriate lane
             if (isSpecial)
-                sailing.HRL += vehicleLength;
+                sailing.HRL += (vehicleLength + 0.5);
             else
-                sailing.LRL += vehicleLength;
+                sailing.LRL += (vehicleLength + 0.5);
 
             // Overwrite the current record
             Util::sailingFile.clear();
@@ -453,13 +461,16 @@ void Sailing::addSpace(const string &sailingId,
             sailing.writeToFile(Util::sailingFile);
             Util::sailingFile.flush();
 
-            cout << "Space restored in " << (isSpecial ? "HRL" : "LRL")
-                 << ". Updated: HRL=" << sailing.HRL << ", LRL=" << sailing.LRL << endl;
+            cout << "Space restored in " 
+                    << (isSpecial ? "HRL" : "LRL")
+                    << ". Updated: HRL=" << sailing.HRL 
+                    << ", LRL=" << sailing.LRL << endl;
             return;
         }
     }
 
-    cout << "Sailing ID " << sailingId << " not found in addSpace()." << endl;
+    cout << "Sailing ID " << sailingId 
+            << " not found in addSpace()." << endl;
 }
 
 //************************************************************
@@ -472,7 +483,9 @@ void Sailing::addSpace(const string &sailingId,
 //************************************************************
 bool Sailing::isValidSailingId(const string &sailingId)
 {
-    if (sailingId.length() != 9 || sailingId[3] != '-' || sailingId[6] != '-')
+    if (sailingId.length() != 9 
+        || sailingId[3] != '-' 
+        || sailingId[6] != '-')
         return false;
 
     // Check first 3 characters are letters

@@ -2,7 +2,8 @@
 // SailingControl.cpp
 //*********************************************************
 // Purpose: Mid-level control module for sailing operations.
-// Handles creation, deletion, reporting, and querying sailings.
+// Handles creation, deletion, reporting, and querying
+// sailings.
 // July 25, 2025 Version 2 - Yadhu
 //*********************************************************
 
@@ -38,7 +39,8 @@ bool SailingControl::createSailing(const string& sailingId,
 {
     if (!Sailing::isValidSailingId(sailingId)) {
         cout << "Invalid sailing ID format.";
-        cout << "Must be in format: aaa-dd-hh (e.g., abc-12-08)." << endl;
+        cout << "Must be in format: aaa-dd-hh "
+            << "(e.g., abc-12-08)." << endl;
         return false;
     }
 
@@ -73,11 +75,22 @@ bool SailingControl::deleteSailing(const string& sailingId)
 {
     if (Sailing::checkExist(sailingId)) 
     {
-        
-        Reservation reservation;
-        reservation.removeReservationsOnSailing(sailingId);
-        cout << "This will delete all the reservations on this sailing. Do you want to continue deleting the sailing [y/n]:"<<endl;
-        return Sailing::removeSailing(sailingId);
+        char input;
+        cout << "This will delete all the reservations on "
+            << "this sailing. Do you want to continue "
+            << "deleting the sailing [y/n]:"<<endl;
+        cin >> input;
+        cin.ignore(numeric_limits<streamsize>::max(),'\n');
+        if(input == 'y' || input == 'Y')
+        {
+            Reservation reservation;
+            reservation.removeReservationsOnSailing(sailingId);
+            return Sailing::removeSailing(sailingId);
+        }
+        else{
+            cout << "Sailing could not delete" << endl;
+            return false;
+        }
     }
     else 
     {
@@ -198,7 +211,8 @@ void SailingControl::printSailingReport() {
 
     // Display sailings in groups of 5
     while (count < sailingIds.size()) {
-        size_t batchEnd = min(count + 5, sailingIds.size());
+        size_t batchEnd = min(count + 5, 
+                              sailingIds.size());
         for (size_t i = count; i < batchEnd; ++i) {
             Sailing s = 
                 Sailing::getSailingInfo(sailingIds[i]);
@@ -207,10 +221,15 @@ void SailingControl::printSailingReport() {
                 substr(sailingIds[i].find('-') + 1); 
             int totalVehicles = Reservation::
                 getTotalReservationsOnSailing(s.sailingId);
-            double totalCapacity = Vessel::getCapacity(s.vesselName);
-            double totalUsed = totalCapacity - (s.HRL + s.LRL);
+            double totalCapacity = 
+                        Vessel::getCapacity(s.vesselName);
+
+            double totalUsed = totalCapacity - 
+                                (s.HRL + s.LRL);
+
             double percent = (totalUsed > 0.0) ? 
-                            ((totalUsed / totalCapacity) * 100.0) : 0.0;
+                            ((totalUsed / totalCapacity) 
+                            * 100.0) : 0.0;
             cout << left
                  << setw(10) << date
                  << setw(15) << s.sailingId
@@ -223,6 +242,7 @@ void SailingControl::printSailingReport() {
         }
 
         count = batchEnd;
+        cout << "------------------------------------------------------------------------------\n";
 
         if (count >= sailingIds.size()) break;
 
@@ -233,5 +253,19 @@ void SailingControl::printSailingReport() {
         cin.ignore(numeric_limits<streamsize>::max(),
              '\n');
         if (tolower(choice) != 'y') break;
+        cout << "=============================== Sailing Report ===============================\n";
+        cout << left
+             << setw(10) << "Date"
+             << setw(15) << "Sailing_ID"
+             << setw(20) << "Vessel name"
+             << setw(6)  << "LRL"
+             << setw(6)  << "HRL"
+             << setw(12)  << "Total"
+             << "% of lane\n"
+             << setw(10) << "&Time"
+             << setw(47) << ""
+             << setw(12) << "Vehicles"
+             << "occupied"
+             << endl;
     }
 }
