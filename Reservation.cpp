@@ -211,6 +211,20 @@ bool Reservation::removeReservation(const string &license, const string &sailing
 {
     Reservation reservation;
 
+    //----------------------------------------------------------------------------------------------------------
+    cout << "Entered the removeReservation." << endl;
+    cout << "The CONTENTS before deleting reservation are: " << endl;
+
+    Util::reservationFile.clear();
+    Util::reservationFile.seekg(0, ios::beg); // move read pointer to beginning
+
+    while (Util::reservationFile.peek() != EOF)
+    {
+        reservation.readFromFile(Util::reservationFile);
+        cout << reservation.toString(); // WEIRDLY THIS WASNT WORKING , IT SHOULD BE AN EASY WAY TO DEBUG AND PRINT
+    }
+    //----------------------------------------------------------------------------------------------------------
+
     if (!Util::reservationFile.is_open())
     {
         cout << "Reservation File is not open." << endl;
@@ -273,7 +287,6 @@ bool Reservation::removeReservation(const string &license, const string &sailing
     Util::reservationFile.open("reservation.dat", ios::in | ios::out | ios::binary);
 
     return true;
-
 }
 
 //************************************************************
@@ -284,6 +297,13 @@ bool Reservation::removeReservation(const string &license, const string &sailing
 // TEST ABOVE FIRST, THIS WITH 1-1 LOOP AT FRONT & END LATER, OTHERWISE TOO MANY PRINTS
 bool Reservation::removeReservationsOnSailing(const std::string &sailingId)
 {
+    //----------------------------------------------------------------------------------------------------------
+    cout << "Entered the removeReservationsOnSailing." << endl;
+    Util::reservationFile.seekg(0, ios::end); // move read pointer to beginning
+    int totalReservations = Util::reservationFile.tellg() / RECORD_SIZE;
+    cout << "Total reservations in system are: " << totalReservations << endl;
+    cout << "Total reservations with given sailing id are:" << getTotalReservationsOnSailing(sailingId) << endl;
+    //----------------------------------------------------------------------------------------------------------
 
     if (!Util::reservationFile.is_open())
     {
