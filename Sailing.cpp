@@ -77,7 +77,6 @@ void Sailing::open(const string &id, const string &vName, double hrl, double lrl
 //************************************************************
 void Sailing::writeToFile(fstream &file) const
 {
-    cout << "In write to file\n";
     if (file.is_open())
     {
         file.write(sailingId, SAILING_ID_LENGTH + 1);                  // Write SailingId

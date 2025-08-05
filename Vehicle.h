@@ -13,12 +13,16 @@
 
 using namespace std;
 
+static const float REGULAR_VEHICLE_HEIGHT = 2.0;
+static const float REGULAR_VEHICLE_LENGTH = 7.0;
+static const int LICENSE_PLATE_LENGTH = 10;
+static const int PHONE_LENGTH = 14;
+
 class Vehicle
 {
 
 public:
-    static const int LICENSE_PLATE_LENGTH = 10;
-    static const int PHONE_LENGTH = 10;
+    
     static const int RECORD_SIZE = LICENSE_PLATE_LENGTH + PHONE_LENGTH + sizeof(float) * 2;
 
     char license[LICENSE_PLATE_LENGTH + 1]; // +1 for null terminator

@@ -13,10 +13,11 @@
 
 using namespace std;
 
+static const int NAME_LENGTH = 25;                            // Length of the vessel name
+
 class Vessel
 {
 public:
-    static const int NAME_LENGTH = 25;                            // Length of the vessel name
     static const int RECORD_SIZE = NAME_LENGTH + 1 + (sizeof(int) * 2); // Size of the record in bytes
 
     char vesselName[NAME_LENGTH + 1]; // +1 for null terminator

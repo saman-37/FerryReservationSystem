@@ -25,8 +25,8 @@ Vehicle::Vehicle()
 {
     strcpy(license, ""); // Set license to empty string
     strcpy(phone, "");   // Set phone to empty string
-    height = 2.0f;       // Default height
-    length = 7.0f;       // Default length
+    height = REGULAR_VEHICLE_HEIGHT;       // Default height
+    length = REGULAR_VEHICLE_LENGTH;       // Default length
 }
 
 //************************************************************
@@ -58,7 +58,6 @@ void Vehicle::writeToFile(fstream &file) const
         file.write(phone, PHONE_LENGTH + 1);
         file.write(reinterpret_cast<const char *>(&height), sizeof(float));
         file.write(reinterpret_cast<const char *>(&length), sizeof(float));
-        cout<< "WRITE TO FILE!" << endl;
     }
     else
     {
@@ -99,7 +98,6 @@ bool Vehicle::checkExist(const string &license)
         {
             vehicle.readFromFile(Util::vehicleFile);
 
-            cout << "File license: " << vehicle.license << "\n our license: " << license.c_str() << endl;
             if (strcmp(vehicle.license, license.c_str()) == 0)
             {
                 return true; // Vessel found end here

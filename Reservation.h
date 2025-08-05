@@ -24,6 +24,7 @@ public:
     static const int SAILING_ID_LENGTH = 9;       // Fixed sailing ID length
     static const int LICENSE_LENGTH = 10;         // Fixed license length
     static const int RECORD_SIZE = LICENSE_LENGTH + 1 + SAILING_ID_LENGTH + 1 + sizeof(bool); 
+    static const int REGULAR_VEHICLE_FARE = 14;
     // Total size of one binary reservation record (+2 for null terminators)
 
     //************************************************************

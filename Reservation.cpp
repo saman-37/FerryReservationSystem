@@ -50,8 +50,8 @@ Reservation::Reservation(const string &license, const string &sailingId, const b
 {
     strcpy(this->license, license.c_str());
     strcpy(this->sailingId, sailingId.c_str());
-    // this->sailingId[SAILING_ID_LENGTH] = '\0'; // Null-terminate sailing ID
-    // this->license[LICENSE_LENGTH] = '\0';      // Null-terminate license
+    this->sailingId[SAILING_ID_LENGTH] = '\0'; // Null-terminate sailing ID
+    this->license[LICENSE_LENGTH] = '\0';      // Null-terminate license
     this->onBoard = onBoard;
 }
 
@@ -189,14 +189,13 @@ int Reservation::getTotalReservationsOnSailing(const string &sailingId)
     int count = 0;
 
     // Loop through records until the end of the file
-    while (!Util::reservationFile.eof())
+    while (Util::reservationFile.peek() != EOF)
     {
         reservation.readFromFile(Util::reservationFile);
 
         if (strcmp(reservation.sailingId, sailingId.c_str()) == 0) // the sailingId of the record just read if matches with the given sailingId
         {
             count++;
-            // cout << "Found " << count << " reservation(s) SO FAR with given sailing id: " << sailingId << endl;
         }
     }
 
@@ -211,20 +210,6 @@ int Reservation::getTotalReservationsOnSailing(const string &sailingId)
 bool Reservation::removeReservation(const string &license, const string &sailingId)
 {
     Reservation reservation;
-
-    //----------------------------------------------------------------------------------------------------------
-    cout << "Entered the removeReservation." << endl;
-    cout << "The CONTENTS before deleting reservation are: " << endl;
-
-    Util::reservationFile.clear();
-    Util::reservationFile.seekg(0, ios::beg); // move read pointer to beginning
-
-    while (Util::reservationFile.peek() != EOF)
-    {
-        reservation.readFromFile(Util::reservationFile);
-        cout << reservation.toString(); // WEIRDLY THIS WASNT WORKING , IT SHOULD BE AN EASY WAY TO DEBUG AND PRINT
-    }
-    //----------------------------------------------------------------------------------------------------------
 
     if (!Util::reservationFile.is_open())
     {
@@ -299,12 +284,6 @@ bool Reservation::removeReservation(const string &license, const string &sailing
 // TEST ABOVE FIRST, THIS WITH 1-1 LOOP AT FRONT & END LATER, OTHERWISE TOO MANY PRINTS
 bool Reservation::removeReservationsOnSailing(const std::string &sailingId)
 {
-    //----------------------------------------------------------------------------------------------------------
-    cout << "Entered the removeReservationsOnSailing." << endl;
-    int totalReservations = Util::reservationFile.tellg() / RECORD_SIZE;
-    cout << "Total reservations in system are: " << totalReservations << endl;
-    cout << "Total reservations with given sailing id are:" << getTotalReservationsOnSailing(sailingId) << endl;
-    //----------------------------------------------------------------------------------------------------------
 
     if (!Util::reservationFile.is_open())
     {
@@ -339,12 +318,6 @@ bool Reservation::removeReservationsOnSailing(const std::string &sailingId)
         cout << "No reservations found for this sailing ID: " << sailingId << "\n Hence, no reservations deletions happened." << endl;
     }
 
-    //----------------------------------------------------------------------------------------------------------
-    cout << "Exited the removeReservationsOnSailing." << endl;
-    totalReservations = Util::reservationFile.tellg() / RECORD_SIZE;
-    cout << "Total reservations in system are: " << totalReservations << endl;
-    cout << "Total reservations with given sailing id are:" << getTotalReservationsOnSailing(sailingId) << endl;
-
     return true;
 }
 
@@ -370,7 +343,6 @@ void Reservation::setCheckedIn(const string &license)
 
         if (strcmp(reservation.license, license.c_str()) == 0)
         {
-            // does this update in the file ? No, it just updates the object
             reservation.onBoard = true;
             cout << "The fare for your vehicle is : $" << calculateFare(license) << endl;
 
@@ -394,17 +366,22 @@ float Reservation::calculateFare(const string &license)
     float height = vehicle.getHeight(license);
     float length = vehicle.getLength(license);
 
-    if (height <= 2.0 && length <= 7.0)
+    if (height <= REGULAR_VEHICLE_HEIGHT && length <= REGULAR_VEHICLE_LENGTH)
     {
-        return 14.0; // Normal vehicle fare
+        return REGULAR_VEHICLE_FARE; // Normal vehicle fare
     }
-    else if (length > 7.0 && height <= 2.0)
+    else if (length > REGULAR_VEHICLE_LENGTH && height <= REGULAR_VEHICLE_HEIGHT)
     {                        // long-low special vehicle
         return 2.0 * length; // Long overheight vehicle fare
     }
-    else if (length > 7.0 && height > 2.0)
+    else if (length > REGULAR_VEHICLE_LENGTH && height > REGULAR_VEHICLE_HEIGHT)
     {                        // long-overheight special vehicle
         return 3.0 * length; // Long overheight vehicle fare
+    }
+    else if (length > REGULAR_VEHICLE_LENGTH && height > REGULAR_VEHICLE_HEIGHT 
+            && length > REGULAR_VEHICLE_LENGTH && height <= REGULAR_VEHICLE_HEIGHT) 
+    {
+        return (3.0 * length) + (2.0 * length);
     }
     return 0.0; // Invalid vehicle dimensions
 }

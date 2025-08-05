@@ -76,31 +76,6 @@ void Vessel::readFromFile(fstream &file)
 // in: vesselName
 // out: true if exists, false otherwise
 //************************************************************
-// bool Vessel::checkExist(const string &vesselName)
-// {
-//     if (Util::vesselFile.is_open())
-//     {
-//         Util::vesselFile.clear();
-//         Util::vesselFile.seekg(0, ios::beg);
-
-//         Vessel vessel;
-//         while (!Util::vesselFile.eof())
-//         {
-//             vessel.readFromFile(Util::vesselFile);
-//             if (strcmp(vessel.vesselName, vesselName.c_str()) == 0)
-//             {
-//                 return true; // Vessel found end here
-//             }
-//         }
-//         return false; // Not found, safe to create new vessel
-
-//     } else {
-//         cout << "Error opening vessel file." << endl;
-//         return false;
-//     }
-
-// }
-
 bool Vessel::checkExist(const string &vesselName)
 {
     if (Util::vesselFile.is_open())
@@ -147,7 +122,7 @@ bool Vessel::writeVessel(const string &VesselName, int HCLL, int LCLL)
 string Vessel::toString() const
 {
     stringstream ss;
-    ss << "Vessel Name: " << vesselName
+    ss << " Vessel Name: " << vesselName
        << "\n High Capacity Lane Length (HCLL): " << HCLL << "m"
        << "\n Low Capacity Lane Length (LCLL): " << LCLL << "m"
        << "\n Total Capacity: " << HCLL + LCLL << "m";
