@@ -63,8 +63,8 @@ bool OtherControls::createReservation(string &phoneNumber,
     }
 
     // Step 2: check if reservation already exists
-    // Check if a reservation already exists for the vehicle and
-    // sailing
+    // Check if a reservation already exists for the vehicle
+    // and sailing
     if (Reservation::checkExist(licensePlate, sailingId)) 
     {
         // Return false if reservation already exists
@@ -80,7 +80,7 @@ bool OtherControls::createReservation(string &phoneNumber,
     // Flag to indicate if the vehicle is special
     bool isSpecial = false; 
 
-    // Check if the vehicle exists based on the license plate
+    // Check if the vehicle exists 
     if (Vehicle::checkExist(licensePlate)) 
     {
         // Vehicle exists, fetch its details
@@ -104,7 +104,8 @@ bool OtherControls::createReservation(string &phoneNumber,
         }
         for (char c : phoneNumber) {
             if (!std::isdigit(c) && c != '-') {
-                cout << "Invalid format for phone number." << endl;
+                cout << "Invalid format for phone number." 
+                        << endl;
                 // Found a non-digit and non-dash character
                 return false; 
             }

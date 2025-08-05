@@ -6,6 +6,7 @@
     "ostream": "cpp",
     "fstream": "cpp",
     "string": "cpp",
-    "istream": "cpp"
+    "istream": "cpp",
+    "limits": "cpp"
   }
 }
