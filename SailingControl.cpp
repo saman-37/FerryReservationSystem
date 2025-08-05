@@ -37,7 +37,6 @@ bool SailingControl::createSailing(const string& sailingId, const string& vessel
         cout << "Sailing already exists." << endl;
         return false;
     }
-    cout << "out of check exist";
     if (!Vessel::checkExist(vesselName)) {
         cout << "Vessel does not exist." << endl;
         return false;

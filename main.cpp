@@ -6,7 +6,7 @@
 // main.cpp
 //************************************************************
 // Purpose: Main entry point for the FerryReserver application.
-// July 20, 2025 Version 1 - Darpandeep Kaur and Noble Sekhon
+// July 20, 2025 Version 2 - Darpandeep Kaur and Noble Sekhon
 //************************************************************
 
 //************************************************************
